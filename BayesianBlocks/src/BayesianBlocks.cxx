@@ -78,7 +78,7 @@ void BayesianBlocks::globalOpt() {
       indx = last[indx-1];
    }
    m_changePoints.push_front(0);
-   m_changePoints.push_back(npts-1);
+   m_changePoints.push_back(npts);
 }
 
 void BayesianBlocks::createCells() {

@@ -15,6 +15,10 @@ class BayesBlocks(BayesianBlocks):
         numEvents = DoubleVector()
         BayesianBlocks.computeLightCurve(self, tmins, tmaxs, numEvents)
         return num.array(tmins), num.array(tmaxs), num.array(numEvents)
+    def cells(self):
+        my_cells = DoubleVector()
+        self.getCells(my_cells)
+        return num.array(my_cells)
 
 def retrend(lightCurve, spectrum):
     tmins, tmaxs, numEvents = lightCurve
@@ -55,6 +59,7 @@ class LightCurve(object):
         except TypeError:
             indx = bisect.bisect(self.times, t)
             return self.dens[indx]
+        return y
     def dataPoints(self):
         return self.times, self.dens
 
