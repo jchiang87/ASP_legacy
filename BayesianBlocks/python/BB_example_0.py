@@ -6,16 +6,12 @@ import numarray as num
 from BayesBlocks import BayesBlocks, LightCurve
 from BayesianBlocks import Exposure, DoubleVector
 
-from distributions import sample
+from distributions import sample, stepFunction
 
-npts = 100
-phi = num.arange(npts, type=num.Float)/(npts-1)*2.*num.pi
-func = 1. + num.sin(phi)
+nsamp = 200
+events = sample(stepFunction(0.5, 0.7, amp=0.5), nsamp)
 
-nsamp = 5000
-events = sample(func, nsamp)*2.*num.pi
-
-fine_blocks = BayesBlocks(events.tolist(), 4)
+fine_blocks = BayesBlocks(events.tolist(), 1)
 #rough_blocks = BayesBlocks(events.tolist(), 4)
 
 fine_lc = LightCurve(fine_blocks.computeLightCurve())
@@ -25,7 +21,7 @@ fine_lc = LightCurve(fine_blocks.computeLightCurve())
 #(xx, yy) = rough_lc.dataPoints()
 
 import hippoplotter as plot
-hist = plot.histogram(events, 'phi')
+hist = plot.histogram(events, 'x')
 reps = hist.getDataReps()
 reps[0].setErrorDisplay('y', 1)
 plot.scatter(x, y, pointRep='Line', oplot=1, color='red')

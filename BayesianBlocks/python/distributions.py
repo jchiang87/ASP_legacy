@@ -24,16 +24,16 @@ def sample(dist, nsamp):
         my_sample.append(interpolate(my_integralDist, values, xi))
     return num.array(my_sample)
 
-def stepFunction(x1, x2, npts=50):
+def stepFunction(x1, x2, npts=50, amp=0.5):
     xx = num.arange(npts)/float(npts-1)
     yy = []
     for xval in xx:
         if xval < x1:
-            yy.append(0.2)
+            yy.append(1. - amp)
         elif xval < x2:
             yy.append(1.)
         else:
-            yy.append(0.2)
+            yy.append(1. - amp)
     return yy
 
 def uniq(x):
