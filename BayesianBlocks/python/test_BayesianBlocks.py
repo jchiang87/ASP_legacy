@@ -7,7 +7,7 @@ from distributions import *
 import numarray as num
 
 evts = []
-file = open("events.dat")
+file = open("../data/events.dat")
 for line in file:
     evts.append(string.atof(line.strip()))
 evts = num.array(evts)

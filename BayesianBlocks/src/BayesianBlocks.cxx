@@ -33,6 +33,12 @@ void BayesianBlocks::computeLightCurve(std::vector<double> & tmins,
    }
 }
 
+void BayesianBlocks::getChangePoints(std::vector<int> & changePoints) const {
+   changePoints.resize(m_changePoints.size());
+   std::copy(m_changePoints.begin(), m_changePoints.end(), 
+             changePoints.begin());
+}
+
 void BayesianBlocks::globalOpt() {
    std::vector<double> opt;
    opt.push_back(blockCost(0, 0) - m_ncpPrior);

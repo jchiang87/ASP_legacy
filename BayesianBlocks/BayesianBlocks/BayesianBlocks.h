@@ -39,21 +39,13 @@ public:
                           std::vector<double> & tmaxs,
                           std::vector<double> & numEvents);
 
+   void getChangePoints(std::vector<int> & changePoints) const;
+
    void setNcpPrior(double ncpPrior) {m_ncpPrior = ncpPrior;}
 
    double ncpPrior() const {return m_ncpPrior;}
 
    static double gammln(double x);
-
-   void createCells();
-
-   void globalOpt();
-
-   double blockCost(unsigned int imin, unsigned int imax) const;
-
-   double blockSize(unsigned int imin, unsigned int imax) const;
-
-   double blockContent(unsigned int imin, unsigned int imax) const;
 
 private:
 
@@ -64,6 +56,16 @@ private:
    std::vector< std::pair<double, double> > m_cells;
 
    std::deque<unsigned int> m_changePoints;
+
+   void createCells();
+
+   void globalOpt();
+
+   double blockCost(unsigned int imin, unsigned int imax) const;
+
+   double blockSize(unsigned int imin, unsigned int imax) const;
+
+   double blockContent(unsigned int imin, unsigned int imax) const;
 
 };
 

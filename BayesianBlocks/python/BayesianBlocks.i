@@ -7,3 +7,4 @@
 %include stl.i
 %include ../BayesianBlocks/BayesianBlocks.h
 %template(DoubleVector) std::vector<double>;
+%template(IntVector) std::vector<int>;
