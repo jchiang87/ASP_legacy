@@ -162,12 +162,12 @@
 
    This is a plot of the expected LAT events due to the Galactic and
    extragalactic diffuse emission measured by EGRET, histogrammed as a
-   function of time (black) for energies \f$E > 20\,\mbox{MeV}\f$. Also
-   plotted are the expected events from the bright flare seen by EGRET
-   from the blazar PKS 1622-297 (red).  Even though this flare was
-   unusually bright, its light curve is still comparable in magnitude
-   to the Poission fluctuations of the diffuse components as shown
-   by the error bars.
+   function of time for energies \f$E > 20\,\mbox{MeV}\f$ (black
+   curve). Also plotted are the expected events from the bright flare
+   seen by EGRET from the blazar PKS 1622-297 (red).  Even though this
+   flare was unusually bright, its light curve is still comparable in
+   magnitude to the Poission fluctuations of the diffuse components as
+   shown by the error bars.
 
    One can increase the signal-to-noise in the flare emission versus
    the diffuse by considering events from smaller portions of the sky,
@@ -191,7 +191,7 @@
    range shown) with the orbital frequency.  Even though this flare
    would be apparent in these data even given the strong orbital
    modulation, most AGN flares will likely be much weaker.  Detecting
-   such flares would clearly be quite difficult both for the normal
+   such flares would clearly be quite difficult both for conventional
    binning and for direct application of BB.
 
    @image html pks1622_flare_BB_scaled.png Figure 8
@@ -215,9 +215,9 @@
    on the location of the source is used to filter the data.  This
    filtering leaves in 251 events from the source and 1896 events from
    the diffuse component.  In what follows, the black histograms in
-   the plots on left are the diffuse + flare events, the red
-   histograms are only the flare events and the green curves are the
-   BB reconstructed light curves using the various kinds of scale
+   the plots on the left are the diffuse and flare events, the red
+   histograms are only the flare events, and the green histograms are
+   the BB reconstructed light curves using the various kinds of scale
    factors.
 
    @image html test_flare_diffuse_scaling.png Figure 9: Diffuse Scaling
@@ -233,7 +233,7 @@
    @image html test_flare_diffuse2_scaling.png Figure 10 Other Diffuse Scaling
 
    In this case, we used diffuse photons from a different simulation
-   to provide the BB light curve which in turn gave the scaling
+   to provide the BB light curve which in turn gave the scale
    factors for the flare analysis.  This is intended to mimic an
    analysis for which data from an earlier epoch are used during which
    it is known that there was no flaring activity.  Even though the
@@ -245,17 +245,18 @@
    
    @image html test_flare_effArea_scaling.png Figure 11 Effective Area Scaling
 
-   One can calculate the exposure as a function of time to a given
-   point on the sky and use that as the scaling factor.
-   Unfortunately, this strategy does not seem to work.  Although there
-   appears to be a correlation with the scale factors using the actual
-   diffuse events that is at least as strong as that found for the
-   diffuse events from a different epoch, our BB analysis consistently
-   fails to find any variability in the reconstructed light
-   curve. (There must be something wrong here, as one would expect it
-   to at least find some spurious variability given that it should not
-   be a perfect proxy for the actual contemporaneous diffuse events.)
+   One can also calculate the exposure as a function of time to a
+   given point on the sky and use that to provide the scale factors.
+   In this example, the effective area scaling does seem to show a
+   stronger correlation with the scale factors obtained using the
+   actual diffuse events from this simulation.  A problem with this
+   strategy is that the exposure profile of the point chosen for
+   computing the scale factors may not be representative of the count
+   rates for the entire acceptance cone.  Ideally, one would like to
+   integrate the exposure over the entire acceptance cone and fold in
+   the expected distribution of diffuse emission, i.e., compute the
+   expected number of counts based on the diffuse model.
+
+   (more to come...)
 
 */
-
-

@@ -50,7 +50,7 @@ evt_times.sort()
 import hippoplotter as plot
 hist = plot.histogram(evt_times)
 hist.setLabel('x', 'Time (s)')
-plot.histogram(flare_times, oplot=1, color='red', )#autoscale=1)
+plot.histogram(flare_times, oplot=1, color='red', autoscale=1)
 
 diffuse_blocks = BayesBlocks(evt_times)
 lc_data = diffuse_blocks.computeLightCurve()
@@ -101,7 +101,7 @@ flc_data = flare_blocks.computeLightCurve()
 flare_lc = LightCurve(flc_data)
 (tt, ff) = flare_lc.dataPoints()
 plot.canvas.selectDisplay(hist)
-plot.scatter(tt, ff, oplot=1, color='green', pointRep='Line', )#autoscale=1)
+plot.scatter(tt, ff, oplot=1, color='green', pointRep='Line', autoscale=1)
 
 #flare_cells = flare_blocks.cells()
 #plot.histogram(flare_cells, 'cell sizes', ylog=1)
