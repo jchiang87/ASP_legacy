@@ -50,7 +50,7 @@ evt_times.sort()
 import hippoplotter as plot
 hist = plot.histogram(evt_times)
 hist.setLabel('x', 'Time (s)')
-plot.histogram(flare_times, oplot=1, color='red', autoscale=1)
+plot.histogram(flare_times, oplot=1, color='red', )#autoscale=1)
 
 diffuse_blocks = BayesBlocks(evt_times)
 lc_data = diffuse_blocks.computeLightCurve()
@@ -72,6 +72,7 @@ def effAreaScaleFactors(Roi_center, evt_times):
         EA_scaleFactors.append(my_exposure.value(t))
     x = num.array(EA_scaleFactors)
     x *= (0.05/max(x))
+    x += (max(x)/1e5)
     return DoubleVector(x.tolist())
 
 def diffuse2_scaleFactors(diffuse2_times, evt_times):
@@ -100,7 +101,10 @@ flc_data = flare_blocks.computeLightCurve()
 flare_lc = LightCurve(flc_data)
 (tt, ff) = flare_lc.dataPoints()
 plot.canvas.selectDisplay(hist)
-plot.scatter(tt, ff, oplot=1, color='green', pointRep='Line', autoscale=1)
+plot.scatter(tt, ff, oplot=1, color='green', pointRep='Line', )#autoscale=1)
+
+#flare_cells = flare_blocks.cells()
+#plot.histogram(flare_cells, 'cell sizes', ylog=1)
 
 #(t0, f0) = diffuse_lc.dataPoints()
 #plot.scatter(t0, f0, oplot=1, pointRep='Line', lineStyle='Dot')
