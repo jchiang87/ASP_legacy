@@ -1,6 +1,6 @@
 import random
 import numarray as num
-from BayesianBlocks import BayesianBlocks, DoubleVector
+from BayesBlocks import BayesBlocks, retrend
 
 class Distribution(object):
     def generateEvents(self, nevents=1000):
@@ -94,40 +94,6 @@ class Gaussian(Distribution):
     def __call__(self, ee):
         return (num.exp(-((ee-self.mean)/2./self.sigma)**2)
                 /num.sqrt(2.)/self.sigma)
-
-class BayesBlocks(BayesianBlocks):
-    def __init__(self, events, ncpPrior=1):
-        my_events = DoubleVector(events)
-        BayesianBlocks.__init__(self, my_events, ncpPrior)
-    def setCellScaling(self, scaleFactors):
-        my_scaleFactors = DoubleVector(scaleFactors)
-        BayesianBlocks.setCellScaling(self, my_scaleFactors)
-    def computeLightCurve(self):
-        tmins = DoubleVector()
-        tmaxs = DoubleVector()
-        numEvents = DoubleVector()
-        BayesianBlocks.computeLightCurve(self, tmins, tmaxs, numEvents)
-        return num.array(tmins), num.array(tmaxs), num.array(numEvents)
-
-def retrend(lightCurve, spectrum):
-    tmins, tmaxs, numEvents = lightCurve
-    energies = []
-    dens = []
-    ecenter = []
-    for tmin, tmax, numEvts in zip(tmins, tmaxs, numEvents):
-        my_dens = numEvts/(tmax - tmin)
-        if (tmin < 0):
-            energies.append(min(events))
-        else:
-            energies.append(tmin)
-        energies.append(tmax)
-        dens.extend([my_dens, my_dens])
-        ecenter.extend([num.sqrt(tmin*tmax), num.sqrt(tmin*tmax)])
-    energies = num.array(energies)
-    ecenter = num.array(ecenter)
-    jacobian = lambda en : abs(spectrum(en) + en*spectrum.deriv(en))
-    dens = num.array(dens)*jacobian(energies)/jacobian(ecenter)
-    return energies, dens
 
 if __name__ == "__main__":
     import string, sys, time
