@@ -53,6 +53,17 @@ void BayesianBlocks::getChangePoints(std::vector<int> & changePoints) const {
              changePoints.begin());
 }
 
+void BayesianBlocks::getCellBoundaries(std::vector<double> & cellBoundaries,
+                                       bool scaled) const {
+   if (scaled) {
+      cellBoundaries.resize(m_scaledBoundaries.size());
+      std::copy(m_scaledBoundaries.begin(), m_scaledBoundaries.end(),
+                cellBoundaries.begin());
+   } else {
+      cellBoundaries = m_cellBoundaries;
+   }
+}
+
 void BayesianBlocks::globalOpt() {
    std::vector<double> opt;
    opt.push_back(blockCost(0, 0) - m_ncpPrior);

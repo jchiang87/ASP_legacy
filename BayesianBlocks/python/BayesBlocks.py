@@ -19,6 +19,10 @@ class BayesBlocks(BayesianBlocks):
         my_cells = DoubleVector()
         self.getCells(my_cells)
         return num.array(my_cells)
+    def cellBoundaries(self, scaled=True):
+        my_boundaries = DoubleVector()
+        self.getCellBoundaries(my_boundaries, scaled)
+        return num.array(my_boundaries)
 
 def retrend(lightCurve, spectrum):
     tmins, tmaxs, numEvents = lightCurve

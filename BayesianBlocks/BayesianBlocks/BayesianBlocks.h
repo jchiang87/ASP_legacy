@@ -47,6 +47,9 @@ public:
       cells = m_cells;
    }
 
+   void getCellBoundaries(std::vector<double> & cellBoundaries, 
+                          bool scaled=true) const;
+
    void setNcpPrior(double ncpPrior) {m_ncpPrior = ncpPrior;}
 
    double ncpPrior() const {return m_ncpPrior;}

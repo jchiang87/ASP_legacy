@@ -108,16 +108,19 @@ if __name__ == "__main__":
 
     import hippoplotter as plot
     gamma = 2.
-    spectrum = PowerLaw(gamma=gamma, emin=10)
-#    spectrum = BrokenPowerLaw(gamma1=1.5, ebreak=200.)
-    events = spectrum.generateEvents(1000)
     eline = 200.
     width = 30.
     gauss = Gaussian(eline, width)
-    events.extend(gauss.generateEvents(100))
-    events.sort()
+    spectrum = PowerLaw(gamma=gamma, emin=10)
+#    spectrum = BrokenPowerLaw(gamma1=1.5, ebreak=200.)
+#    events = spectrum.generateEvents(1000)
+#    events.extend(gauss.generateEvents(100))
+#    events.sort()
+#    events = num.array(events)
+ 
+    from read_data import read_data
+    (events, ) = read_data('powerlaw_events.dat')
 
-    events = num.array(events)
     my_blocks = BayesBlocks(events.tolist(), ncpPrior)
     
     scaleFactors = spectrum(events)
@@ -134,9 +137,17 @@ if __name__ == "__main__":
     else:
         energies, dens = LightCurve(lightCurve).dataPoints()
     
-    plot.clear()
+#    plot.clear()
     specHist = plot.histogram(events, 'energy', xlog=1, ylog=1)
     plot.canvas.selectDisplay(specHist)
     plot.scatter(energies, dens, oplot=1, pointRep='Line', color='red')
+    specHist.setRange('x', 10, 2e5)
+    specHist.setRange('y', 1e-4, 100)
     plot.vline(eline)
-    
+
+    if "-no_scale" not in sys.argv:
+        cellBoundaries = my_blocks.cellBoundaries()
+        plot.histogram(cellBoundaries, 'scaled energy')
+        scaled_blocks = BayesBlocks(cellBoundaries.tolist())
+        x, y = LightCurve(scaled_blocks.computeLightCurve()).dataPoints()
+        plot.scatter(x, y, oplot=1, pointRep='Line', color='red')
