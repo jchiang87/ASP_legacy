@@ -68,7 +68,7 @@ def runObsSim(filename, file_prefix):
     os.system(command)
 
 if __name__ == '__main__':
-    src = randomFlare(flux=0.1)
+    src = randomFlare(flux=0.05, window=(0, 2*8.64e4))
     xmlFile = 'random_flare.xml'
     writeXml(src, xmlFile)
     runObsSim(xmlFile, 'random_flare')

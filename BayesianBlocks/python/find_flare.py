@@ -3,19 +3,31 @@ import numarray.ma as ma
 import celgal
 import copy
 from FitsNTuple import FitsNTuple
+from xml.dom import minidom
 
 import sys
 sys.path.append('../python')
 from BayesBlocks import BayesBlocks, LightCurve
 
+import string
+
+def roiCenter(xmlFile):
+    (src, ) = minidom.parse(xmlFile).getElementsByTagName('source')
+    (dir, ) = src.getElementsByTagName('celestial_dir')
+    ra = string.atof(dir.getAttribute('ra'))
+    dec = string.atof(dir.getAttribute('dec'))
+    return ra, dec
+
 #flare = FitsNTuple('test_events_0000.fits')
 #flare = FitsNTuple('test_0.5_events_0000.fits')
 #flare = FitsNTuple('test_0.25_events_0000.fits')
-flare = FitsNTuple('broad_flare_events_0000.fits')
+#flare = FitsNTuple('broad_flare_events_0000.fits')
+flare = FitsNTuple('random_flare_events_0000.fits')
 diffuse = FitsNTuple('eg_diffuse_events_0000.fits')
 
-Roi_center = (246.36, -29.92)
-Roi_radius = 30.
+#Roi_center = (246.36, -29.92)
+Roi_center = roiCenter('random_flare.xml')
+Roi_radius = 10.
 
 def get_times(data, center, radius=20):
     data.dist = celgal.dist(Roi_center, (data.RA, data.DEC))
