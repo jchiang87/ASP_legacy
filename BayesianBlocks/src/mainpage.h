@@ -161,7 +161,7 @@
 
    This is a plot of the expected LAT events due to the Galactic and
    extragalactic diffuse emission measured by EGRET, histogrammed as a
-   function of time (black) for energies \f$E > 20 MeV\f$. Also
+   function of time (black) for energies \f$E > 20\,\mbox{MeV}\f$. Also
    plotted are the expected events from the bright flare seen by EGRET
    from the blazar PKS 1622-297 (red).  Even though this flare was
    unusually bright, its light curve is still comparable in magnitude
@@ -170,11 +170,28 @@
 
    One can increase the signal-to-noise in the flare emission versus
    the diffuse by considering events from smaller portions of the sky,
-   but in this case the orbital and diurnal modulations are magnified:
+   but in this case the orbital modulations are magnified:
 
    @image html pks1622_flare_20deg.png
-   
-   For these data, a 20 degree acceptance cone centered 
+
+   @image html pks1622_flare_20deg_BB.png
+
+   For these data, a 20 degree acceptance cone centered on the
+   location of PKS 1622-297 was used to filter the data.  In the upper
+   plot, the black histogram is the extragalactic diffuse, the blue
+   histogram is the Galactic diffuse, and the red histogram is PKS
+   1622-297.  In the lower plot, the BB estimate of the count rates
+   from the extragalactic diffuse and PKS 1622-297 are shown.  The
+   spikes in these light curves occur at the orbital period and are
+   due to the sharply varying exposure to the region around PKS
+   1622-297 as the spacecraft orbits and step-rocks.  The six large
+   spikes in the Galactic Diffuse shown in the upper plot result from
+   the beating of the bin frequency (50 uniform bins over the time
+   range shown) with the orbital frequency.  Even though this flare
+   would be apparent in these data even given the strong orbital
+   modulation, most AGN flares will likely be much weaker.  Detecting
+   such flares would clearly be quite difficult both for the normal
+   binning and for direct application of BB.
 
 */
 
