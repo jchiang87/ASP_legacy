@@ -29,7 +29,7 @@ flare = FitsNTuple('random_flare_events_0000.fits')
 diffuse = FitsNTuple('eg_diffuse_events_0000.fits')
 
 Roi_center = roiCenter('random_flare.xml')
-Roi_radius = 15.
+Roi_radius = 10.
 
 def get_times(data, center, radius=20):
     data.dist = celgal.dist(Roi_center, (data.RA, data.DEC))
@@ -53,17 +53,23 @@ diffuse_blocks = BayesBlocks(evt_times)
 lc_data = diffuse_blocks.computeLightCurve()
 diffuse_lc = LightCurve(lc_data)
 
-block_times = list(lc_data[0])
-block_times.append(lc_data[1][-1])
-if block_times[0] < 0:
-    block_times[0] = evt_times[0]
-block_times = DoubleVector(block_times)
-my_exposure = Exposure('eg_diffuse_scData_0000.fits', block_times,
-                       Roi_center[0], Roi_center[1])
-
-scaleFactors = DoubleVector()
-for t in evt_times:
-    scaleFactors.append(my_exposure.value(t))
+if "-ea" in sys.argv: # use effective Area
+#    block_times = list(lc_data[0])
+#    block_times.append(lc_data[1][-1])
+#    if block_times[0] < 0:
+#        block_times[0] = evt_times[0]
+    block_times = num.arange(100)/99.*max(lc_data[0]) + evt_times[0]
+    block_times = DoubleVector(block_times.tolist())
+    my_exposure = Exposure('eg_diffuse_scData_0000.fits', block_times,
+                           Roi_center[0], Roi_center[1])
+    scaleFactors = DoubleVector()
+    for t in evt_times:
+        scaleFactors.append(my_exposure.value(t))
+else:
+    diffuse_only = BayesBlocks(diffuse_times)
+    diffuse_only_lc = LightCurve(diffuse_only.computeLightCurve())
+    scaleFactors = diffuse_only_lc(evt_times)
+    
 plot.scatter(evt_times, scaleFactors, pointRep='Line')
 
 flare_blocks = BayesBlocks(evt_times, 4)

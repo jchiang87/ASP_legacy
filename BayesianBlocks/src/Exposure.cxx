@@ -19,15 +19,18 @@
 Exposure::Exposure(const std::string & scDataFile,
                    const std::vector<double> & timeBoundaries,
                    double ra, double dec) 
-   : m_timeBoundaries(timeBoundaries), m_irfs(0), m_energy(300.) {
+   : m_timeBoundaries(timeBoundaries), m_irfs_front(0), m_irfs_back(0), 
+     m_energy(300.) {
    m_srcDir = astro::SkyDir(ra, dec);
-   m_irfs = latResponse::irfsFactory().create("DC1::Front");
+   m_irfs_front = latResponse::irfsFactory().create("DC1::Front");
+   m_irfs_back = latResponse::irfsFactory().create("DC1::Back");
    readScData(scDataFile);
    integrateExposure();
 }
 
 Exposure::~Exposure() throw() {
-   delete m_irfs;
+   delete m_irfs_front;
+   delete m_irfs_back;
 }
    
 double Exposure::value(double time) const {
@@ -80,6 +83,8 @@ double Exposure::effArea(double time) const {
    astro::SkyDir zAxis = scData->zAxis(time);
    astro::SkyDir xAxis = scData->xAxis(time);
    
-   latResponse::IAeff * aeff = m_irfs->aeff();
-   return aeff->value(m_energy, m_srcDir, zAxis, xAxis);
+   latResponse::IAeff * aeff_front = m_irfs_front->aeff();
+   latResponse::IAeff * aeff_back = m_irfs_back->aeff();
+   return aeff_front->value(m_energy, m_srcDir, zAxis, xAxis)
+      + aeff_back->value(m_energy, m_srcDir, zAxis, xAxis);
 }
