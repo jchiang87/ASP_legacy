@@ -10,6 +10,9 @@ apply_pattern package_linkopts
 apply_pattern shared_library
 
 use GlastPolicy v*
+use likeGui v*
+use observationSim v*
+use sane v*
 
 private
 
