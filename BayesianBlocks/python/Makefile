@@ -1,10 +1,9 @@
 SWIG = swig
 #SWIG_DIR = /scratch/local
-#PYTHONDIR = $(GLAST_EXT)/python/2.3/Linux
-#PYINCLUDE = -I$(PYTHONDIR)/include
-PYINCLUDE = -I/usr/local/include/python2.3
+#PYINCLUDE = -I$(GLAST_EXT)/python/2.3/Linux/include
+#PYINCLUDE = -I/usr/local/include/python2.3
 
-CFLAGS = -g
+CFLAGS = -g 
 
 INCLUDE = -I$(BAYESIANBLOCKSROOT)
 
@@ -19,7 +18,7 @@ ${module_name}: ${module_base}_wrap.o
 	${CXX} -shared $< ${LIBS} -o ${module_name}
 
 ${module_base}_wrap.o: ${module_base}_wrap.cxx
-	${CXX} -c ${CFLAGS} ${INCLUDE} ${PYINCLUDE} -o $@ $<
+	${CXX} -c ${CFLAGS} ${INCLUDE} -I${PYINCLUDE} -o $@ $<
 
 ${module_base}_wrap.cxx: ${module_base}.i
 	${SWIG} -python -c++ ${module_base}.i

@@ -95,54 +95,22 @@ class Gaussian(Distribution):
         return (num.exp(-((ee-self.mean)/2./self.sigma)**2)
                 /num.sqrt(2.)/self.sigma)
 
-def detrend(events, func):
-    my_events = []
-    for evt in events:
-        my_events.append(evt*func(evt))
-    return my_events
+class BayesBlocks(BayesianBlocks):
+    def __init__(self, events, ncpPrior=1):
+        my_events = DoubleVector(events)
+        BayesianBlocks.__init__(self, my_events, ncpPrior)
+    def setCellScaling(self, scaleFactors):
+        my_scaleFactors = DoubleVector(scaleFactors)
+        BayesianBlocks.setCellScaling(self, my_scaleFactors)
+    def computeLightCurve(self):
+        tmins = DoubleVector()
+        tmaxs = DoubleVector()
+        numEvents = DoubleVector()
+        BayesianBlocks.computeLightCurve(self, tmins, tmaxs, numEvents)
+        return num.array(tmins), num.array(tmaxs), num.array(numEvents)
 
-if __name__ == "__main__":
-    import string, sys, time
-    if len(sys.argv) == 2:
-        ncpPrior = string.atof(sys.argv[1])
-    else:
-        ncpPrior = 2.
-
-    import hippoplotter as plot
-    gamma = 2.
-#    pl = PowerLaw(gamma=gamma)
-    pl = BrokenPowerLaw(gamma1=1.5, ebreak=200.)
-    events = pl.generateEvents(1000)
-    eline = 500.
-    width = 30.
-    gauss = Gaussian(eline, width)
-    events.extend(gauss.generateEvents(30))
-    events.sort()
-
-    plot.clear()
-    spectrum = plot.histogram(events, 'energy', xlog=1, ylog=1)
-
-    events = num.array(events)
-    scaleFactors = pl(events).tolist()
-#    events = detrend(events, pl)
-    
-    evts = DoubleVector(list(events))
-    my_blocks = BayesianBlocks(evts, ncpPrior)
-
-    sfs = DoubleVector(scaleFactors)
-    my_blocks.setCellScaling(sfs)
-    cells = DoubleVector()
-    my_blocks.getCells(cells)
-    plot.histogram(cells, ylog=1)
-
-    tmins = DoubleVector()
-    tmaxs = DoubleVector()
-    numEvents = DoubleVector()
-    t0 = time.time()
-    my_blocks.computeLightCurve(tmins, tmaxs, numEvents)
-    t1 = time.time()
-    print t1 - t0
-    
+def retrend(lightCurve, spectrum):
+    tmins, tmaxs, numEvents = lightCurve
     energies = []
     dens = []
     ecenter = []
@@ -155,10 +123,46 @@ if __name__ == "__main__":
         energies.append(tmax)
         dens.extend([my_dens, my_dens])
         ecenter.extend([num.sqrt(tmin*tmax), num.sqrt(tmin*tmax)])
-
     energies = num.array(energies)
     ecenter = num.array(ecenter)
-    jacobian = lambda en : abs(pl(en) + en*pl.deriv(en))
+    jacobian = lambda en : abs(spectrum(en) + en*spectrum.deriv(en))
     dens = num.array(dens)*jacobian(energies)/jacobian(ecenter)
-    plot.canvas.selectDisplay(spectrum)
+    return energies, dens
+
+if __name__ == "__main__":
+    import string, sys, time
+    if len(sys.argv) == 2:
+        ncpPrior = string.atof(sys.argv[1])
+    else:
+        ncpPrior = 2.
+
+    import hippoplotter as plot
+    gamma = 2.
+    spectrum = PowerLaw(gamma=gamma)
+#    spectrum = BrokenPowerLaw(gamma1=1.5, ebreak=200.)
+    events = spectrum.generateEvents(1000)
+    eline = 200.
+    width = 30.
+    gauss = Gaussian(eline, width)
+    events.extend(gauss.generateEvents(50))
+    events.sort()
+
+    events = num.array(events)
+    my_blocks = BayesBlocks(events.tolist(), ncpPrior)
+    
+    scaleFactors = spectrum(events)
+    my_blocks.setCellScaling(scaleFactors.tolist())
+
+    t0 = time.time()
+    lightCurve = my_blocks.computeLightCurve()
+    t1 = time.time()
+    print t1 - t0
+
+    energies, dens = retrend(lightCurve, spectrum)
+    
+    plot.clear()
+    specHist = plot.histogram(events, 'energy', xlog=1, ylog=1)
+    plot.canvas.selectDisplay(specHist)
     plot.scatter(energies, dens, oplot=1, pointRep='Line', color='red')
+    plot.vline(eline)
+    

@@ -59,10 +59,9 @@ private:
 
    double m_ncpPrior;
 
-   bool m_cellsAreScaled;
-
    std::vector<double> m_cells;
    std::vector<double> m_cellBoundaries;
+   std::deque<double> m_scaledBoundaries;
 
    std::deque<unsigned int> m_changePoints;
 
