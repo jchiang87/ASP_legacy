@@ -10,14 +10,8 @@ evts = []
 file = open("../data/events.dat")
 for line in file:
     evts.append(string.atof(line.strip()))
-evts = num.array(evts)
 
-dt = []
-for i in xrange(len(evts)-1):
-    dt.append(abs(evts[i+1] - evts[i]))
-evts /= min(dt)/2.
-
-evts = BayesianBlocks.DoubleVector(list(evts))
+evts = BayesianBlocks.DoubleVector(evts)
 
 my_blocks = BayesianBlocks.BayesianBlocks(evts)
 

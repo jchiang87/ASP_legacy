@@ -1,7 +1,8 @@
 SWIG = swig
-SWIG_DIR = /scratch/local
-PYTHONDIR = $(GLAST_EXT)/python/2.3/Linux
-PYINCLUDE = -I$(PYTHONDIR)/include
+#SWIG_DIR = /scratch/local
+#PYTHONDIR = $(GLAST_EXT)/python/2.3/Linux
+#PYINCLUDE = -I$(PYTHONDIR)/include
+PYINCLUDE = -I/usr/local/include/python2.3
 
 CFLAGS = -g
 

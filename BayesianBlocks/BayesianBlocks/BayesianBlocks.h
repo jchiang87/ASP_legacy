@@ -39,7 +39,13 @@ public:
                           std::vector<double> & tmaxs,
                           std::vector<double> & numEvents);
 
+   int setCellScaling(const std::vector<double> & scaleFactors);
+
    void getChangePoints(std::vector<int> & changePoints) const;
+
+   void getCells(std::vector<double> & cells) const {
+      cells = m_cells;
+   }
 
    void setNcpPrior(double ncpPrior) {m_ncpPrior = ncpPrior;}
 
@@ -53,13 +59,16 @@ private:
 
    double m_ncpPrior;
 
-   std::vector< std::pair<double, double> > m_cells;
+   std::vector<double> m_cells;
+   std::vector<double> m_cellBoundaries;
 
    std::deque<unsigned int> m_changePoints;
 
    void createCells();
 
    void globalOpt();
+
+   void renormalize();
 
    double blockCost(unsigned int imin, unsigned int imax) const;
 
