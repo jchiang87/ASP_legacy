@@ -5,26 +5,32 @@ author James Chiang <jchiang@slac.stanford.edu>
 
 # $Id$
 
-apply_pattern package_include
-apply_pattern package_linkopts
-apply_pattern shared_library
-
 use GlastPolicy v*
 use likeGui v*
 use astro v*
-use latResponse v*
+use irfInterface v* irfs
 use Likelihood v*
 use observationSim v*
 use sane v*
 
+apply_pattern package_include
+apply_pattern package_linkopts
+apply_pattern shared_library
+
+path_remove PYTHONPATH BayesianBlocks
+path_append PYTHONPATH $(BAYESIANBLOCKSROOT)/$(BINDIR)
+path_append PYTHONPATH $(BAYESIANBLOCKSROOT)/python
+
 private
 
-macro BayesianBlocks_cppflags "" \
-   WIN32 "/I..\src /wd4290 "
+macro_append cppflags "" Linux " -I../src -DTRAP_FPE " 
+macro source *.cxx WIN32 "*.h *.cxx"
 
-#macro test_BayesianBlocksstamps "BayesianBlocks.stamp"
+library BayesianBlocks $(source)
 
-library BayesianBlocks *.cxx
+use SwigPolicy v*
+
+apply_pattern swig_module name="BayesianBlocks"
 
 # test application
 #application test_BayesianBlocks test/*.cxx

@@ -9,9 +9,9 @@
 #include <stdexcept>
 #include <utility>
 
-#include "latResponse/IrfsFactory.h"
+#include "irfInterface/IrfsFactory.h"
 
-#include "Likelihood/PointSource.h"
+#include "Likelihood/LikeExposure.h"
 #include "Likelihood/ScData.h"
 #include "Likelihood/Util.h"
 
@@ -21,10 +21,11 @@ Exposure::Exposure(const std::string & scDataFile,
                    const std::vector<double> & timeBoundaries,
                    double ra, double dec) 
    : m_timeBoundaries(timeBoundaries), m_irfs_front(0), m_irfs_back(0), 
-     m_energy(300.) {
+     m_energy(300.), m_scData(0) {
    m_srcDir = astro::SkyDir(ra, dec);
-   m_irfs_front = latResponse::irfsFactory().create("DC1::Front");
-   m_irfs_back = latResponse::irfsFactory().create("DC1::Back");
+   m_irfs_front = irfInterface::IrfsFactory::instance()->create("DC1::Front");
+   m_irfs_back = irfInterface::IrfsFactory::instance()->create("DC1::Back");
+   m_scData = new Likelihood::ScData();
    readScData(scDataFile);
    integrateExposure();
 }
@@ -42,14 +43,13 @@ double Exposure::value(double time) const {
 }
 
 void Exposure::readScData(const std::string & scDataFile) {
-   int scHdu(2);
    std::vector<std::string> scFiles;
    Likelihood::Util::resolve_fits_files(scDataFile, scFiles);
    std::vector<std::string>::const_iterator scIt = scFiles.begin();
    bool clear(true);
    for ( ; scIt != scFiles.end(); scIt++) {
       Likelihood::Util::file_ok(*scIt);
-      Likelihood::ScData::readData(*scIt, scHdu, clear);
+      m_scData->readData(*scIt, clear);
       clear = false;
    }
 }
@@ -64,12 +64,10 @@ void Exposure::integrateExposure() {
       wholeInterval.second = m_timeBoundaries[i+1];
       std::pair<Likelihood::ScData::Iterator, 
          Likelihood::ScData::Iterator> scData;
-      Likelihood::ScData::Iterator firstIt
-         = Likelihood::ScData::instance()->vec.begin();
-      Likelihood::ScData::Iterator lastIt
-         = Likelihood::ScData::instance()->vec.end() - 1;
+      Likelihood::ScData::Iterator firstIt = m_scData->vec.begin();
+      Likelihood::ScData::Iterator lastIt = m_scData->vec.end() - 1;
       try {
-         scData = Likelihood::ScData::bracketInterval(wholeInterval);
+         scData = m_scData->bracketInterval(wholeInterval);
          if (scData.first - firstIt < 0) scData.first = firstIt;
          if (scData.second - firstIt > lastIt - firstIt) 
             scData.second = lastIt;
@@ -81,8 +79,9 @@ void Exposure::integrateExposure() {
          std::pair<double, double> thisInterval;
          thisInterval.first = it->time;
          thisInterval.second = (it+1)->time;
-         if (Likelihood::PointSource::overlapInterval(wholeInterval, 
-                                                      thisInterval)) {
+//          if (Likelihood::PointSource::overlapInterval(wholeInterval, 
+//                                                       thisInterval)) {
+         if (Likelihood::LikeExposure::overlap(wholeInterval, thisInterval)) {
             m_exposureValues[i] += (effArea(thisInterval.first) 
                                     + effArea(thisInterval.second))/2.
                *(thisInterval.second - thisInterval.first);
@@ -92,12 +91,11 @@ void Exposure::integrateExposure() {
 }
 
 double Exposure::effArea(double time) const {
-   Likelihood::ScData * scData = Likelihood::ScData::instance();
-   astro::SkyDir zAxis = scData->zAxis(time);
-   astro::SkyDir xAxis = scData->xAxis(time);
+   astro::SkyDir zAxis = m_scData->zAxis(time);
+   astro::SkyDir xAxis = m_scData->xAxis(time);
    
-   latResponse::IAeff * aeff_front = m_irfs_front->aeff();
-   latResponse::IAeff * aeff_back = m_irfs_back->aeff();
+   irfInterface::IAeff * aeff_front = m_irfs_front->aeff();
+   irfInterface::IAeff * aeff_back = m_irfs_back->aeff();
    return aeff_front->value(m_energy, m_srcDir, zAxis, xAxis)
       + aeff_back->value(m_energy, m_srcDir, zAxis, xAxis);
 }

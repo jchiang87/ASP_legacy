@@ -1,6 +1,6 @@
 import numarray as num
 import numarray.ma as ma
-from gammln import gammln
+from gammaln import gammln
 
 num.Error.setMode(invalid='ignore')
 

@@ -11,8 +11,6 @@ file = open("../data/events.dat")
 for line in file:
     evts.append(string.atof(line.strip()))
 
-evts = BayesianBlocks.DoubleVector(evts)
-
 my_blocks = BayesianBlocks.BayesianBlocks(evts)
 
 tmins = BayesianBlocks.DoubleVector()
@@ -24,7 +22,7 @@ if len(sys.argv) == 2:
 t0 = time.time()
 my_blocks.computeLightCurve(tmins, tmaxs, numEvents)
 t1 = time.time()
-print t1-t0
+print t1 - t0
 
 import hippoplotter as plot
 

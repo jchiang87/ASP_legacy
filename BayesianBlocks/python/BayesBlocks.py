@@ -4,11 +4,9 @@ from BayesianBlocks import BayesianBlocks, DoubleVector
 
 class BayesBlocks(BayesianBlocks):
     def __init__(self, events, ncpPrior=1):
-        my_events = DoubleVector(events)
-        BayesianBlocks.__init__(self, my_events, ncpPrior)
+        BayesianBlocks.__init__(self, events, ncpPrior)
     def setCellScaling(self, scaleFactors):
-        my_scaleFactors = DoubleVector(scaleFactors)
-        BayesianBlocks.setCellScaling(self, my_scaleFactors)
+        BayesianBlocks.setCellScaling(self, scaleFactors)
     def computeLightCurve(self):
         tmins = DoubleVector()
         tmaxs = DoubleVector()

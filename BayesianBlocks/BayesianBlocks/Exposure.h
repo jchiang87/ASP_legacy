@@ -15,8 +15,12 @@
 
 #include "astro/SkyDir.h"
 
-namespace latResponse {
+namespace irfInterface {
    class Irfs;
+}
+
+namespace Likelihood {
+   class ScData;
 }
 
 /**
@@ -47,11 +51,13 @@ public:
 private:
 
    std::vector<double> m_timeBoundaries;
-   latResponse::Irfs * m_irfs_front;
-   latResponse::Irfs * m_irfs_back;
+   irfInterface::Irfs * m_irfs_front;
+   irfInterface::Irfs * m_irfs_back;
    double m_energy;
    astro::SkyDir m_srcDir;
    std::vector<double> m_exposureValues;
+
+   Likelihood::ScData * m_scData;
 
    void readScData(const std::string & filename);
    void integrateExposure();

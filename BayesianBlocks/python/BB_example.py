@@ -1,10 +1,5 @@
-import sys, os
-sys.path.append('../python')
-sys.path.append(os.path.join(os.environ['LIKEGUIROOT'], 'python'))
-sys.path.append(os.path.join(os.environ['SANEROOT'], 'python'))
 import numarray as num
 from BayesBlocks import BayesBlocks, LightCurve
-from BayesianBlocks import Exposure, DoubleVector
 
 from distributions import sample
 
@@ -15,8 +10,8 @@ func = 1. + num.sin(phi)
 nsamp = 5000
 events = sample(func, nsamp)*2.*num.pi
 
-fine_blocks = BayesBlocks(events.tolist(), 4)
-#rough_blocks = BayesBlocks(events.tolist(), 4)
+fine_blocks = BayesBlocks(events, 4)
+#rough_blocks = BayesBlocks(events, 4)
 
 fine_lc = LightCurve(fine_blocks.computeLightCurve())
 #rough_lc = LightCurve(rough_blocks.computeLightCurve())
