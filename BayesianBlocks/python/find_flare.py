@@ -27,9 +27,10 @@ def roiCenter(xmlFile):
 #flare = FitsNTuple('broad_flare_events_0000.fits')
 flare = FitsNTuple('random_flare_events_0000.fits')
 diffuse = FitsNTuple('eg_diffuse_events_0000.fits')
+diffuse2 = FitsNTuple('eg_diffuse_2_events_0000.fits')
 
 Roi_center = roiCenter('random_flare.xml')
-Roi_radius = 10.
+Roi_radius = 20.
 
 def get_times(data, center, radius=20):
     data.dist = celgal.dist(Roi_center, (data.RA, data.DEC))
@@ -41,45 +42,65 @@ def get_times(data, center, radius=20):
 
 flare_times = get_times(flare, Roi_center, radius=Roi_radius)
 diffuse_times = get_times(diffuse, Roi_center, radius=Roi_radius)
+diffuse2_times = get_times(diffuse2, Roi_center, radius=Roi_radius)
 
 evt_times = flare_times + diffuse_times
 evt_times.sort()
 
 import hippoplotter as plot
 hist = plot.histogram(evt_times)
-plot.histogram(flare_times, oplot=1, color='red')
+hist.setLabel('x', 'Time (s)')
+plot.histogram(flare_times, oplot=1, color='red', autoscale=1)
 
 diffuse_blocks = BayesBlocks(evt_times)
 lc_data = diffuse_blocks.computeLightCurve()
 diffuse_lc = LightCurve(lc_data)
+    
+diffuse_only = BayesBlocks(diffuse_times)
+diffuse_only_lc = LightCurve(diffuse_only.computeLightCurve())
+scaleFactors = diffuse_only_lc(evt_times)
 
-if "-ea" in sys.argv: # use effective Area
-#    block_times = list(lc_data[0])
-#    block_times.append(lc_data[1][-1])
-#    if block_times[0] < 0:
-#        block_times[0] = evt_times[0]
-    block_times = num.arange(100)/99.*max(lc_data[0]) + evt_times[0]
+def effAreaScaleFactors(Roi_center, evt_times):
+    npts = 1000
+    block_times = (num.arange(npts, type=num.Float)/(npts-1)
+                   *max(lc_data[0]) + evt_times[0])
     block_times = DoubleVector(block_times.tolist())
     my_exposure = Exposure('eg_diffuse_scData_0000.fits', block_times,
                            Roi_center[0], Roi_center[1])
-    scaleFactors = DoubleVector()
+    EA_scaleFactors = []
     for t in evt_times:
-        scaleFactors.append(my_exposure.value(t))
-else:
-    diffuse_only = BayesBlocks(diffuse_times)
-    diffuse_only_lc = LightCurve(diffuse_only.computeLightCurve())
-    scaleFactors = diffuse_only_lc(evt_times)
-    
-plot.scatter(evt_times, scaleFactors, pointRep='Line')
+        EA_scaleFactors.append(my_exposure.value(t))
+    x = num.array(EA_scaleFactors)
+    x *= (0.05/max(x))
+    return DoubleVector(x.tolist())
+
+def diffuse2_scaleFactors(diffuse2_times, evt_times):
+    diffuse2_only = BayesBlocks(diffuse2_times)
+    diffuse2_only_lc = LightCurve(diffuse2_only.computeLightCurve())
+    return diffuse2_only_lc(evt_times)
 
 flare_blocks = BayesBlocks(evt_times, 4)
-flare_blocks.setCellScaling(scaleFactors)
+
+if "-ea" in sys.argv: # use effective Area
+    EA_scaleFactors = effAreaScaleFactors(Roi_center, evt_times)
+    plot.scatter(scaleFactors, EA_scaleFactors, "diffuse scale factors",
+                 "eff. area scale factors")
+    flare_blocks.setCellScaling(EA_scaleFactors)
+elif "-diffuse" in sys.argv: # use diffuse2 events
+    scaleFactors2 = diffuse2_scaleFactors(diffuse2_times, evt_times)
+    plot.scatter(scaleFactors, scaleFactors2, "diffuse scale factors",
+                 "diffuse2 scale factors")
+    flare_blocks.setCellScaling(scaleFactors2)
+else:
+    flare_blocks.setCellScaling(scaleFactors)
+    plot.scatter(evt_times, scaleFactors, 'Time (s)', 'scale factors',
+                 pointRep='Line')
 
 flc_data = flare_blocks.computeLightCurve()
 flare_lc = LightCurve(flc_data)
 (tt, ff) = flare_lc.dataPoints()
 plot.canvas.selectDisplay(hist)
-plot.scatter(tt, ff, oplot=1, color='green', pointRep='Line')
+plot.scatter(tt, ff, oplot=1, color='green', pointRep='Line', autoscale=1)
 
 #(t0, f0) = diffuse_lc.dataPoints()
 #plot.scatter(t0, f0, oplot=1, pointRep='Line', lineStyle='Dot')

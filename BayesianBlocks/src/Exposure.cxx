@@ -6,6 +6,7 @@
  * $Header$
  */
 
+#include <stdexcept>
 #include <utility>
 
 #include "latResponse/IrfsFactory.h"
@@ -61,8 +62,20 @@ void Exposure::integrateExposure() {
       std::pair<double, double> wholeInterval;
       wholeInterval.first = m_timeBoundaries[i];
       wholeInterval.second = m_timeBoundaries[i+1];
-      std::pair<Likelihood::ScData::Iterator, Likelihood::ScData::Iterator> 
+      std::pair<Likelihood::ScData::Iterator, 
+         Likelihood::ScData::Iterator> scData;
+      Likelihood::ScData::Iterator firstIt
+         = Likelihood::ScData::instance()->vec.begin();
+      Likelihood::ScData::Iterator lastIt
+         = Likelihood::ScData::instance()->vec.end() - 1;
+      try {
          scData = Likelihood::ScData::bracketInterval(wholeInterval);
+         if (scData.first - firstIt < 0) scData.first = firstIt;
+         if (scData.second - firstIt > lastIt - firstIt) 
+            scData.second = lastIt;
+      } catch (std::out_of_range &eObj) { // use brute force
+         scData = std::make_pair(firstIt, lastIt);
+      }
       for (Likelihood::ScData::Iterator it = scData.first; 
            it != (scData.second-1); ++it) {
          std::pair<double, double> thisInterval;

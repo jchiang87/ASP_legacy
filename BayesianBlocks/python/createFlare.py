@@ -63,12 +63,14 @@ def runObsSim(filename, file_prefix):
     pars = Pil('obsSim.par')
     pars['Output_file_prefix'] = file_prefix
     pars['XML_source_file'] = filename
+    pars['Start_time'] = 0
+    pars['Number_of_events'] = 8.64e4*2
     command = ' '.join((obsSim, pars()))
     print command
     os.system(command)
 
 if __name__ == '__main__':
-    src = randomFlare(flux=0.05, window=(0, 2*8.64e4))
+    src = randomFlare(flux=0.1, window=(0, 2*8.64e4))
     xmlFile = 'random_flare.xml'
     writeXml(src, xmlFile)
     runObsSim(xmlFile, 'random_flare')

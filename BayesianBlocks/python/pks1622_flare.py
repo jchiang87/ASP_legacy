@@ -22,7 +22,7 @@ nt3 = reps[2].createNTuple()
 
 plot.canvas.removeDisplay(hist)
 
-hist = plot.Scatter(nt1, 'X', 'Value', pointRep='Column')
+hist = plot.Scatter(nt1, 'X', 'Value', pointRep='Column', yrange=(0, 0.09))
 plot.Scatter(nt2, 'X', 'Value', pointRep='Column', oplot=1, color='blue')
 plot.Scatter(nt3, 'X', 'Value', pointRep='Column', oplot=1, color='red')
 
@@ -61,6 +61,11 @@ combined_blocks.setCellScaling(scaleFactors)
 flare_lc = LightCurve(combined_blocks.computeLightCurve())
 (tt, ff) = flare_lc.dataPoints()
 
-plot.scatter(tt, ff, pointRep='Line')
+plot.scatter(tt, ff, 'Time (s)', 'Counts/s', pointRep='Line')
 
-
+from read_data import read_data
+import os
+template = read_data(os.path.join(os.environ['OBSERVATIONSIMROOT'],
+                                  'data/pks1622-297_Template.dat'))
+plot.scatter(template[0], template[1]/max(template[1])*0.4, pointRep='Line',
+             lineStyle='Dot', oplot=1)

@@ -5,8 +5,9 @@
                   
    As part of an effort to understand it, but also to see if it could
    be used to detect day time scale transients in LAT data, I
-   implemented Jeff Scargle's Bayesian Blocks algorithm for 1D data.
-   The main reference that I used is the article by <a
+   implemented <a href="http://trotsky.arc.nasa.gov/~jeffrey/">Jeff
+   Scargle</a>'s Bayesian Blocks algorithm for 1D data.  The main
+   reference that I used is the article by <a
    href="http://trotsky.arc.nasa.gov/~jeffrey/paper_1d.pdf">Jackson,
    Scargle, et al. 2003</a>.  I also consulted Jeff's longer <a
    href="http://trotsky.arc.nasa.gov/~jeffrey/global.ps">Paper VI</a>
@@ -66,7 +67,7 @@
 
    Here is an example of a Bayesian Blocks (hereafter BB) analysis:
 
-   @image html BB_example_0.png
+   @image html BB_example_0.png Figure 1
 
    For this plot, 200 events were drawn from the differential
    distribution
@@ -97,7 +98,7 @@
    \f$dn/dE = E^{-2}\f$ along with 100 events from a Gaussian line with
    width 30 at energy \f$E_{\rm line} = 200\f$:
 
-   @image html powerlaw_not_scaled.png
+   @image html powerlaw_not_scaled.png Figure 2
 
    As before, the black histogram is the data binned in equal-spaced
    (log-scale) bins and the red histogram is the BB estimate.  The
@@ -124,23 +125,23 @@
    distribution and any deviations from the power-law will be more
    prominent.  Here is a plot of the above data detrended:
 
-   @image html powerlaw_detrended.png
+   @image html powerlaw_detrended.png Figure 3
    
    and the original data along with the BB estimate of those data
    "retrended" using the assumed \f$dn/dE\f$:
 
-   @image html powerlaw_scaled.png
+   @image html powerlaw_scaled.png Figure 4
 
-   Note that this procedure of detrending the data by scaling the cell
-   sizes by the expected distribution is closely related to the
-   application of the BB method Mike Nowak describes for <a
+   This procedure of detrending the data by scaling the cell sizes by
+   the expected distribution is closely related to the application of
+   the BB method Mike Nowak describes for <a
    href="http://space.mit.edu/CXC/analysis/SITAR/bb_experiment.html">finding
    residuals in spectral gratings data</a>.  In Mike's final
    expression for the marginalized likelihood of a block, the
    denominator is essentially the total model count rate for the
    assumed underlying distribution.  This factor plays the same role
    as the third term in our block cost function, \f$-\log\Gamma(M +
-   2)\f$, since multiplying the cell size by \f$dn/dE\f$ means that
+   2)\f$, since multiplying each cell size by \f$dn/dE\f$ means that
    the resulting block size \f$M\f$ is an estimate of the expected
    number of counts in that block.
 
@@ -155,9 +156,9 @@
    (except for GRB events), the contribution from even the brightest
    AGN flares seen by EGRET will be swamped by the Poisson
    fluctuations of the diffuse components if the total LAT count rates
-   are considered:
+   are considered.
    
-   @image html pks1622_flare.png
+   @image html pks1622_flare.png Figure 5
 
    This is a plot of the expected LAT events due to the Galactic and
    extragalactic diffuse emission measured by EGRET, histogrammed as a
@@ -172,9 +173,9 @@
    the diffuse by considering events from smaller portions of the sky,
    but in this case the orbital modulations are magnified:
 
-   @image html pks1622_flare_20deg.png
+   @image html pks1622_flare_20deg.png Figure 6
 
-   @image html pks1622_flare_20deg_BB.png
+   @image html pks1622_flare_20deg_BB.png Figure 7
 
    For these data, a 20 degree acceptance cone centered on the
    location of PKS 1622-297 was used to filter the data.  In the upper
@@ -193,11 +194,68 @@
    such flares would clearly be quite difficult both for the normal
    binning and for direct application of BB.
 
+   @image html pks1622_flare_BB_scaled.png Figure 8
+
+   In this plot, the extragalactic diffuse and PKS 1622-297 flare data
+   within the 20 degree acceptance cone have been analyzed using BB
+   (the Galactic diffuse was omitted to speed the analysis).  The
+   solid curve is the BB estimate of the flare light curve, and the
+   dotted curve is the model used to generate these events.  A BB
+   analysis of the diffuse emission by itself (i.e., the black curve
+   in Figure 7) provided the scale factor for detrending the effects
+   of the varying exposure.  This, of course, is an idealized
+   situation, since one cannot definitively separate diffuse events
+   from point source events.
+
+   @section trade_studies Trade Studies
+
+   Here we consider smaller, 12 hour flares with a flat profile, in
+   the presence only of the extragalactic diffuse emission, over a 48
+   hour observing window.  Again a 20 degree acceptance cone centered
+   on the location of the source is used to filter the data.  This
+   filtering leaves in 251 events from the source and 1896 events from
+   the diffuse component.  In what follows, the black histograms in
+   the plots on left are the diffuse + flare events, the red
+   histograms are only the flare events and the green curves are the
+   BB reconstructed light curves using the various kinds of scale
+   factors.
+
+   @image html test_flare_diffuse_scaling.png Figure 9: Diffuse Scaling
+
+   In these plots, we have used the light curve obtained from a BB
+   analysis of the diffuse photons themselves to provide the scale
+   factors, just as we did in Figure 8.  Again, this case is highly
+   idealized and essentially produces a perfect reconstruction of the
+   underlying flare light curve.  The plot on the right shows the BB
+   estimate of the diffuse-only events which provided the scale
+   factors used in the BB flare analysis shown on the left.
+
+   @image html test_flare_diffuse2_scaling.png Figure 10 Other Diffuse Scaling
+
+   In this case, we used diffuse photons from a different simulation
+   to provide the BB light curve which in turn gave the scaling
+   factors for the flare analysis.  This is intended to mimic an
+   analysis for which data from an earlier epoch are used during which
+   it is known that there was no flaring activity.  Even though the
+   exposure history may be identical over two distinct epochs, the
+   count rates from diffuse emission will differ from epoch to epoch
+   owing to Poisson fluctuations.  The plot on the right shows a
+   comparison of the scale factors obtained for this analysis plotted
+   versus those used for the analysis shown in Figure 9.
+   
+   @image html test_flare_effArea_scaling.png Figure 11 Effective Area Scaling
+
+   One can calculate the exposure as a function of time to a given
+   point on the sky and use that as the scaling factor.
+   Unfortunately, this strategy does not seem to work.  Although there
+   appears to be a correlation with the scale factors using the actual
+   diffuse events that is at least as strong as that found for the
+   diffuse events from a different epoch, our BB analysis consistently
+   fails to find any variability in the reconstructed light
+   curve. (There must be something wrong here, as one would expect it
+   to at least find some spurious variability given that it should not
+   be a perfect proxy for the actual contemporaneous diffuse events.)
+
 */
 
-//    For this plot, 5000 events were drawn from the differential
-//    distribution
-//    \f[
-//    \frac{dn}{d\phi}\mbox{~}{\stackrel{d}{\sim}}\mbox{~}1 + \sin\phi.
-//    \f]
 
