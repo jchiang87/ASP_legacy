@@ -47,7 +47,7 @@ def randomFlare(window=(0, 8.64e4), file='random_flare.xml',
     celestial_dir.setAttribute('ra', '%.2f' % ra)
     celestial_dir.setAttribute('dec', '%.2f' % dec)
 
-    return src
+    return src, tstart
 
 def writeXml(src, filename):
     file = open(filename, 'w')
@@ -61,6 +61,7 @@ obsSim = os.path.join(os.environ['OBSERVATIONSIMROOT'],
 
 def runObsSim(filename, file_prefix):
     pars = Pil('obsSim.par')
+    pars['Source_list'] = 'random_source.dat'
     pars['Output_file_prefix'] = file_prefix
     pars['XML_source_file'] = filename
     pars['Start_time'] = 0
@@ -70,8 +71,7 @@ def runObsSim(filename, file_prefix):
     os.system(command)
 
 if __name__ == '__main__':
-    src = randomFlare(flux=0.1, window=(0, 2*8.64e4))
+    (src, tstart) = randomFlare(flux=0.1, window=(0, 2*8.64e4))
     xmlFile = 'random_flare.xml'
     writeXml(src, xmlFile)
     runObsSim(xmlFile, 'random_flare')
-    
