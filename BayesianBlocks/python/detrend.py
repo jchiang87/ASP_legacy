@@ -1,6 +1,6 @@
 import random
 import numarray as num
-from BayesBlocks import BayesBlocks, retrend
+from BayesBlocks import BayesBlocks, retrend, LightCurve
 
 class Distribution(object):
     def generateEvents(self, nevents=1000):
@@ -97,34 +97,42 @@ class Gaussian(Distribution):
 
 if __name__ == "__main__":
     import string, sys, time
-    if len(sys.argv) == 2:
-        ncpPrior = string.atof(sys.argv[1])
+    args = []
+    for arg in sys.argv:
+        if arg.find("-") != 0:
+            args.append(arg)
+    if len(args) == 2:
+        ncpPrior = string.atof(args)
     else:
         ncpPrior = 2.
 
     import hippoplotter as plot
     gamma = 2.
-    spectrum = PowerLaw(gamma=gamma)
+    spectrum = PowerLaw(gamma=gamma, emin=10)
 #    spectrum = BrokenPowerLaw(gamma1=1.5, ebreak=200.)
     events = spectrum.generateEvents(1000)
     eline = 200.
     width = 30.
     gauss = Gaussian(eline, width)
-    events.extend(gauss.generateEvents(50))
+    events.extend(gauss.generateEvents(100))
     events.sort()
 
     events = num.array(events)
     my_blocks = BayesBlocks(events.tolist(), ncpPrior)
     
     scaleFactors = spectrum(events)
-    my_blocks.setCellScaling(scaleFactors.tolist())
+    if "-no_scale" not in sys.argv:
+        my_blocks.setCellScaling(scaleFactors.tolist())
 
     t0 = time.time()
     lightCurve = my_blocks.computeLightCurve()
     t1 = time.time()
     print t1 - t0
 
-    energies, dens = retrend(lightCurve, spectrum)
+    if "-no_scale" not in sys.argv:
+        energies, dens = retrend(lightCurve, spectrum)
+    else:
+        energies, dens = LightCurve(lightCurve).dataPoints()
     
     plot.clear()
     specHist = plot.histogram(events, 'energy', xlog=1, ylog=1)

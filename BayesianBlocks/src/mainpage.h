@@ -50,17 +50,17 @@
      \log\Gamma(N + 1) + \log\Gamma(M - N + 1) - \log\Gamma(M + 2) 
          - \log\gamma,
      \f]
-
      where \f$\Gamma\f$ is the usual gamma-function, \f$\Gamma(x+1) =
      x\Gamma(x)\f$, and the total cost function of the partition is
-     the sum of the individual block cost functions.  This is based on
-     a Poisson model for the expected number of counts in a block
-     given a constant rate.  The last term, \f$\log\gamma\f$,
-     describes a prior distribution that prefers a smaller number of
-     change points.  Since larger values of \f$\log\gamma\f$ tend to
-     produce less structured models, the value of \f$\log\gamma\f$ at
-     which a given feature is suppressed can be considered as a
-     measure of the "significance" of that feature.
+     the sum of the individual block cost functions.  The above
+     expression is based on a Poisson model for the expected number of
+     counts in a block given a constant rate.  The last term,
+     \f$\log\gamma\f$, describes a prior distribution that prefers a
+     smaller number of change points.  Since larger values of
+     \f$\log\gamma\f$ tend to produce less structured models, the
+     value of \f$\log\gamma\f$ at which a given feature is suppressed
+     can be considered as a measure of the "significance" of that
+     feature.
 
    Here is an example of a Bayesian Blocks analysis
 
@@ -68,20 +68,32 @@
 
    For this plot, 200 events were drawn from the differential
    distribution
+   
+   \f[\frac{dN}{dx} = 0.5 \qquad x < 0.5\f]
+   \f[\frac{dN}{dx} = 1   \qquad 0.5 \le x < 0.7\f]
+   \f[\frac{dN}{dx} = 0.5 \qquad 0.7 \le x < 1\f]
 
-   \f[
-   \frac{dN}{dx} = 
-
-   For this plot, 5000 events were drawn from the differential
-   distribution
-   \f[
-   \frac{dN}{d\phi}\mbox{~}{\stackrel{d}{\sim}}\mbox{~}1 + \sin\phi.
-   \f]
    The black histogram are these data binned into 50 equal-sized bins
-   in \f$\phi\f$, and the red histogram is the Bayesian Block
-   estimate of the underlying distribution.
+   in \f$x\f$, and the red histogram is the Bayesian Block estimate of
+   the underlying distribution.  The dotted vertical lines indicate 
+   \f$x = 0.5,\,0.7\f$, the "true" locations of the change points in the
+   underlying distribution.
 
-   Even though this analysis does
+   @section nonconstantApp Application to Photon Spectra 
+
+   While the basic Bayesian Block method can be applied to any sort of
+   event data, it is most effective when the distribution in the null
+   hypothesis is constant and the method is used to find deviations
+   (or "flares") from a flat distribution.  If the intrinsic
+   distribution of the events is itself highly structured then the
+   method may miss discrete features that may still appear obvious to
+   the eye.   
 
 */
+
+//    For this plot, 5000 events were drawn from the differential
+//    distribution
+//    \f[
+//    \frac{dN}{d\phi}\mbox{~}{\stackrel{d}{\sim}}\mbox{~}1 + \sin\phi.
+//    \f]
 
