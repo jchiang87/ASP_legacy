@@ -1,3 +1,7 @@
+import sys, os
+sys.path.append('../python')
+sys.path.append(os.path.join(os.environ['LIKEGUIROOT'], 'python'))
+sys.path.append(os.path.join(os.environ['SANEROOT'], 'python'))
 import numarray as num
 import numarray.ma as ma
 import celgal
@@ -5,9 +9,8 @@ import copy
 from FitsNTuple import FitsNTuple
 from xml.dom import minidom
 
-import sys
-sys.path.append('../python')
 from BayesBlocks import BayesBlocks, LightCurve
+from BayesianBlocks import Exposure, DoubleVector
 
 import string
 
@@ -25,9 +28,8 @@ def roiCenter(xmlFile):
 flare = FitsNTuple('random_flare_events_0000.fits')
 diffuse = FitsNTuple('eg_diffuse_events_0000.fits')
 
-#Roi_center = (246.36, -29.92)
 Roi_center = roiCenter('random_flare.xml')
-Roi_radius = 10.
+Roi_radius = 15.
 
 def get_times(data, center, radius=20):
     data.dist = celgal.dist(Roi_center, (data.RA, data.DEC))
@@ -44,22 +46,37 @@ evt_times = flare_times + diffuse_times
 evt_times.sort()
 
 import hippoplotter as plot
-plot.histogram(evt_times)
+hist = plot.histogram(evt_times)
 plot.histogram(flare_times, oplot=1, color='red')
-plot.histogram(diffuse_times, oplot=1, color='blue')
 
-diffuse_blocks = BayesBlocks(diffuse_times)
+diffuse_blocks = BayesBlocks(evt_times)
 lc_data = diffuse_blocks.computeLightCurve()
 diffuse_lc = LightCurve(lc_data)
 
+block_times = list(lc_data[0])
+block_times.append(lc_data[1][-1])
+if block_times[0] < 0:
+    block_times[0] = evt_times[0]
+block_times = DoubleVector(block_times)
+my_exposure = Exposure('eg_diffuse_scData_0000.fits', block_times,
+                       Roi_center[0], Roi_center[1])
+
+scaleFactors = DoubleVector()
+for t in evt_times:
+    scaleFactors.append(my_exposure.value(t))
+plot.scatter(evt_times, scaleFactors, pointRep='Line')
+
 flare_blocks = BayesBlocks(evt_times, 4)
-scaleFactors = diffuse_lc(evt_times)
 flare_blocks.setCellScaling(scaleFactors)
 
 flc_data = flare_blocks.computeLightCurve()
 flare_lc = LightCurve(flc_data)
 (tt, ff) = flare_lc.dataPoints()
+plot.canvas.selectDisplay(hist)
 plot.scatter(tt, ff, oplot=1, color='green', pointRep='Line')
+
+#(t0, f0) = diffuse_lc.dataPoints()
+#plot.scatter(t0, f0, oplot=1, pointRep='Line', lineStyle='Dot')
 
 #import os
 #from read_data import read_data

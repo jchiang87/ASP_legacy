@@ -8,6 +8,7 @@
 
 #include <cmath>
 
+#include <iostream>
 #include <numeric>
 
 #include "BayesianBlocks/BayesianBlocks.h"

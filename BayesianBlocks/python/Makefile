@@ -5,9 +5,31 @@ SWIG = swig
 
 CFLAGS = -g 
 
-INCLUDE = -I$(BAYESIANBLOCKSROOT)
+INCLUDE = -I$(BAYESIANBLOCKSROOT)\
+	-I$(ASTROROOT)\
+	-I$(LATRESPONSEROOT)\
+	-I$(LIKELIHOODROOT)\
+	-I$(CLHEP_DIR)/1.8.0.0/include
 
-LIBS = -L ../$(BINDIR)/ -lBayesianBlocks
+LIBS = -L ../$(BINDIR)/ -lBayesianBlocks\
+	-L$(LATRESPONSEROOT)/$(BINDIR) -llatResponseLib\
+	-L$(LIKELIHOODROOT)/$(BINDIR) -lLikelihoodLib\
+	-L$(ST_APPROOT)/$(BINDIR) -lst_appLib\
+	-L$(MAP_TOOLSROOT)/$(BINDIR) -lmap_toolsLib\
+	-L$(ASTROROOT)/$(BINDIR) -lastro\
+	-L$(OPTIMIZERSROOT)/$(BINDIR) -loptimizersLib\
+	-L$(HOOPSROOT)/$(BINDIR) -lhoopsLib\
+	-L$(GLAST_EXT)/pil/1.9.2/lib/linux-3.2 -lpil\
+	-L$(TIPROOT)/$(BINDIR) -ltipLib\
+	-L$(XMLROOT)/$(BINDIR) -lxml\
+	-L$(FACILITIESROOT)/$(BINDIR) -lfacilities\
+	-L$(CFITSIO_DIR)/lib -lcfitsio\
+	-L$(CLHEP_DIR)/1.8.0.0/lib -lCLHEP\
+	-L$(GLAST_EXT)/xerces/1.7.0/lib/ -lxerces-c1_7_0 -lpthread\
+	-L$(GLAST_EXT)/ROOT/v3.10.02/root/lib\
+	-lCore -lCint -lTree -lMatrix -lPhysics\
+	-lHist -lGraf -lGraf3d -lGpad -lRint -lPostscript\
+	-lg2c -L$(SWIG_DIR)/lib -lswigpy -fPIC -ldl
 
 #LIBS = -L$(SWIG_DIR)/lib -lswigpy
 

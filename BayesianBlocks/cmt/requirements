@@ -11,6 +11,9 @@ apply_pattern shared_library
 
 use GlastPolicy v*
 use likeGui v*
+use astro v*
+use latResponse v*
+use Likelihood v*
 use observationSim v*
 use sane v*
 

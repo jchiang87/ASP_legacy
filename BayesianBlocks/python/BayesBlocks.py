@@ -53,7 +53,7 @@ class LightCurve(object):
         try:
             y = []
             for x in t:
-                indx = bisect.bisect(self.times, x)
+                indx = min(len(self.times)-1, bisect.bisect(self.times, x))
                 y.append(self.dens[indx])
             return y
         except TypeError:
