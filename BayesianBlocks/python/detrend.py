@@ -66,10 +66,16 @@ class BrokenPowerLaw(Distribution):
                 result.append(self(energy))
             return num.array(result)
     def deriv(self, ee):
-        if ee < self.ebreak:
-            return self.pl1.deriv(ee)
-        else:
-            return self.pl2.deriv(ee)
+        try:
+            if ee < self.ebreak:
+                return self.pl1.deriv(ee)
+            else:
+                return self.pl2.deriv(ee)
+        except RuntimeError:
+            result = []
+            for energy in ee:
+                result.append(self.deriv(energy))
+            return num.array(result)
     def integral(self, emin, emax):
         if emax < self.ebreak:
             return self.pl1.integral(emin, emax)
@@ -96,7 +102,7 @@ def detrend(events, func):
     return my_events
 
 if __name__ == "__main__":
-    import string, sys
+    import string, sys, time
     if len(sys.argv) == 2:
         ncpPrior = string.atof(sys.argv[1])
     else:
@@ -110,7 +116,7 @@ if __name__ == "__main__":
     eline = 500.
     width = 30.
     gauss = Gaussian(eline, width)
-    events.extend(gauss.generateEvents(40))
+    events.extend(gauss.generateEvents(30))
     events.sort()
 
     plot.clear()
@@ -118,7 +124,7 @@ if __name__ == "__main__":
 
     events = num.array(events)
     scaleFactors = pl(events).tolist()
-    #events = detrend(events, pl)
+#    events = detrend(events, pl)
     
     evts = DoubleVector(list(events))
     my_blocks = BayesianBlocks(evts, ncpPrior)
@@ -132,10 +138,14 @@ if __name__ == "__main__":
     tmins = DoubleVector()
     tmaxs = DoubleVector()
     numEvents = DoubleVector()
+    t0 = time.time()
     my_blocks.computeLightCurve(tmins, tmaxs, numEvents)
+    t1 = time.time()
+    print t1 - t0
     
     energies = []
     dens = []
+    ecenter = []
     for tmin, tmax, numEvts in zip(tmins, tmaxs, numEvents):
         my_dens = numEvts/(tmax - tmin)
         if (tmin < 0):
@@ -144,15 +154,11 @@ if __name__ == "__main__":
             energies.append(tmin)
         energies.append(tmax)
         dens.extend([my_dens, my_dens])
+        ecenter.extend([num.sqrt(tmin*tmax), num.sqrt(tmin*tmax)])
 
-#    energies = num.array(energies)
-#    energies = energies**(1./(1. - gamma))
-#    jacobian = abs(pl(energies) + energies*pl.deriv(energies))
-#    dens = num.array(dens)*jacobian
+    energies = num.array(energies)
+    ecenter = num.array(ecenter)
+    jacobian = lambda en : abs(pl(en) + en*pl.deriv(en))
+    dens = num.array(dens)*jacobian(energies)/jacobian(ecenter)
     plot.canvas.selectDisplay(spectrum)
     plot.scatter(energies, dens, oplot=1, pointRep='Line', color='red')
-
-#    bpl = BrokenPowerLaw()
-#    events = bpl.generateEvents(10000)
-#    plot.histogram(events, xlog=1, ylog=1)
-    

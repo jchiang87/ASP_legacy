@@ -14,7 +14,8 @@
 
 BayesianBlocks::BayesianBlocks(const std::vector<double> & eventTimes, 
                                double ncpPrior) : m_eventTimes(eventTimes),
-                                                  m_ncpPrior(ncpPrior) {
+                                                  m_ncpPrior(ncpPrior),
+                                                  m_cellsAreScaled(false) {
    std::stable_sort(m_eventTimes.begin(), m_eventTimes.end());
    createCells();
 }
@@ -25,6 +26,7 @@ int BayesianBlocks::setCellScaling(const std::vector<double> & scaleFactors) {
          m_cells[i] *= scaleFactors[i];
       }
       renormalize();
+      m_cellsAreScaled = true;
       return 1;
    }
    return 0;
@@ -122,10 +124,14 @@ double BayesianBlocks::blockCost(unsigned int imin, unsigned int imax) const {
 }
 
 double BayesianBlocks::blockSize(unsigned int imin, unsigned int imax) const {
-   double value(0);
-   value = std::accumulate(m_cells.begin() + imin, m_cells.begin() + imax + 1,
-                           value);
-   return value;
+   if (m_cellsAreScaled) {
+      double value(0);
+      value = std::accumulate(m_cells.begin() + imin, 
+                              m_cells.begin() + imax + 1,
+                              value);
+      return value;
+   }
+   return m_cellBoundaries[imax+1] - m_cellBoundaries[imin];
 }
 
 double BayesianBlocks::blockContent(unsigned int imin, 
