@@ -39,7 +39,9 @@ public:
 
    Exposure(const std::string & scDataFile, 
             const std::vector<double> &timeBoundaries,
-            double ra, double dec);
+            double ra, double dec,
+            const std::string & frontIrfs="testIrfs::Front",
+            const std::string & backIrfs="testIrfs::Back");
 
    ~Exposure() throw();
 

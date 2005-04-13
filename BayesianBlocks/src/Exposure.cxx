@@ -9,28 +9,33 @@
 #include <stdexcept>
 #include <utility>
 
+#include "st_facilities/Util.h"
+
 #include "irfInterface/IrfsFactory.h"
+#include "irfLoader/Loader.h"
 
 #include "Likelihood/LikeExposure.h"
 #include "Likelihood/ScData.h"
-#include "Likelihood/Util.h"
 
 #include "BayesianBlocks/Exposure.h"
 
 Exposure::Exposure(const std::string & scDataFile,
                    const std::vector<double> & timeBoundaries,
-                   double ra, double dec) 
+                   double ra, double dec, const std::string & frontIrfs,
+                   const std::string & backIrfs) 
    : m_timeBoundaries(timeBoundaries), m_irfs_front(0), m_irfs_back(0), 
      m_energy(300.), m_scData(0) {
    m_srcDir = astro::SkyDir(ra, dec);
-   m_irfs_front = irfInterface::IrfsFactory::instance()->create("DC1::Front");
-   m_irfs_back = irfInterface::IrfsFactory::instance()->create("DC1::Back");
+   irfLoader::Loader::go();
+   m_irfs_front = irfInterface::IrfsFactory::instance()->create(frontIrfs);
+   m_irfs_back = irfInterface::IrfsFactory::instance()->create(backIrfs);
    m_scData = new Likelihood::ScData();
    readScData(scDataFile);
    integrateExposure();
 }
 
 Exposure::~Exposure() throw() {
+   delete m_scData;
    delete m_irfs_front;
    delete m_irfs_back;
 }
@@ -44,11 +49,11 @@ double Exposure::value(double time) const {
 
 void Exposure::readScData(const std::string & scDataFile) {
    std::vector<std::string> scFiles;
-   Likelihood::Util::resolve_fits_files(scDataFile, scFiles);
+   st_facilities::Util::resolve_fits_files(scDataFile, scFiles);
    std::vector<std::string>::const_iterator scIt = scFiles.begin();
    bool clear(true);
    for ( ; scIt != scFiles.end(); scIt++) {
-      Likelihood::Util::file_ok(*scIt);
+      st_facilities::Util::file_ok(*scIt);
       m_scData->readData(*scIt, clear);
       clear = false;
    }
@@ -79,8 +84,6 @@ void Exposure::integrateExposure() {
          std::pair<double, double> thisInterval;
          thisInterval.first = it->time;
          thisInterval.second = (it+1)->time;
-//          if (Likelihood::PointSource::overlapInterval(wholeInterval, 
-//                                                       thisInterval)) {
          if (Likelihood::LikeExposure::overlap(wholeInterval, thisInterval)) {
             m_exposureValues[i] += (effArea(thisInterval.first) 
                                     + effArea(thisInterval.second))/2.

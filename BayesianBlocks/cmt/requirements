@@ -9,7 +9,9 @@ use GlastPolicy v*
 use likeGui v*
 use astro v*
 use irfInterface v* irfs
+use irfLoader v* irfs
 use Likelihood v*
+use st_facilities v*
 use observationSim v*
 use sane v*
 
