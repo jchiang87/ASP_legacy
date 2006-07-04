@@ -1,8 +1,9 @@
 package pyASP
 version v0
 
-use astro v*
 use SwigPolicy v*
+use astro v*
+use sane v* -no_auto_imports
 
 path_remove PYTHONPATH pyASP
 path_append PYTHONPATH $(PYASPROOT)/$(BINDIR)
