@@ -47,7 +47,7 @@ def extractLatData(gbmNotice, duration=100, radius=15):
     except:
         pass
 
-    return gtbin['outfile']
+    return gtselect['outfile'], gtbin['outfile']
 
 def burst_interval(lc_file, minrate=30):
     import numarray as num
