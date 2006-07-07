@@ -1,5 +1,5 @@
 """
-@brief Use findSrc to refine the burst position based on a GBM Notice
+@brief Use gtfindsrc to refine the burst position based on a GBM Notice
 and create a TS map using gttsmap.
 
 @author J. Chiang <jchiang@slac.stanford.edu>
@@ -15,7 +15,7 @@ from errEst import errEst
 
 _LatFt2File = '/nfs/farm/g/glast/u33/jchiang/DC2/DC2_FT2_v2.fits'
 
-findSrc = GtApp('findSrc')
+gtfindsrc = GtApp('gtfindsrc')
 
 def refinePosition(gbm_notice, extracted=False):
     notice = GbmNotice(gbm_notice)
@@ -25,29 +25,29 @@ def refinePosition(gbm_notice, extracted=False):
         ft1_file = notice.Name + '_LAT_2.fits'
         lc_file = notice.Name + '_LAT_lc_2.fits'
 
-    findSrc['evfile'] = ft1_file
-    findSrc['scfile'] = _LatFt2File
-    findSrc['outfile'] = 'findSrc.txt'
-    findSrc['rspfunc'] = 'DSS'
-    findSrc['use_lb'] = 'no'
-    findSrc['lon0'] = notice.RA
-    findSrc['lat0'] = notice.DEC
-    findSrc['optimizer'] = 'DRMNGB'
-    input, output = findSrc.runWithOutput()
+    gtfindsrc['evfile'] = ft1_file
+    gtfindsrc['scfile'] = _LatFt2File
+    gtfindsrc['outfile'] = 'findSrc.txt'
+    gtfindsrc['rspfunc'] = 'DSS'
+    gtfindsrc['use_lb'] = 'no'
+    gtfindsrc['lon0'] = notice.RA
+    gtfindsrc['lat0'] = notice.DEC
+    gtfindsrc['optimizer'] = 'DRMNGB'
+    input, output = gtfindsrc.runWithOutput()
     lines = output.readlines()
     fields = lines[-6].split()
     ra, dec, ts = float(fields[0]), float(fields[1]), float(fields[2])
 
-    pos_error = errEst(findSrc['outfile'])
+    pos_error = errEst(gtfindsrc['outfile'])
 
     print ra, dec, ts, pos_error
 
     npix = 20
     mapsize = 4*pos_error
     gttsmap = GtApp('gttsmap')
-    gttsmap['evfile'] = findSrc['evfile']
-    gttsmap['scfile'] = findSrc['scfile']
-    gttsmap['rspfunc'] = findSrc['rspfunc']
+    gttsmap['evfile'] = gtfindsrc['evfile']
+    gttsmap['scfile'] = gtfindsrc['scfile']
+    gttsmap['rspfunc'] = gtfindsrc['rspfunc']
     gttsmap['source_model_file'] = 'none'
     gttsmap['outfile'] = notice.Name + '_tsmap.fits'
     gttsmap['use_lb'] = 'no'

@@ -8,7 +8,6 @@ about the minimum and can be fit by a paraboloid near the minimum.
 #
 # $Header$
 #
-from FunctionWrapper import FunctionWrapper
 import numarray as num
 from read_data import read_data
 from pyASP import SkyDir
@@ -32,6 +31,7 @@ def errEst(infile='findSrc.txt', makeplot=False):
 
     if makeplot:
         import hippoplotter as plot
+        from FunctionWrapper import FunctionWrapper
         nt = plot.newNTuple((ra, dec, dist, d2, logLike),
                             ('ra', 'dec', 'dist', 'd2', 'logLike'))
         plot.Scatter(nt, 'd2', 'logLike')
