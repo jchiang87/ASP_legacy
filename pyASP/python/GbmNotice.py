@@ -6,6 +6,7 @@
 # $Header$
 #
 
+import numarray as num
 import pyASP
 
 _LatFt2File = '/nfs/farm/g/glast/u33/jchiang/DC2/DC2_FT2_v2.fits'
@@ -27,6 +28,7 @@ class GbmNotice(object):
         self.RA = float(self.RA)
         self.DEC = float(self.DEC)
         self.LOC_ERR = float(self.LOC_ERR)
+        self.ft2 = None
     def _convertMET(self, date, time):
         year = 2000 + int(date[:2])
         month = int(date[2:4])
@@ -41,22 +43,32 @@ class GbmNotice(object):
             if fields[0] == 'Closest':
                 self.Closest_detectors = line.split('=')[-1].strip().split()
     def offAxisAngle(self, ft2File=_LatFt2File):
-        import numarray as num
-        from FitsNTuple import FitsNTuple
-        ft2 = FitsNTuple(ft2File, 'SC_DATA')
-        indx = num.where(ft2.START > self.start_time)
+        self._getFt2(ft2File)
+        indx = num.where(self.ft2.START > self.start_time)
         ii = indx[0][0]
-        dir1 = pyASP.SkyDir(ft2.RA_SCZ[ii-1], ft2.DEC_SCZ[ii-1])
-        dir2 = pyASP.SkyDir(ft2.RA_SCZ[ii], ft2.DEC_SCZ[ii])
-        t1 = ft2.START[ii-1]
-        t2 = ft2.START[ii]
+        dir1 = pyASP.SkyDir(self.ft2.RA_SCZ[ii-1], self.ft2.DEC_SCZ[ii-1])
+        dir2 = pyASP.SkyDir(self.ft2.RA_SCZ[ii], self.ft2.DEC_SCZ[ii])
+        t1 = self.ft2.START[ii-1]
+        t2 = self.ft2.START[ii]
         my_dir = pyASP.SkyDir_interpolate(dir1, dir2, t1, t2,
-                                            self.start_time)
+                                          self.start_time)
         return my_dir.difference(pyASP.SkyDir(self.RA, self.DEC))*180./num.pi
+    def inSAA(self, ft2File =_LatFt2File):
+        self._getFt2(ft2File)
+        indx = num.where(self.ft2.START < self.start_time)
+        ii = indx[0][-1]
+        return self.ft2.IN_SAA[ii]
+    def _getFt2(self, ft2File):
+        if self.ft2 is None:
+            from FitsNTuple import FitsNTuple
+            self.ft2 = FitsNTuple(ft2File, 'SC_DATA')
 
 if __name__ == '__main__':
     import glob
-    files = glob.glob('../Notices/*NOTICE*')
+    files = glob.glob('/nfs/farm/g/glast/u33/jchiang/ASP/GRB/Notices/*NOTICE*')
     for item in files:
         notice = GbmNotice(item)
-        print notice.Name, notice.RA, notice.DEC, notice.offAxisAngle()
+        if notice.offAxisAngle() < 60 and not notice.inSAA():
+            print ("%s  %6.2f  %6.2f  %6.2f  %i" %
+                   (notice.Name, notice.RA, notice.DEC,
+                    notice.offAxisAngle(), notice.inSAA()))

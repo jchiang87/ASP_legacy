@@ -30,7 +30,6 @@ astro::JulianDate jd_from_MET(double met) {
 }
 %template(DoublePair) std::pair<double, double>;
 %template(DoubleVector) std::vector<double>;
-%template(StringVector) std::vector<std::string>;
 %include $(ASTROROOT)/astro/JulianDate.h
 %include $(ASTROROOT)/astro/SkyProj.h
 %include $(ASTROROOT)/astro/SkyDir.h

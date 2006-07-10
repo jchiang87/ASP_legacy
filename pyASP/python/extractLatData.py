@@ -9,7 +9,7 @@
 import numarray as num
 from FitsNTuple import FitsNTuple
 from BayesBlocks import BayesBlocks
-from getApp import GtApp
+from GtApp import GtApp
 
 gtselect = GtApp('gtselect')
 gtbin = GtApp('gtbin')
