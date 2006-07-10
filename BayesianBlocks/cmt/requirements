@@ -13,7 +13,8 @@ use irfLoader v* irfs
 use Likelihood v*
 use st_facilities v*
 use observationSim v*
-use sane v*
+use sane v* -no_auto_imports
+use SwigPolicy v*
 
 apply_pattern package_include
 apply_pattern package_linkopts
@@ -23,14 +24,10 @@ path_remove PYTHONPATH BayesianBlocks
 path_append PYTHONPATH $(BAYESIANBLOCKSROOT)/$(BINDIR)
 path_append PYTHONPATH $(BAYESIANBLOCKSROOT)/python
 
-private
-
 macro_append cppflags "" Linux " -I../src -DTRAP_FPE " 
 macro source *.cxx WIN32 "*.h *.cxx"
 
 library BayesianBlocks $(source)
-
-use SwigPolicy v*
 
 apply_pattern swig_module name="BayesianBlocks"
 

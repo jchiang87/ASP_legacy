@@ -9,7 +9,7 @@ from find_flare_2 import find_flare, first_rise
 
 file = open('trade_study_1.dat', 'w')
 
-ntrials = 100
+ntrials = 500
 for i in xrange(ntrials):
     src, tstart = randomFlare(flux=0.1, window=(0, 2*8.64e4))
     xmlFile = 'random_flare.xml'

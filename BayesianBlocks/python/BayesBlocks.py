@@ -7,7 +7,9 @@ class BayesBlocks(BayesianBlocks):
         BayesianBlocks.__init__(self, events, ncpPrior)
     def setCellScaling(self, scaleFactors):
         BayesianBlocks.setCellScaling(self, scaleFactors)
-    def computeLightCurve(self):
+    def lightCurve(self):
+        return LightCurve(BayesianBlocks.lightCurve(self))
+    def _computeLightCurve(self):
         tmins = DoubleVector()
         tmaxs = DoubleVector()
         numEvents = DoubleVector()

@@ -257,6 +257,14 @@
    the expected distribution of diffuse emission, i.e., compute the
    expected number of counts based on the diffuse model.
 
-   (more to come...)
+   @image html trade_study_1.png Figure 12
+
+   The plot on the left are the estimated flare start times plotted
+   versus the true start times for 500 Monte Carlo trials using the
+   actual diffuse events for providing the scale factors.  I am
+   defining the estimated start time as the first change point that
+   indicates a rise in flux.  The plot on the left is the same
+   comparison except using the effective area at the center of the ROI
+   to provide the scale factors.
 
 */
