@@ -40,10 +40,10 @@ class GbmNotice(object):
             self.__dict__[self._id[' '.join(fields[:2])]] = fields[-1]
             if fields[0] == 'Closest':
                 self.Closest_detectors = line.split('=')[-1].strip().split()
-    def offAxisAngle(self, Ft2File=_LatFt2File):
+    def offAxisAngle(self, ft2File=_LatFt2File):
         import numarray as num
         from FitsNTuple import FitsNTuple
-        ft2 = FitsNTuple(Ft2File, 'SC_DATA')
+        ft2 = FitsNTuple(ft2File, 'SC_DATA')
         indx = num.where(ft2.START > self.start_time)
         ii = indx[0][0]
         dir1 = pyASP.SkyDir(ft2.RA_SCZ[ii-1], ft2.DEC_SCZ[ii-1])

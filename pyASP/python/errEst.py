@@ -13,7 +13,7 @@ from read_data import read_data
 from pyASP import SkyDir
 
 def errEst(infile='findSrc.txt', makeplot=False):
-    ra, dec, logLike, err = read_data('findSrc.txt')
+    ra, dec, logLike, err = read_data(infile)
 
     minDir = SkyDir(ra[-1], dec[-1])
     indx = num.where(logLike < logLike[-1] + 2)

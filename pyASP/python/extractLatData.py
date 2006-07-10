@@ -6,20 +6,23 @@
 # $Header$
 #
 
+import numarray as num
+from FitsNTuple import FitsNTuple
+from BayesBlocks import BayesBlocks
 from getApp import GtApp
 
 gtselect = GtApp('gtselect')
 gtbin = GtApp('gtbin')
 
-_LatFt1Data = '/nfs/farm/g/glast/u33/jchiang/DC2/FT1_merged_gti.fits'
+_LatFt1File = '/nfs/farm/g/glast/u33/jchiang/DC2/FT1_merged_gti.fits'
 
-def extractLatData(gbmNotice, duration=100, radius=15):
-    gtselect['infile'] = _LatFt1Data
+def extractLatData(gbmNotice, ft1File=_LatFt1File, duration=100, radius=15):
+    gtselect['infile'] = ft1File
     gtselect['outfile'] = gbmNotice.Name + '_LAT.fits'
     gtselect['ra'] = gbmNotice.RA
     gtselect['dec'] = gbmNotice.DEC
     gtselect['rad'] = radius
-    gtselect['tmin'] = gbmNotice.start_time
+    gtselect['tmin'] = gbmNotice.start_time - duration
     gtselect['tmax'] = gbmNotice.start_time + duration
     gtselect.run()
 
@@ -27,13 +30,19 @@ def extractLatData(gbmNotice, duration=100, radius=15):
     gtbin['outfile'] = gbmNotice.Name + '_LAT_lc.fits'
     gtbin['algorithm'] = 'LC'
     gtbin['timebinalg'] = 'LIN'
-    gtbin['tstart'] = gbmNotice.start_time
+    gtbin['tstart'] = gbmNotice.start_time - duration
     gtbin['tstop'] = gbmNotice.start_time + duration
     gtbin['deltatime'] = 0.1
     gtbin.run()
+    
+    events = FitsNTuple(gtselect['outfile'], 'EVENTS')
+    bb = BayesBlocks(events.TIME, 4)
+    lc = bb.lightCurve()
+    x, y = lc.dataPoints()
 
     try:
-        tmin, tmax = burst_interval(gtbin['outfile'])
+#        tmin, tmax = burst_interval(gtbin['outfile'])
+        tmin, tmax = x[1], x[-2]
         gtselect['infile'] = gtselect['outfile']
         gtselect['outfile'] = gbmNotice.Name + '_LAT_2.fits'
         gtselect['tmin'] = tmin
@@ -50,8 +59,6 @@ def extractLatData(gbmNotice, duration=100, radius=15):
     return gtselect['outfile'], gtbin['outfile']
 
 def burst_interval(lc_file, minrate=30):
-    import numarray as num
-    from FitsNTuple import FitsNTuple
     lc = FitsNTuple(lc_file, 'RATE')
     rate = lc.COUNTS/lc.TIMEDEL
     indx = num.where(rate > minrate)
