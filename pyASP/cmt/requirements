@@ -1,5 +1,5 @@
 package pyASP
-version v0
+version v0r1
 
 use SwigPolicy v*
 use astro v*
