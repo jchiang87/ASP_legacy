@@ -111,9 +111,9 @@ void BayesianBlocks::createCells() {
 }
 
 void BayesianBlocks::renormalize() {
-   double smallest_cell(m_cells[0]);
+   double smallest_cell(m_eventTimes.back() - m_eventTimes.front());
    for (unsigned int i = 0; i < m_cells.size(); i++) {
-      if (m_cells[i] < smallest_cell) {
+      if (m_cells[i] < smallest_cell && m_cells[i] > 0) {
          smallest_cell = m_cells[i];
       }
    }

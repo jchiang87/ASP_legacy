@@ -31,8 +31,6 @@ public:
   
    BayesianBlocks(const std::vector<double> & eventTimes, double ncpPrior=1.);
    
-//    BayesianBlocks(const std::string & filename, double ncpPrior=1.);
-
    ~BayesianBlocks() throw() {}
 
    void computeLightCurve(std::vector<double> & tmins,
@@ -50,9 +48,17 @@ public:
    void getCellBoundaries(std::vector<double> & cellBoundaries, 
                           bool scaled=true) const;
 
-   void setNcpPrior(double ncpPrior) {m_ncpPrior = ncpPrior;}
+   void setNcpPrior(double ncpPrior) {
+      m_ncpPrior = ncpPrior;
+   }
 
-   double ncpPrior() const {return m_ncpPrior;}
+   double ncpPrior() const {
+      return m_ncpPrior;
+   }
+
+   const std::vector<double> & eventTimes() const {
+      return m_eventTimes;
+   }
 
    static double gammln(double x);
 
