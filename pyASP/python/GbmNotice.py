@@ -62,6 +62,8 @@ class GbmNotice(object):
         if self.ft2 is None:
             from FitsNTuple import FitsNTuple
             self.ft2 = FitsNTuple(ft2File, 'SC_DATA')
+    def __repr__(self):
+        return self.Name
 
 if __name__ == '__main__':
     import glob

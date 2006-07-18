@@ -1,6 +1,8 @@
 package pyASP
 version v0r1
 
+# $Id$
+
 use SwigPolicy v*
 use astro v*
 use BayesianBlocks v*

@@ -19,8 +19,18 @@ gtselect = GtApp('gtselect')
 _LatFt1File = '/nfs/farm/g/glast/u33/jchiang/DC2/FT1_merged_gti.fits'
 _LatFt2File = '/nfs/farm/g/glast/u33/jchiang/DC2/DC2_FT2_v2.fits'
 
-def LatGrbSpectrum(ra, dec, tmin, tmax, name, radius=15,
+def LatGrbSpectrum(ra, dec=None, tmin=None, tmax=None, name=None, radius=15,
                    ft1File=_LatFt1File, ft2File=_LatFt2File):
+    try:
+        gbmNotice = ra
+        ra = gbmNotice.ra
+        dec = gbmNotice.dec
+        tmin = gbmNotice.tmin
+        tmax = gbmNotice.tmax
+        name = gbmNotice.Name
+    except AttributeError:
+        pass
+
     gtselect['infile'] = ft1File
     gtselect['outfile'] = name + '_LAT_3.fits'
     gtselect['ra'] = ra

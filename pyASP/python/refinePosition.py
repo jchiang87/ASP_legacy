@@ -20,8 +20,12 @@ _LatFt2File = '/nfs/farm/g/glast/u33/jchiang/DC2/DC2_FT2_v2.fits'
 gtfindsrc = GtApp('gtfindsrc')
 
 def refinePosition(gbm_notice, extracted=False, ft1Input=_LatFt1File,
-                   ft2Input=_LatFt2File, tsmap=True):
-    notice = GbmNotice(gbm_notice)
+                   ft2Input=_LatFt2File, tsmap=True, duration=100,
+                   radius=15):
+    try:
+        notice = GbmNotice(gbm_notice)
+    except TypeError:
+        notice = gbm_notice
     if notice.offAxisAngle() > 60:
         raise ValueError, ("Burst off-axis angle (from GBM position) "
                            + "> 60 degrees and so lies outside the "
@@ -29,7 +33,8 @@ def refinePosition(gbm_notice, extracted=False, ft1Input=_LatFt1File,
     if notice.inSAA():
         raise ValueError, ("Burst occurred while LAT was in the SAA.")
     if not extracted:
-        ft1_file, lc_file = extractLatData(notice, ft1File=ft1Input)
+        ft1_file, lc_file = extractLatData(notice, ft1File=ft1Input,
+                                           duration=duration, radius=radius)
     else:
         ft1_file = notice.Name + '_LAT_2.fits'
         lc_file = notice.Name + '_LAT_lc_2.fits'
