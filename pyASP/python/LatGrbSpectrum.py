@@ -9,7 +9,7 @@ an XML model file.
 # $Header$
 #
 
-from GtApp import GtApp
+from getApp import GtApp
 import readXml
 import FuncFactory as funcFactory
 from UnbinnedAnalysis import *

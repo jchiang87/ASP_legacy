@@ -11,7 +11,7 @@ import numarray as num
 from FitsNTuple import FitsNTuple
 from GbmNotice import GbmNotice
 from extractLatData import extractLatData
-from GtApp import GtApp
+from getApp import GtApp
 
 # defaults for DC2 data
 _LatFt1File = '/nfs/farm/g/glast/u33/jchiang/DC2/FT1_merged_gti.fits'
