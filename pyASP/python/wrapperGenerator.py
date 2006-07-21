@@ -1,6 +1,6 @@
 """
 @brief Generate bash wrapper scripts to set the environment for
-running the pyASP Python analysis scripts.
+running the pyASP Python scripts.
 
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
@@ -23,9 +23,10 @@ if not sys.argv[1:]:
     print "usage: %s <python script name>" % sys.argv[0]
     sys.exit(1)
 
-pyScript = sys.argv[1].split(".py")[0]
+prefix = sys.argv[1].split(".py")[0]
+pyScript = os.path.abspath(sys.argv[1])
 
-output = open(pyScript + ".sh", "w")
+output = open(prefix + ".sh", "w")
 output.write("#!/bin/bash\n")
 output.write("CMTSITE=SLAC_UNIX; export CMTSITE\n")
 output.write("CMTVERSION=v1r16p20040701; export CMTVERSION\n")
@@ -37,7 +38,8 @@ output.write("CMTPATH=%s; export CMTPATH\n" %
              os.pathsep.join((_ST_path, _ASP_path)))
 output.write("PATH=%s:${PATH}; export PATH\n" %
              os.path.join(_ST_path, 'bin'))
+output.write('PFILES=".;"; export PFILES\n')
 output.write("source %s\n" % os.path.join(_pyASP_root, 'cmt', 'setup.sh'))
 output.write("source %s\n" % _astrotools_setup)
-output.write("%s %s\n" % (_asp_python, sys.argv[1]))
+output.write('%s %s\n' % (_asp_python, pyScript))
 output.close()

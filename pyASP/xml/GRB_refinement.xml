@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline
+   xmlns="http://glast-ground.slac.stanford.edu/pipeline"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/pipeline/schemas/2.0/pipeline.xsd">
+<!-- $Header$
+-->
+<task>
+   <name>GBM_refinement</name>
+   <version>
+      <major>1</major>
+      <minor>1</minor>
+   </version>
+   <type>Data</type>
+   <notation> </notation>
+   <prerequisites>
+      <prerequisite name="GBM_Notice" type="string"/>
+      <prerequisite name="output_dir" type="string"/>
+      <prerequisite name="PYASPROOT" type="string"/>
+   </prerequisites>
+   <process name="GBM_refinement" type="batch">
+      <job executable="/nfs/farm/g/glast/u33/jchiang/ASP/pyASP/v0r1/python/GBM_refinement.sh" maxCPU="600">
+         <environment>
+            <var name="OUTPUTDIR">${output_dir}</var>
+            <var name="GBMNOTICE">${GBM_Notice}</var>
+         </environment>
+      </job>
+   </process>
+</task>
+</pipeline>
