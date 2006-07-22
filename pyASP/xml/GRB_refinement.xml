@@ -19,7 +19,7 @@
       <prerequisite name="PYASPROOT" type="string"/>
    </prerequisites>
    <process name="GBM_refinement" type="batch">
-      <job executable="/nfs/farm/g/glast/u33/jchiang/ASP/pyASP/v0r1/python/GBM_refinement.sh" maxCPU="600">
+      <job executable="${PYASPROOT}/python/GBM_refinement.sh" maxCPU="600">
          <environment>
             <var name="OUTPUTDIR">${output_dir}</var>
             <var name="GBMNOTICE">${GBM_Notice}</var>
