@@ -41,7 +41,6 @@ def extractLatData(gbmNotice, ft1File=_LatFt1File, duration=100, radius=15):
     x, y = lc.dataPoints()
 
     try:
-        #tmin, tmax = burst_interval(gtbin['outfile'])
         if len(x) == 2:
             tmin, tmax = tuple(x)
         else:

@@ -11,7 +11,7 @@ running the pyASP Python scripts.
 import os
 import sys
 
-_astrotools_setup= "/afs/slac/g/glast/applications/astroTools/astrotools_setup.sh"
+_ftools_setup= "/afs/slac/g/glast/ground/PipelineConfig/ASP/headas-config-noric024835.sh"
 #_ST_path = "/nfs/farm/g/glast/u09/builds/rh9_gcc32/ScienceTools/ScienceTools-LATEST1.1537"
 _ST_path = "/nfs/farm/g/glast/u06/jchiang/ST"
 _ASP_path = "/nfs/farm/g/glast/u33/jchiang/ASP"
@@ -36,10 +36,9 @@ output.write("CMTBIN=Linux; export CMTBIN\n")
 output.write("CMTCONFIG=rh9_gcc32; export CMTCONFIG\n")
 output.write("CMTPATH=%s; export CMTPATH\n" %
              os.pathsep.join((_ST_path, _ASP_path)))
-output.write("PATH=%s:${PATH}; export PATH\n" %
-             os.path.join(_ST_path, 'bin'))
-output.write('PFILES=".;"; export PFILES\n')
+output.write("source %s\n" % _ftools_setup)
+output.write("GLAST_EXT=/afs/slac/g/glast/ground/GLAST_EXT/rh9_gcc32; export GLAST_EXT\n")
+output.write("PATH=%s:${PATH}; export PATH\n" % os.path.join(_ST_path, 'bin'))
 output.write("source %s\n" % os.path.join(_pyASP_root, 'cmt', 'setup.sh'))
-output.write("source %s\n" % _astrotools_setup)
 output.write('%s %s\n' % (_asp_python, pyScript))
 output.close()

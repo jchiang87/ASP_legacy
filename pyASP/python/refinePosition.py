@@ -26,12 +26,15 @@ def refinePosition(gbm_notice, extracted=False, ft1Input=_LatFt1File,
         notice = GbmNotice(gbm_notice)
     except TypeError:
         notice = gbm_notice
+
     if notice.offAxisAngle() > 60:
         raise ValueError, ("Burst off-axis angle (from GBM position) "
                            + "> 60 degrees and so lies outside the "
                            + "nominal LAT FOV.")
+
     if notice.inSAA():
         raise ValueError, ("Burst occurred while LAT was in the SAA.")
+
     if not extracted:
         ft1_file, lc_file = extractLatData(notice, ft1File=ft1Input,
                                            duration=duration, radius=radius)
