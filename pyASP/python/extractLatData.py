@@ -69,13 +69,18 @@ def burst_interval(lc_file, minrate=30):
     return times[0] - dts[0], times[-1] + dts[-1]
 
 if __name__ == '__main__':
-    import numarray as num
     from GbmNotice import GbmNotice
-    import hippoplotter as plot
-    notice = GbmNotice('GLG_NOTICE_080101283.TXT')
-    lc_file = extractLatData(notice)
-#    lc_file = notice.Name + '_LAT_lc.fits'
-    nt, tup = plot.FitsNTuple(lc_file, 'RATE')
-    nt.addColumn('rate', tup.COUNTS/tup.TIMEDEL)
-    nt.addColumn('rate_err', num.sqrt(tup.COUNTS)/tup.TIMEDEL)
-    plot.XYPlot(nt, 'TIME', 'rate', yerr='rate_err')
+    from getL1Data import getL1Data
+    try:
+        GbmFile = sys.argv[1]
+    except ValueError:
+        GbmFile = os.environ['GBMNOTICE']
+    gbmNotice = GbmNotice(GbmFile)
+    duration = 100
+    ft1, ft2 = getL1Data(gbmNotice.start_time - duration,
+                         gbmNotice.start_time + duration)
+    ft1_extracted, lcFile = extractLatData(gbmNotice, ft1, duration=duration,
+                                           radius=15)
+    outfile = open('%s_files' % gbmNotice.Name, 'w')
+    outfile.write('%s\n%s\n' % (ft1_extracted, ft2))
+    outfile.close()
