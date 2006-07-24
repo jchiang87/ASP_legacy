@@ -27,7 +27,7 @@ prefix = sys.argv[1].split(".py")[0]
 pyScript = os.path.abspath(sys.argv[1])
 
 output = open(prefix + ".sh", "w")
-output.write("#!/bin/bash\n")
+output.write("#!/usr/local/bin/bash\n")
 output.write("CMTSITE=SLAC_UNIX; export CMTSITE\n")
 output.write("CMTVERSION=v1r16p20040701; export CMTVERSION\n")
 output.write("CMTBASE=/afs/slac.stanford.edu/g/glast/applications/CMT; export CMTBASE\n")
@@ -42,3 +42,4 @@ output.write("PATH=%s:${PATH}; export PATH\n" % os.path.join(_ST_path, 'bin'))
 output.write("source %s\n" % os.path.join(_pyASP_root, 'cmt', 'setup.sh'))
 output.write('%s %s\n' % (_asp_python, pyScript))
 output.close()
+os.system('chmod +x %s' % (prefix + '.sh',))

@@ -9,7 +9,7 @@
 import numarray as num
 from FitsNTuple import FitsNTuple
 from BayesBlocks import BayesBlocks
-from getApp import GtApp
+from GtApp import GtApp
 
 gtselect = GtApp('gtselect')
 gtbin = GtApp('gtbin')
@@ -69,18 +69,20 @@ def burst_interval(lc_file, minrate=30):
     return times[0] - dts[0], times[-1] + dts[-1]
 
 if __name__ == '__main__':
+    import os, sys
     from GbmNotice import GbmNotice
     from getL1Data import getL1Data
-    try:
-        GbmFile = sys.argv[1]
-    except ValueError:
-        GbmFile = os.environ['GBMNOTICE']
+    from ft1merge import ft1merge
+    os.chdir(os.environ['output_dir'])
+    GbmFile = os.environ['GBM_Notice']
     gbmNotice = GbmNotice(GbmFile)
     duration = 100
     ft1, ft2 = getL1Data(gbmNotice.start_time - duration,
                          gbmNotice.start_time + duration)
-    ft1_extracted, lcFile = extractLatData(gbmNotice, ft1, duration=duration,
-                                           radius=15)
+    ft1Merged = 'FT1_merged.fits'
+    ft1merge(ft1, ft1Merged)
+    ft1_extracted, lcFile = extractLatData(gbmNotice, ft1Merged, 
+                                           duration=duration, radius=15)
     outfile = open('%s_files' % gbmNotice.Name, 'w')
-    outfile.write('%s\n%s\n' % (ft1_extracted, ft2))
+    outfile.write('%s\n%s\n' % (ft1_extracted, ft2[0]))
     outfile.close()

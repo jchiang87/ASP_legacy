@@ -9,7 +9,7 @@ an XML model file.
 # $Header$
 #
 
-from getApp import GtApp
+from GtApp import GtApp
 import readXml
 import FuncFactory as funcFactory
 from UnbinnedAnalysis import *
@@ -57,6 +57,31 @@ def LatGrbSpectrum(ra, dec=None, tmin=None, tmax=None, name=None, radius=15,
     like.writeXml()
     return like
 
+def grbCoords(gbmNotice):
+    infile = open(gbmNotice.Name + '_findSrc.txt')
+    lines = infile.readlines()
+    tokens = lines[-1].split()
+    ra = float(tokens[0])
+    dec = float(tokens[1])
+    return ra, dec
+
+def grbTiming(gbmNotice):
+    from FitsNTuple import FitsNTuple
+    gtis = FitsNTuple(gbmNotice.Name + '_LAT_2.fits', 'GTI')
+    return gtis.START[0], gtis.STOP[-1]
+
+def grbFiles(gbmNotice):
+    infile = open(gbmNotice.Name + '_files')
+    lines = infile.readlines()
+    return 'FT1_merged.fits', lines[-1].strip()
+
 if __name__ == '__main__':
-    like = LatGrbSpectrum(170.166, -13.316, 222367682.458, 222367682.60699999,
-                          'GRB080118700')
+    import os
+    from GbmNotice import GbmNotice
+    os.chdir(os.environ['output_dir'])
+    gbmNotice = GbmNotice(os.environ['GBM_Notice'])
+    ra, dec = grbCoords(gbmNotice)
+    tmin, tmax = grbTiming(gbmNotice)
+    ft1File, ft2File = grbFiles(gbmNotice)
+    like = LatGrbSpectrum(ra, dec, tmin, tmax, gbmNotice.Name,
+                          radius=15, ft1File=ft1File, ft2File=ft2File)

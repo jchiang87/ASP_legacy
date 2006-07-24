@@ -13,7 +13,7 @@ cuts, are the same for all of the files.
 
 import os
 import pyfits
-from getApp import GtApp
+from GtApp import GtApp
 
 fmerge = GtApp('fmerge')
 

@@ -11,7 +11,7 @@ import numarray as num
 from FitsNTuple import FitsNTuple
 from GbmNotice import GbmNotice
 from extractLatData import extractLatData
-from getApp import GtApp
+from GtApp import GtApp
 
 # defaults for DC2 data
 _LatFt1File = '/nfs/farm/g/glast/u33/jchiang/DC2/FT1_merged_gti.fits'
@@ -87,4 +87,14 @@ def refinePosition(gbm_notice, extracted=False, ft1Input=_LatFt1File,
     return notice
 
 if __name__ == '__main__':
-    refinePosition('../../Notices/GLG_NOTICE_080105885.TXT')
+    import os, sys
+    from GbmNotice import GbmNotice
+    os.chdir(os.environ['output_dir'])
+    gbmNotice = GbmNotice(os.environ['GBM_Notice'])
+    infiles = open(gbmNotice.Name + '_files')
+    ft1File = infiles.readline().strip()
+    ft2File = infiles.readline().strip()
+    infiles.close()
+    refinePosition(gbmNotice, extracted=True, ft1Input=ft1File,
+                   ft2Input=ft2File, tsmap=False, duration=100,
+                   radius=15)
