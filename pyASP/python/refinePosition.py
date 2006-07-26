@@ -89,8 +89,8 @@ def refinePosition(gbm_notice, extracted=False, ft1Input=_LatFt1File,
 if __name__ == '__main__':
     import os, sys
     from GbmNotice import GbmNotice
-    os.chdir(os.environ['output_dir'])
-    gbmNotice = GbmNotice(os.environ['GBM_Notice'])
+    os.chdir(os.environ['OUTPUTDIR'])
+    gbmNotice = GbmNotice(os.environ['GBMNOTICE'])
     infiles = open(gbmNotice.Name + '_files')
     ft1File = infiles.readline().strip()
     ft2File = infiles.readline().strip()

@@ -73,8 +73,8 @@ if __name__ == '__main__':
     from GbmNotice import GbmNotice
     from getL1Data import getL1Data
     from ft1merge import ft1merge
-    os.chdir(os.environ['output_dir'])
-    GbmFile = os.environ['GBM_Notice']
+    os.chdir(os.environ['OUTPUTDIR'])
+    GbmFile = os.environ['GBMNOTICE']
     gbmNotice = GbmNotice(GbmFile)
     duration = 100
     ft1, ft2 = getL1Data(gbmNotice.start_time - duration,

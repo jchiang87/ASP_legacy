@@ -78,8 +78,8 @@ def grbFiles(gbmNotice):
 if __name__ == '__main__':
     import os
     from GbmNotice import GbmNotice
-    os.chdir(os.environ['output_dir'])
-    gbmNotice = GbmNotice(os.environ['GBM_Notice'])
+    os.chdir(os.environ['OUTPUTDIR'])
+    gbmNotice = GbmNotice(os.environ['GBMNOTICE'])
     ra, dec = grbCoords(gbmNotice)
     tmin, tmax = grbTiming(gbmNotice)
     ft1File, ft2File = grbFiles(gbmNotice)
