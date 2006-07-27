@@ -27,3 +27,5 @@ like.fit()
 
 print like.model
 print 'TS value: ', like.Ts(grbName)
+
+like.writeXml()
