@@ -1,5 +1,5 @@
 """
-@brief GRB Afterglow analysis development
+@brief Extract data files for a GRB afterglow analysis.
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
@@ -10,6 +10,7 @@ import os, sys
 from GtApp import GtApp
 from getL1Data import getL1Data
 from ft1merge import ft1merge
+from parfile_parser import parfile_parser
 import readXml
 import xmlSrcLib
 import FuncFactory
@@ -48,31 +49,22 @@ def getData(time, ra, dec, srcName, duration=5*3600, radius=15,
     srcModel[srcName].spatialModel.RA.value = ra
     srcModel[srcName].spatialModel.DEC.value = dec
     srcModel[srcName].spatialModel.setAttributes()
-    srcModel.writeTo(srcName + '_model.xml')
+    srcModel.filename = srcName + '_afterglow_model.xml'
+    srcModel.writeTo()
     return srcModel, gtselect['outfile'], ft2[0]
 
-if __name__ == '__main__':
-    grbName = 'GRB080104514'
-    srcModel, ft1, ft2 = getData(221142033.593, 57.5685, 15.7564, grbName,
-                                 extracted=True)
-    
-    gtlivetimecube = GtApp('gtlivetimecube')
-    gtlivetimecube['evfile'] = ft1
-    gtlivetimecube['scfile'] = ft2
-    gtlivetimecube['outfile'] = 'expCube_' + grbName + '.fits'
-#    gtlivetimecube.run()
-    
-    gtexpmap = GtApp('gtexpmap')
-    gtexpmap['evfile'] = ft1
-    gtexpmap['scfile'] = ft2
-    gtexpmap['exposure_cube_file'] = gtlivetimecube['outfile']
-    gtexpmap['outfile'] = 'expmap_' + grbName + '.fits'
-    gtexpmap['source_region_radius'] = 25
-    gtexpmap['rspfunc'] = 'DSS'
-#    gtexpmap.run()
+def afterglow_pars(infile):
+    pars = parfile_parser(infile)
+    return pars['name'], pars['ra'], pars['dec'], pars['tstart'], pars['tstop']
 
-    from UnbinnedAnalysis import *
-    obs = UnbinnedObs(ft1, ft2, expMap=gtexpmap['outfile'],
-                      expCube=gtlivetimecube['outfile'], irfs='DC2')
-    like = UnbinnedAnalysis(obs, grbName + '_model.xml', 'NewMinuit')
-    like.fit()
+if __name__ == '__main__':
+    import os, sys
+    os.chdir(os.environ['OUTPUTDIR'])
+    grbName, ra, dec, tstart, tstop = afterglow_pars(os.environ['GRBPARS'])
+
+    srcModel, ft1, ft2 = getData(tstop, ra, dec, grbName)
+    outfile = open('%s_afterglow_files' % grbName, 'w')
+    outfile.write('ft1File = %s\n' % ft1)
+    outfile.write('ft2File = %s\n' % ft2)
+    outfile.write('xmlFile = %s\n' % srcModel.filename)
+    outfile.close()

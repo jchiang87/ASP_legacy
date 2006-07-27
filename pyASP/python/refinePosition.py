@@ -95,6 +95,13 @@ if __name__ == '__main__':
     ft1File = infiles.readline().strip()
     ft2File = infiles.readline().strip()
     infiles.close()
-    refinePosition(gbmNotice, extracted=True, ft1Input=ft1File,
-                   ft2Input=ft2File, tsmap=False, duration=100,
-                   radius=15)
+    gbmNotice = refinePosition(gbmNotice, extracted=True, ft1Input=ft1File,
+                               ft2Input=ft2File, tsmap=False, duration=100,
+                               radius=15)
+    outfile = open('%s_pars.txt' % gbmNotice.Name, 'w')
+    outfile.write('name = %s\n' % gbmNotice.Name)
+    outfile.write('ra = %.3f\n' % gbmNotice.ra)
+    outfile.write('dec = %.3f\n' % gbmNotice.dec)
+    outfile.write('tstart = %.6f\n' % gbmNotice.tmin)
+    outfile.write('tstop = %.6f\n' % gbmNotice.tmax)
+    outfile.close()
