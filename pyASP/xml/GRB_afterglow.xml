@@ -9,7 +9,7 @@
    <name>GRB_afterglow</name>
    <version>
       <major>1</major>
-      <minor>0</minor>
+      <minor>1</minor>
    </version>
    <type>Data</type>
    <notation> </notation>
@@ -31,7 +31,7 @@
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/afterglowExposures.sh" maxCPU="2000">
+      <job executable="${PYASPROOT}/python/afterglowExposures.sh" maxCPU="5500">
       </job>
       <depends>
           <after process="afterglowData" status="SUCCESS"/>
