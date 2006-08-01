@@ -19,7 +19,7 @@ pars = parfile_parser(afterglowFiles)
 obs = UnbinnedObs(pars['ft1File'], pars['ft2File'], expMap=pars['expmap'],
                   expCube=pars['expcube'], irfs='DC2')
 
-like = UnbinnedAnalysis(obs, grbName + '_model.xml', 'Minuit')
+like = UnbinnedAnalysis(obs, grbName + '_afterglow_model.xml', 'Minuit')
 
 like.thaw(6)
 
