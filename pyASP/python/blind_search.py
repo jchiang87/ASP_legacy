@@ -96,10 +96,36 @@ def convert(events, imin=0, imax=None):
         my_events.append(Event(ra, dec, time))
     return my_events
 
+def triggerTimes(time, logLike, threshold=112, deadtime=0):
+    """Find trigger times and peak times based on a time-ordered
+    figure-of-merit (FOM), such as Jay and Jerry's -log(likelihood).
+    Return the initial time the FOM is above threshold, resetting the
+    trigger when the FOM goes back below threshold or after an
+    artificial deadtime."""
+    triggers = []
+    tpeaks = []
+    trigger_is_set = True
+    lmax = 0
+    tmax = time[0]
+    for tt, ll in zip(time, logLike):
+        if (trigger_is_set and ll > threshold and
+            (len(triggers) == 0 or (tt - triggers[-1]) > deadtime)):
+            triggers.append(tt)
+            trigger_is_set = False
+        if not trigger_is_set:
+            if ll > lmax:
+                lmax = ll
+                tmax = tt
+        if not trigger_is_set and ll <= threshold:
+            tpeaks.append(tmax)
+            lmax = 0
+            trigger_is_set = True
+    return triggers, tpeaks
+
 if __name__ == '__main__':
     import hippoplotter as plot
     from FitsNTuple import FitsNTuple
-    events = FitsNTuple('downlink_0093.fits')
+    events = FitsNTuple('/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks/downlink_0039.fits')
     nevts = len(events.RA)
     dn = 20
     indices = range(0, nevts, dn)
@@ -121,9 +147,17 @@ if __name__ == '__main__':
     logdists = num.array(logdists)
     plot.scatter(times, logdts, pointRep='Line')
     plot.scatter(times, logdists, pointRep='Line')
-    plot.scatter(times, logdts + logdists, pointRep='Line')
+    logLike = logdts + logdists
+    plot.scatter(times, logLike, pointRep='Line')
+
+    triggers, tpeaks = triggerTimes(times, -logLike, deadtime=1000)
+    for item in tpeaks:
+        plot.vline(item, color='red')
+
     hist = plot.histogram(events.TIME)
     hist.setBinWidth('x', 5)
+    for item in tpeaks:
+        plot.vline(item, color='red')
 
 #    import hippoplotter as plot
 #    import random
