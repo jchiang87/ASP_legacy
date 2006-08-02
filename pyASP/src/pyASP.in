@@ -41,4 +41,7 @@ astro::JulianDate jd_from_MET(double met);
                                     double t1, double t2, double tt) {
       return astro::SkyDir((tt - t1)/(t2 - t1)*(dir2() - dir1()) + dir1());
    }
+   astro::SkyDir operator+(const astro::SkyDir & other) {
+      return astro::SkyDir(self->operator()() + other());
+   }
 }
