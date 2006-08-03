@@ -132,76 +132,76 @@ def triggerTimes(time, logLike, threshold=112, deadtime=0):
             trigger_is_set = True
     return triggers, tpeaks
 
-def localize(events, radius=17):
-    clusters = EventClusters(events)
-    max_cluster = clusters.largestCluster(radius)
-    return meanDir(max_cluster), max_cluster
+class BlindSearch(object):
+    def __init__(self, events, dn=20, deadtime=1000):
+        self.events = events
+        nevts = len(events.RA)
+        dn = 20
+        indices = range(0, nevts, dn)
+        indices.append(nevts)
+        logdts = []
+        logdists = []
+        times = []
+        bg_rate = nevts/(events.TIME[-1] - events.TIME[0])
+        for imin, imax in zip(indices[:-1], indices[1:]):
+            clusters = EventClusters(convert(events, imin, imax))
+            try:
+                logPdts, logPdists = clusters.logLike(bg_rate=bg_rate)
+                logdts.append(logPdts)
+                logdists.append(logPdists)
+                times.append((events.TIME[imin] + events.TIME[imax-1])/2.)
+            except ValueError:
+                pass
+        self.times = num.array(times)
+        self.logdts = num.array(logdts)
+        self.logdists = num.array(logdists)
+        logLike = self.logdts + self.logdists
+        self.triggers, self.tpeaks = triggerTimes(times, -logLike,
+                                                  deadtime=deadtime)
+    def grbDirs(self, radius=5):
+        events = self.events
+        grb_dirs = []
+        for tpeak in self.tpeaks:
+            imin = min(num.where(events.TIME > tpeak-50)[0])
+            imax = max(num.where(events.TIME < tpeak+50)[0])
+            grb_dir, ras, decs = self._localize(convert(events, imin, imax),
+                                                radius=radius)
+            grb_dirs.append((grb_dir, tpeak, ras, decs))
+        return grb_dirs
+    def _localize(self, events, radius=5):
+        clusters = EventClusters(events)
+        max_cluster = clusters.largestCluster(radius)
+        ras, decs = [], []
+        for event in max_cluster:
+            ras.append(event.ra)
+            decs.append(event.dec)
+        return meanDir(max_cluster), ras, decs
 
 if __name__ == '__main__':
     import hippoplotter as plot
     from FitsNTuple import FitsNTuple
-    events = FitsNTuple('/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks/downlink_0028.fits')
-    nevts = len(events.RA)
-    dn = 20
-    indices = range(0, nevts, dn)
-    indices.append(nevts)
-    logdts = []
-    logdists = []
-    times = []
-    bg_rate = nevts/(events.TIME[-1] - events.TIME[0])
-    for imin, imax in zip(indices[:-1], indices[1:]):
-        clusters = EventClusters(convert(events, imin, imax))
-        try:
-            logPdts, logPdists = clusters.logLike(bg_rate=bg_rate)
-            logdts.append(logPdts)
-            logdists.append(logPdists)
-            times.append((events.TIME[imin] + events.TIME[imax-1])/2.)
-        except ValueError:
-            pass
-    logdts = num.array(logdts)
-    logdists = num.array(logdists)
-    plot.scatter(times, logdts, pointRep='Line')
-    plot.scatter(times, logdists, pointRep='Line')
-    logLike = logdts + logdists
-    plot.scatter(times, logLike, pointRep='Line')
+    from LatGcnNotice import LatGcnNotice
+    
+    events = FitsNTuple('/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks/' +
+                        'downlink_0028.fits')
 
-    triggers, tpeaks = triggerTimes(times, -logLike, deadtime=1000)
-    for item in tpeaks:
+    blindSearch = BlindSearch(events)
+
+    plot.scatter(blindSearch.times, blindSearch.logdts, pointRep='Line')
+    plot.scatter(blindSearch.times, blindSearch.logdists, pointRep='Line')
+    logLike = blindSearch.logdts + blindSearch.logdists
+    plot.scatter(blindSearch.times, logLike, pointRep='Line')
+
+    for item in blindSearch.tpeaks:
         plot.vline(item, color='red')
 
     hist = plot.histogram(events.TIME)
     hist.setBinWidth('x', 5)
-    for trigger, tpeak in zip(triggers, tpeaks):
-        imin = min(num.where(events.TIME > tpeak-50)[0])
-        imax = max(num.where(events.TIME < tpeak+50)[0])
-        grb_dir, max_cluster = localize(convert(events, imin, imax), radius=5)
-        plot.xyhist(events.RA[imin:imax], events.DEC[imin:imax])
+
+    grbDirs = blindSearch.grbDirs()
+    for item in grbDirs:
+        grb_dir, tpeak, ras, decs = item
+        plot.xyhist(ras, decs)
         print grb_dir.ra(), grb_dir.dec(), tpeak
         plot.vline(grb_dir.ra())
         plot.hline(grb_dir.dec())
-        for event in max_cluster:
-            plot.scatter([event.ra], [event.dec], oplot=1)
-
-#    import hippoplotter as plot
-#    import random
-#
-#    disp = plot.scatter([], [], xrange=(0, 360), yrange=(-90, 90))
-#    my_events = plot.pickData()
-#    events = []
-#    time = 0
-#    for i in range(my_events.rows):
-#        ra, dec, z, px, py = my_events.getRow(i)
-#        time += random.random()
-#        events.append(Event(ra, dec, time))
-#        
-#    clusters = EventClusters(events)
-#    radius = 17
-#    max_cluster = clusters.largestCluster(radius)
-#
-#    nt = plot.newNTuple(([], []), ('ra', 'dec'))
-#    for item in max_cluster:
-#        nt.addRow((item.ra, item.dec))
-#    plot.canvas.selectDisplay(disp)
-#    plot.Scatter(nt, 'ra', 'dec', oplot=1, color='green')
-#
-#    print clusters.logLike(17)
