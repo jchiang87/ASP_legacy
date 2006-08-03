@@ -15,8 +15,8 @@ _LAT_Notice = """GLAST LAT BURST NOTIFICATION
 BURST Name     =                         %s
 BURST Date     =                         %s
 BURST Time (Sec of Day)     =            %s
-BURST RA  (Deg)   =                      %s
-BURST DEC (Deg)  =                       %s
+BURST RA  (Deg)   =                      %.3f
+BURST DEC (Deg)  =                       %.3f
 BURST LOC ERR (Deg 1 sigma)  =           """
 
 class LatGcnNotice(object):
@@ -26,10 +26,11 @@ class LatGcnNotice(object):
         date = '%02i%02i%02i' % ((int(year) % 100), int(month), int(day))
         time = '%.1f' % (hours*3600.,)
         name = 'GRB%s%03i' % (date, 1000.*hours/24.)
+        self.name = name
         self.text = _LAT_Notice % (name, date, time, ra, dec)
     def setLocErr(self, error):
         self.text + (".6f" % error)
-    def write(outfile):
+    def write(self, outfile):
         output = open(outfile, 'w')
         output.write(self.text + '\n')
         output.close()

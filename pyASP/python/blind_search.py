@@ -201,6 +201,8 @@ if __name__ == '__main__':
     grbDirs = blindSearch.grbDirs()
     for item in grbDirs:
         grb_dir, tpeak, ras, decs = item
+        notice = LatGcnNotice(tpeak, grb_dir.ra(), grb_dir.dec())
+        notice.write(notice.name + '.txt')
         plot.xyhist(ras, decs)
         print grb_dir.ra(), grb_dir.dec(), tpeak
         plot.vline(grb_dir.ra())
