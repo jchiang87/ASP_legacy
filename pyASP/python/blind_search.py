@@ -29,14 +29,24 @@ class Event(object):
         #return '%.3f %.3f %.3f' % (self.ra, self.dec, self.time)
         return `self.id`
 
+def meanDir(cluster):
+    ra = 0
+    dec = 0
+    for event in cluster:
+        ra += event.ra
+        dec += event.dec
+    return SkyDir(ra/len(cluster), dec/len(cluster))
+#    mDir = cluster[0].dir
+#    for item in cluster[1:]:
+#        mDir += item.dir
+#    return mDir
+
 def cluster_dists(cluster):
     """Cluster distances from mean direction in radians"""
-    meanDir = cluster[0].dir
-    for item in cluster[1:]:
-        meanDir += item.dir
+    mDir = meanDir(cluster)
     dists = []
     for item in cluster:
-        dists.append(item.dir.difference(meanDir))
+        dists.append(item.dir.difference(mDir))
     return num.array(dists)
 
 class EventClusters(object):
@@ -122,10 +132,41 @@ def triggerTimes(time, logLike, threshold=112, deadtime=0):
             trigger_is_set = True
     return triggers, tpeaks
 
+def localize(events, radius=17):
+    clusters = EventClusters(events)
+    max_cluster = clusters.largestCluster(radius)
+    return meanDir(max_cluster), max_cluster
+
+def triggerTimes(time, logLike, threshold=112, deadtime=0):
+    """Find trigger times and peak times based on a time-ordered
+    figure-of-merit (FOM), such as Jay and Jerry's -log(likelihood).
+    Return the initial time the FOM is above threshold, resetting the
+    trigger when the FOM goes back below threshold or after an
+    artificial deadtime."""
+    triggers = []
+    tpeaks = []
+    trigger_is_set = True
+    lmax = 0
+    tmax = time[0]
+    for tt, ll in zip(time, logLike):
+        if (trigger_is_set and ll > threshold and
+            (len(triggers) == 0 or (tt - triggers[-1]) > deadtime)):
+            triggers.append(tt)
+            trigger_is_set = False
+        if not trigger_is_set:
+            if ll > lmax:
+                lmax = ll
+                tmax = tt
+        if not trigger_is_set and ll <= threshold:
+            tpeaks.append(tmax)
+            lmax = 0
+            trigger_is_set = True
+    return triggers, tpeaks
+
 if __name__ == '__main__':
     import hippoplotter as plot
     from FitsNTuple import FitsNTuple
-    events = FitsNTuple('/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks/downlink_0039.fits')
+    events = FitsNTuple('/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks/downlink_0028.fits')
     nevts = len(events.RA)
     dn = 20
     indices = range(0, nevts, dn)
@@ -156,8 +197,16 @@ if __name__ == '__main__':
 
     hist = plot.histogram(events.TIME)
     hist.setBinWidth('x', 5)
-    for item in tpeaks:
-        plot.vline(item, color='red')
+    for trigger, tpeak in zip(triggers, tpeaks):
+        imin = min(num.where(events.TIME > tpeak-50)[0])
+        imax = max(num.where(events.TIME < tpeak+50)[0])
+        grb_dir, max_cluster = localize(convert(events, imin, imax), radius=5)
+        plot.xyhist(events.RA[imin:imax], events.DEC[imin:imax])
+        print grb_dir.ra(), grb_dir.dec(), tpeak
+        plot.vline(grb_dir.ra())
+        plot.hline(grb_dir.dec())
+        for event in max_cluster:
+            plot.scatter([event.ra], [event.dec], oplot=1)
 
 #    import hippoplotter as plot
 #    import random
