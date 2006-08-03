@@ -45,3 +45,16 @@ astro::JulianDate jd_from_MET(double met);
       return astro::SkyDir(self->operator()() + other());
    }
 }
+%extend astro::JulianDate {
+   std::vector<double> gregorianDate() {
+      int year, month, day;
+      double hours;
+      self->getGregorianDate(year, month, day, hours);
+      std::vector<double> data;
+      data.push_back(year);
+      data.push_back(month);
+      data.push_back(day);
+      data.push_back(hours);
+      return data;
+   }
+}
