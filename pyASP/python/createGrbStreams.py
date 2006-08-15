@@ -47,7 +47,7 @@ def afterglowStreams(parfiles=None):
 
     for parfile in parfiles:
         args = (','.join(("output_dir=%s",
-                          "GBM_parfile=%s",
+                          "GRB_parfile=%s",
                           "PYASPROOT=%s"))
                 % (os.environ['OUTPUTDIR'], parfile,
                    '/nfs/farm/g/glast/u33/jchiang/ASP/pyASP/v0r1'))
