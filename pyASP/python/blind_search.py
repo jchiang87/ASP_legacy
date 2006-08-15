@@ -178,32 +178,42 @@ class BlindSearch(object):
         return meanDir(max_cluster), ras, decs
 
 if __name__ == '__main__':
-    import hippoplotter as plot
+    import os
     from FitsNTuple import FitsNTuple
     from LatGcnNotice import LatGcnNotice
+    import createGrbStreams
+
+    makePlots = False
     
-    events = FitsNTuple('/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks/' +
-                        'downlink_0028.fits')
+    os.chdir(os.environ['OUTPUTDIR'])
+    downlink_file = os.environ['DOWNLINKFILE']
+    events = FitsNTuple(downlink_file)
 
     blindSearch = BlindSearch(events)
 
-    plot.scatter(blindSearch.times, blindSearch.logdts, pointRep='Line')
-    plot.scatter(blindSearch.times, blindSearch.logdists, pointRep='Line')
-    logLike = blindSearch.logdts + blindSearch.logdists
-    plot.scatter(blindSearch.times, logLike, pointRep='Line')
+    if makePlots:
+        import hippoplotter as plot
+        plot.scatter(blindSearch.times, blindSearch.logdts, pointRep='Line')
+        plot.scatter(blindSearch.times, blindSearch.logdists, pointRep='Line')
+        logLike = blindSearch.logdts + blindSearch.logdists
+        plot.scatter(blindSearch.times, logLike, pointRep='Line')
+        
+        for item in blindSearch.tpeaks:
+            plot.vline(item, color='red')
 
-    for item in blindSearch.tpeaks:
-        plot.vline(item, color='red')
-
-    hist = plot.histogram(events.TIME)
-    hist.setBinWidth('x', 5)
+        hist = plot.histogram(events.TIME)
+        hist.setBinWidth('x', 5)
 
     grbDirs = blindSearch.grbDirs()
     for item in grbDirs:
         grb_dir, tpeak, ras, decs = item
         notice = LatGcnNotice(tpeak, grb_dir.ra(), grb_dir.dec())
-        notice.write(notice.name + '.txt')
-        plot.xyhist(ras, decs)
+        notice.write(notice.name + '_Notice.txt')
         print grb_dir.ra(), grb_dir.dec(), tpeak
-        plot.vline(grb_dir.ra())
-        plot.hline(grb_dir.dec())
+        
+        if makePlots:
+            plot.xyhist(ras, decs)
+            plot.vline(grb_dir.ra())
+            plot.hline(grb_dir.dec())
+
+    createGrbStreams.refinementStreams()

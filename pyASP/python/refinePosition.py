@@ -89,6 +89,8 @@ def refinePosition(gbm_notice, extracted=False, ft1Input=_LatFt1File,
 if __name__ == '__main__':
     import os, sys
     from GbmNotice import GbmNotice
+    import createGrbStreams
+    
     os.chdir(os.environ['OUTPUTDIR'])
     gbmNotice = GbmNotice(os.environ['GBMNOTICE'])
     infiles = open(gbmNotice.Name + '_files')
@@ -98,10 +100,14 @@ if __name__ == '__main__':
     gbmNotice = refinePosition(gbmNotice, extracted=True, ft1Input=ft1File,
                                ft2Input=ft2File, tsmap=False, duration=100,
                                radius=15)
-    outfile = open('%s_pars.txt' % gbmNotice.Name, 'w')
+    parfile = '%s_pars.txt' % gbmNotice.Name
+    outfile = open(parfile, 'w')
     outfile.write('name = %s\n' % gbmNotice.Name)
     outfile.write('ra = %.3f\n' % gbmNotice.ra)
     outfile.write('dec = %.3f\n' % gbmNotice.dec)
     outfile.write('tstart = %.6f\n' % gbmNotice.tmin)
     outfile.write('tstop = %.6f\n' % gbmNotice.tmax)
     outfile.close()
+
+    createGrbStreams.afterglowStreams((os.path.join(os.environ['OUTPUTDIR'],
+                                                    parfile), ))

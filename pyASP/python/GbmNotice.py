@@ -27,7 +27,10 @@ class GbmNotice(object):
         self.start_time = self._convertMET(self.Date, self.Time)
         self.RA = float(self.RA)
         self.DEC = float(self.DEC)
-        self.LOC_ERR = float(self.LOC_ERR)
+        try:
+            self.LOC_ERR = float(self.LOC_ERR)
+        except:
+            pass
         self.ft2 = None
     def _convertMET(self, date, time):
         year = 2000 + int(date[:2])
