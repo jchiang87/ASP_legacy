@@ -105,6 +105,7 @@ if __name__ == '__main__':
     outfile.write('name = %s\n' % gbmNotice.Name)
     outfile.write('ra = %.3f\n' % gbmNotice.ra)
     outfile.write('dec = %.3f\n' % gbmNotice.dec)
+    outfile.write('loc_err = %.5f\n' % gbmNotice.pos_err)
     outfile.write('tstart = %.6f\n' % gbmNotice.tmin)
     outfile.write('tstop = %.6f\n' % gbmNotice.tmax)
     outfile.close()

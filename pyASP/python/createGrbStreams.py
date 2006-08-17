@@ -79,7 +79,7 @@ def afterglowStreams(parfiles=None):
         if rc != 0:
             raise PipelineError, ("pipeline return code: %i" % rc)
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
 #    blindSearchStreams('foo')
 #    refinementStreams('bar')
 #    afterglowStreams('foobar')
