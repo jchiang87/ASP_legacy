@@ -136,7 +136,6 @@ class BlindSearch(object):
     def __init__(self, events, dn=20, deadtime=1000):
         self.events = events
         nevts = len(events.RA)
-        dn = 20
         indices = range(0, nevts, dn)
         indices.append(nevts)
         logdts = []
