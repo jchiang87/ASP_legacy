@@ -5,6 +5,7 @@ version v0r2p1
 
 use SwigPolicy v*
 use astro v*
+use pyIrfLoader v* -no_auto_imports
 use BayesianBlocks v* -no_auto_imports
 use sane v* -no_auto_imports
 use pyLikelihood v* -no_auto_imports
