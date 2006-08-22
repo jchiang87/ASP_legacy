@@ -9,110 +9,7 @@
 
 import numarray as num
 from pyIrfLoader import SkyDir
-
-_eventId = 0
-class Event(object):
-    def __init__(self, ra, dec, time, energy, evt_class):
-        self.dir = SkyDir(ra, dec)
-        self.ra, self.dec, self.energy = ra, dec, energy
-        self.evt_class = evt_class
-        self.time = time
-        global _eventId
-        self.id = _eventId
-        _eventId += 1
-    def sep(self, event):
-        return self.dir.difference(event.dir)*180./num.pi
-    def __eq__(self, other):
-        return self.id == other.id
-    def __ne__(self, other):
-        return not self==other
-    def __repr__(self):
-        #return '%.3f %.3f %.3f' % (self.ra, self.dec, self.time)
-        return `self.id`
-
-def meanDir(cluster):
-    ra = 0
-    dec = 0
-    for event in cluster:
-        ra += event.ra
-        dec += event.dec
-    return SkyDir(ra/len(cluster), dec/len(cluster))
-
-def cluster_dists(cluster):
-    """Cluster distances from mean direction in radians"""
-    mDir = meanDir(cluster)
-    dists = []
-    for item in cluster:
-        dists.append(item.dir.difference(mDir))
-    return num.array(dists)
-
-class EventClusters(object):
-    def __init__(self, events):
-        dists = {}
-        for evt in events:
-            dists[evt] = []
-            for other in events:
-                dists[evt].append(evt.sep(other))
-            dists[evt] = num.array(dists[evt])
-        self.dists = dists
-    def _clusterSizes(self, radius=10):
-        sizes = {}
-        for evt in self.dists:
-            sizes[evt] = len(num.where(self.dists[evt] < radius)[0])
-        return sizes
-    def _findCluster(self, event, radius):
-        cluster = []
-        for evt in self.dists:
-            if evt.sep(event) < radius:
-                cluster.append(evt)
-        return cluster
-    def _largestCluster(self, radius):
-        sizes = self._clusterSizes(radius)
-        maxnum = 0
-        for evt in sizes:
-            if maxnum < sizes[evt]:
-                largest = evt
-                maxnum = sizes[evt]
-        return self._findCluster(largest, radius)
-    def logLike(self, radius=17, bg_rate=None):
-        times = []
-        for evt in self.dists:
-            times.append(evt.time)
-        times.sort()
-        times = num.array(times)
-        dts = times[1:] - times[:-1]
-        if bg_rate is None:
-            bg_rate = len(times)/(times[-1] - times[0])
-        xvals = bg_rate*dts
-        logPdts = sum(num.log(1. - num.exp(-xvals)))
-
-        max_cluster = self._largestCluster(radius)
-        if len(max_cluster) < 2:
-            raise ValueError, 'Largest cluster size < 2'
-        dists = cluster_dists(max_cluster)
-        logPdists = sum(num.log(1. - num.cos(dists)))
-
-        return logPdts, logPdists
-    def localize(self, cluster=None, radius=5):
-        if cluster is None:
-            cluster = self._largestCluster(radius)
-        ras, decs = [], []
-        for event in cluster:
-            ras.append(event.ra)
-            decs.append(event.dec)
-        return meanDir(cluster), ras, decs
-
-def convert(events, imin=0, imax=None):
-    if imax is None:
-        imax = len(events.RA)
-    my_events = []
-    for ra, dec, time, energy, evt_class in zip(events.RA[imin:imax],
-                                                events.DEC[imin:imax],
-                                                events.TIME[imin:imax],
-                                                events.ENERGY[imin:imax],
-                                                events.EVENT_CLASS[imin:imax]):
-        my_events.append(Event(ra, dec, time, energy, evt_class))
-    return my_events
+from EventClusters import *
 
 def triggerTimes(time, logLike, threshold=112, deadtime=0):
     """Find trigger times and peak times based on a time-ordered
@@ -141,7 +38,7 @@ def triggerTimes(time, logLike, threshold=112, deadtime=0):
     return triggers, tpeaks
 
 class BlindSearch(object):
-    def __init__(self, events, dn=20, deadtime=1000,
+    def __init__(self, events, dn=20, deadtime=1000, threshold=112,
                  clusterAlg=EventClusters):
         self.clusterAlg = clusterAlg 
         self.events = events
@@ -166,7 +63,8 @@ class BlindSearch(object):
         self.logdists = num.array(logdists)
         logLike = self.logdts + self.logdists
         self.triggers, self.tpeaks = triggerTimes(times, -logLike,
-                                                  deadtime=deadtime)
+                                                  deadtime=deadtime,
+                                                  threshold=threshold)
     def grbDirs(self, radius=5):
         events = self.events
         grb_dirs = []
@@ -181,11 +79,16 @@ class BlindSearch(object):
 
 if __name__ == '__main__':
     import os
+    import sys
     from FitsNTuple import FitsNTuple
     from LatGcnNotice import LatGcnNotice
     import createGrbStreams
 
-    makePlots = False
+    try:
+        sys.argv[1:].index('-p')
+        makePlots = True
+    except ValueError:
+        makePlots = False
     
     os.chdir(os.environ['OUTPUTDIR'])
     downlink_file = os.environ['DOWNLINKFILE']
@@ -219,4 +122,5 @@ if __name__ == '__main__':
             plot.vline(grb_dir.ra())
             plot.hline(grb_dir.dec())
 
-    createGrbStreams.refinementStreams()
+    if not makePlots:
+        createGrbStreams.refinementStreams()
