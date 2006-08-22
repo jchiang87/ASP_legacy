@@ -18,11 +18,9 @@ _scData = ScData()
 pyIrfLoader.Loader_go()
 _irfsFactory = pyIrfLoader.IrfsFactory_instance()
 
-_psfs = []
-_psfs.append(_irfsFactory.create('DC2::FrontA').psf())
-_psfs.append(_irfsFactory.create('DC2::BackA').psf())
-_psfs.append(_irfsFactory.create('DC2::FrontB').psf())
-_psfs.append(_irfsFactory.create('DC2::BackB').psf())
+irfs = ('DC2::FrontA', 'DC2::BackA', 'DC2::FrontB', 'DC2::BackB')
+#irfs = ('DC1A::Front', 'DC1A::Back', 'DC1A::Front', 'DC1A::Back')
+_psfs = [_irfsFactory.create(irf).psf() for irf in irfs]
 
 class PsfClusters(object):
     def __init__(self, events):
