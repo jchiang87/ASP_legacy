@@ -1,6 +1,6 @@
 """
-@brief Use psf to construct spatial part of log-likelihood and to
-determine cluster locations.
+@brief Use PSF to determine cluster locations and to construct spatial
+part of log-likelihood.
 
 @author J. Chiang <jchiang@sla.stanford.edu>
 """
@@ -11,10 +11,9 @@ determine cluster locations.
 import numarray as num
 import pyIrfLoader
 from ScData import ScData
-from blind_search import triggerTimes, convert
+SkyDir = pyIrfLoader.SkyDir
 
-_ft2File = '/nfs/farm/g/glast/u33/jchiang/DC2/DC2_FT2_v2.fits'
-_scData = ScData(_ft2File)
+_scData = ScData()
 
 pyIrfLoader.Loader_go()
 _irfsFactory = pyIrfLoader.IrfsFactory_instance()
@@ -47,7 +46,7 @@ class PsfClusters(object):
             psf_wts[other] = psf.value(sep, other.energy, theta, 0)
             logLike += num.log(psf_wts[other])
         return logLike, psf_wts
-    def largestCluster(self, radius=None):
+    def _largestCluster(self, radius=None):
         sizes = self._clusterSizes()
         maxval = sizes[sizes.keys()[0]]
         for evt in sizes:
@@ -67,45 +66,43 @@ class PsfClusters(object):
         xvals = bg_rate*dts
         logPdts = sum(num.log(1. - num.exp(-xvals)))
 
-        max_cluster = self.largestCluster()
-        logPdists = max_cluster[0]
+        max_cluster = self._largestCluster()
+        logPdists = -max_cluster[0]
         
         return logPdts, logPdists
-
-class BlindSearch(object):
-    def __init__(self, events, dn=20, deadtime=1000):
-        self.events = events
-        nevts = len(events.RA)
-        indices = range(0, nevts, dn)
-        indices.append(nevts)
-        logdts = []
-        logdists = []
-        times = []
-        bg_rate = nevts/(events.TIME[-1] - events.TIME[0])
-        for imin, imax in zip(indices[:-1], indices[1:]):
-            clusters = PsfClusters(convert(events, imin, imax))
-            try:
-                logPdts, logPdists = clusters.logLike(bg_rate=bg_rate)
-                logdts.append(logPdts)
-                logdists.append(logPdists)
-                times.append((events.TIME[imin] + events.TIME[imax-1])/2.)
-            except ValueError:
-                pass
-        self.times = num.array(times)
-        self.logdts = num.array(logdts)
-        self.logdists = num.array(logdists)
-        logLike = self.logdts + self.logdists
-        self.triggers, self.tpeaks = triggerTimes(times, -logLike,
-                                                  deadtime=deadtime)
+    def localize(self, cluster=None):
+        if cluster is None:
+            logLike, psf_wts = self._largestCluster()
+        ra_avg, dec_avg, norm = 0, 0, 0
+        ras, decs = [], []
+        for evt in psf_wts:
+            ras.append(evt.ra)
+            decs.append(evt.dec)
+            ra_avg += evt.ra*psf_wts[evt]
+            dec_avg += evt.dec*psf_wts[evt]
+            norm += psf_wts[evt]
+        return SkyDir(ra_avg/norm, dec_avg/norm), ras, decs
 
 if __name__ == '__main__':
+    import os
     from FitsNTuple import FitsNTuple
     import hippoplotter as plot
+    from blind_search import BlindSearch
     
-    downlink = '/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks/downlink_0028.fits'
-    blindSearch = BlindSearch(FitsNTuple(downlink))
+    downlink = os.environ['DOWNLINKFILE']
+    events = FitsNTuple(downlink)
+    blindSearch = BlindSearch(events, clusterAlg=PsfClusters)
     
     plot.scatter(blindSearch.times, blindSearch.logdts, pointRep='Line')
     plot.scatter(blindSearch.times, blindSearch.logdists, pointRep='Line')
-    logLike = blindSearch.logdts - blindSearch.logdists
+    logLike = blindSearch.logdts + blindSearch.logdists
     plot.scatter(blindSearch.times, logLike, pointRep='Line')
+
+    hist = plot.histogram(events.TIME)
+    hist.setBinWidth('x', 5)
+
+    grb_dirs = blindSearch.grbDirs()
+    for grb in grb_dirs:
+        plot.xyhist(grb[1], grb[2], xname='RA', yname='Dec')
+        plot.vline(grb[0].ra())
+        plot.hline(grb[0].dec())

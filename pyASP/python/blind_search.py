@@ -8,7 +8,6 @@
 #
 
 import numarray as num
-#from pyASP import SkyDir
 from pyIrfLoader import SkyDir
 
 _eventId = 0
@@ -38,10 +37,6 @@ def meanDir(cluster):
         ra += event.ra
         dec += event.dec
     return SkyDir(ra/len(cluster), dec/len(cluster))
-#    mDir = cluster[0].dir
-#    for item in cluster[1:]:
-#        mDir += item.dir
-#    return mDir
 
 def cluster_dists(cluster):
     """Cluster distances from mean direction in radians"""
@@ -71,7 +66,7 @@ class EventClusters(object):
             if evt.sep(event) < radius:
                 cluster.append(evt)
         return cluster
-    def largestCluster(self, radius):
+    def _largestCluster(self, radius):
         sizes = self._clusterSizes(radius)
         maxnum = 0
         for evt in sizes:
@@ -91,13 +86,21 @@ class EventClusters(object):
         xvals = bg_rate*dts
         logPdts = sum(num.log(1. - num.exp(-xvals)))
 
-        max_cluster = self.largestCluster(radius)
+        max_cluster = self._largestCluster(radius)
         if len(max_cluster) < 2:
             raise ValueError, 'Largest cluster size < 2'
         dists = cluster_dists(max_cluster)
         logPdists = sum(num.log(1. - num.cos(dists)))
 
         return logPdts, logPdists
+    def localize(self, cluster=None, radius=5):
+        if cluster is None:
+            cluster = self._largestCluster(radius)
+        ras, decs = [], []
+        for event in cluster:
+            ras.append(event.ra)
+            decs.append(event.dec)
+        return meanDir(cluster), ras, decs
 
 def convert(events, imin=0, imax=None):
     if imax is None:
@@ -138,7 +141,9 @@ def triggerTimes(time, logLike, threshold=112, deadtime=0):
     return triggers, tpeaks
 
 class BlindSearch(object):
-    def __init__(self, events, dn=20, deadtime=1000):
+    def __init__(self, events, dn=20, deadtime=1000,
+                 clusterAlg=EventClusters):
+        self.clusterAlg = clusterAlg 
         self.events = events
         nevts = len(events.RA)
         indices = range(0, nevts, dn)
@@ -148,7 +153,7 @@ class BlindSearch(object):
         times = []
         bg_rate = nevts/(events.TIME[-1] - events.TIME[0])
         for imin, imax in zip(indices[:-1], indices[1:]):
-            clusters = EventClusters(convert(events, imin, imax))
+            clusters = self.clusterAlg(convert(events, imin, imax))
             try:
                 logPdts, logPdists = clusters.logLike(bg_rate=bg_rate)
                 logdts.append(logPdts)
@@ -168,18 +173,11 @@ class BlindSearch(object):
         for tpeak in self.tpeaks:
             imin = min(num.where(events.TIME > tpeak-50)[0])
             imax = max(num.where(events.TIME < tpeak+50)[0])
-            grb_dir, ras, decs = self._localize(convert(events, imin, imax),
-                                                radius=radius)
-            grb_dirs.append((grb_dir, tpeak, ras, decs))
+            clusters = self.clusterAlg(convert(events, imin, imax))
+            grb_dir = list(clusters.localize())
+            grb_dir.append(tpeak)
+            grb_dirs.append(grb_dir)
         return grb_dirs
-    def _localize(self, events, radius=5):
-        clusters = EventClusters(events)
-        max_cluster = clusters.largestCluster(radius)
-        ras, decs = [], []
-        for event in max_cluster:
-            ras.append(event.ra)
-            decs.append(event.dec)
-        return meanDir(max_cluster), ras, decs
 
 if __name__ == '__main__':
     import os
@@ -211,7 +209,7 @@ if __name__ == '__main__':
 
     grbDirs = blindSearch.grbDirs()
     for item in grbDirs:
-        grb_dir, tpeak, ras, decs = item
+        grb_dir, ras, decs, tpeak = item
         notice = LatGcnNotice(tpeak, grb_dir.ra(), grb_dir.dec())
         notice.write(notice.name + '_Notice.txt')
         print grb_dir.ra(), grb_dir.dec(), tpeak
