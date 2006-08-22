@@ -49,7 +49,7 @@ if __name__ == '__main__':
         if sys.argv[1:]:
             wrapperGenerator(sys.argv[1])
         else:
-            standard_scripts = ('blind_search.py', 'extractLatData.py',
+            standard_scripts = ('BlindSearch.py', 'extractLatData.py',
                                 'refinePosition.py', 'LatGrbSpectrum.py',
                                 'afterglowData.py', 'afterglowExposures.py',
                                 'afterglowAnalysis.py')

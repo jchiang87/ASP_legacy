@@ -9,7 +9,7 @@
    <name>GRB_blind_search</name>
    <version>
       <major>1</major>
-      <minor>0</minor>
+      <minor>1</minor>
    </version>
    <type>Data</type>
    <notation> </notation>
@@ -23,7 +23,7 @@
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="DOWNLINKFILE">${Downlink_file}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/blind_search.sh" maxCPU="600">
+      <job executable="${PYASPROOT}/python/BlindSearch.sh" maxCPU="600">
       </job>
    </process>
 </task>
