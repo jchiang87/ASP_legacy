@@ -8,13 +8,15 @@
 #
 
 import numarray as num
-from pyASP import SkyDir
+#from pyASP import SkyDir
+from pyIrfLoader import SkyDir
 
 _eventId = 0
 class Event(object):
-    def __init__(self, ra, dec, time):
+    def __init__(self, ra, dec, time, energy, evt_class):
         self.dir = SkyDir(ra, dec)
-        self.ra, self.dec = ra, dec
+        self.ra, self.dec, self.energy = ra, dec, energy
+        self.evt_class = evt_class
         self.time = time
         global _eventId
         self.id = _eventId
@@ -58,25 +60,25 @@ class EventClusters(object):
                 dists[evt].append(evt.sep(other))
             dists[evt] = num.array(dists[evt])
         self.dists = dists
-    def clusterSizes(self, radius=10):
+    def _clusterSizes(self, radius=10):
         sizes = {}
         for evt in self.dists:
             sizes[evt] = len(num.where(self.dists[evt] < radius)[0])
         return sizes
-    def findCluster(self, event, radius):
+    def _findCluster(self, event, radius):
         cluster = []
         for evt in self.dists:
             if evt.sep(event) < radius:
                 cluster.append(evt)
         return cluster
     def largestCluster(self, radius):
-        sizes = self.clusterSizes(radius)
+        sizes = self._clusterSizes(radius)
         maxnum = 0
         for evt in sizes:
             if maxnum < sizes[evt]:
                 largest = evt
                 maxnum = sizes[evt]
-        return self.findCluster(largest, radius)
+        return self._findCluster(largest, radius)
     def logLike(self, radius=17, bg_rate=None):
         times = []
         for evt in self.dists:
@@ -101,9 +103,12 @@ def convert(events, imin=0, imax=None):
     if imax is None:
         imax = len(events.RA)
     my_events = []
-    for ra, dec, time in zip(events.RA[imin:imax], events.DEC[imin:imax],
-                             events.TIME[imin:imax]):
-        my_events.append(Event(ra, dec, time))
+    for ra, dec, time, energy, evt_class in zip(events.RA[imin:imax],
+                                                events.DEC[imin:imax],
+                                                events.TIME[imin:imax],
+                                                events.ENERGY[imin:imax],
+                                                events.EVENT_CLASS[imin:imax]):
+        my_events.append(Event(ra, dec, time, energy, evt_class))
     return my_events
 
 def triggerTimes(time, logLike, threshold=112, deadtime=0):
@@ -186,6 +191,7 @@ if __name__ == '__main__':
     
     os.chdir(os.environ['OUTPUTDIR'])
     downlink_file = os.environ['DOWNLINKFILE']
+
     events = FitsNTuple(downlink_file)
 
     blindSearch = BlindSearch(events)
