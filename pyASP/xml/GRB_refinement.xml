@@ -6,10 +6,10 @@
 <!-- $Header$
 -->
 <task>
-   <name>GBM_refinement</name>
+   <name>GRB_refinement</name>
    <version>
       <major>1</major>
-      <minor>3</minor>
+      <minor>4</minor>
    </version>
    <type>Data</type>
    <notation> </notation>
