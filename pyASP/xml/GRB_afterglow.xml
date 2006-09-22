@@ -2,48 +2,38 @@
 <pipeline
    xmlns="http://glast-ground.slac.stanford.edu/pipeline"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/pipeline/schemas/2.0/pipeline.xsd">
+   xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task>
-   <name>GRB_afterglow</name>
-   <version>
-      <major>1</major>
-      <minor>2</minor>
-   </version>
-   <type>Data</type>
-   <notation> </notation>
+<task name="GRB_afterglow" version="1.2" type="Data">
    <prerequisites>
       <prerequisite name="output_dir" type="string"/>
       <prerequisite name="GRB_parfile" type="string"/>
       <prerequisite name="PYASPROOT" type="string"/>
    </prerequisites>
-   <process name="afterglowData" type="batch">
+   <process name="afterglowData">
       <variables>
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/afterglowData.sh" maxCPU="600">
-      </job>
+      <job executable="${PYASPROOT}/python/afterglowData.sh" maxCPU="600"/>
    </process>
-   <process name="afterglowExposures" type="batch">
+   <process name="afterglowExposures" >
       <variables>
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/afterglowExposures.sh" maxCPU="20000">
-      </job>
+      <job executable="${PYASPROOT}/python/afterglowExposures.sh" maxCPU="20000"/>
       <depends>
           <after process="afterglowData" status="SUCCESS"/>
       </depends>
    </process>
-   <process name="afterglowAnalysis" type="batch">
+   <process name="afterglowAnalysis">
       <variables>
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/afterglowAnalysis.sh" maxCPU="600">
-      </job>
+      <job executable="${PYASPROOT}/python/afterglowAnalysis.sh" maxCPU="600"/>
       <depends>
           <after process="afterglowExposures" status="SUCCESS"/>
       </depends>
