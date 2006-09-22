@@ -62,7 +62,7 @@ def refinementStreams(notices=None):
         notices = (notices, )
     for notice in notices:
         args = argString({'GBM_Notice': notice})
-        command = pipelineCommand('GBM_refinement', args)
+        command = pipelineCommand('GRB_refinement', args)
         print command
         rc = os.system(command)
         if rc != 0:
