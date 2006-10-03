@@ -35,7 +35,7 @@ def wrapperGenerator(scriptName):
     output.write("GLAST_EXT=/afs/slac/g/glast/ground/GLAST_EXT/rh9_gcc32; export GLAST_EXT\n")
     output.write("PATH=%s:${PATH}; export PATH\n" % os.path.join(_ST_path, 'bin'))
     output.write("source %s\n" % os.path.join(_pyASP_root, 'cmt', 'setup.sh'))
-    output.write('%s %s\n' % (_asp_python, pyScript))
+    output.write('exec %s %s\n' % (_asp_python, pyScript))
     output.close()
     os.system('chmod +x %s' % (prefix + '.sh',))
 
@@ -51,7 +51,8 @@ if __name__ == '__main__':
         else:
             standard_scripts = ('BlindSearch.py', 'extractLatData.py',
                                 'refinePosition.py', 'LatGrbSpectrum.py',
-                                'afterglowData.py', 'afterglowExposures.py',
-                                'afterglowAnalysis.py')
+                                'afterglowData.py', 'afterglowLivetimeCube.py'
+                                'afterglowDiffResps.py', 'afterglowExpMap.py', 
+                                'combineExpMaps.py', 'afterglowAnalysis.py')
             for script in standard_scripts:
                 wrapperGenerator(script)
