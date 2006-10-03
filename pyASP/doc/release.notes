@@ -5,6 +5,7 @@
     $Id$
 
     @verbatim
+    v0r3p1 03-Oct-06   JC   update xml files for P-II v2.0.1 schema
     v0r3   22-Aug-06   JC   add PsfClusters, ScData, refactored blind search
                             code
     v0r2p1 17-Aug-06   JC   refactored wrapperGenerator.py and
