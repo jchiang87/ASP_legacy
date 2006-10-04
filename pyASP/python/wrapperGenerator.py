@@ -51,7 +51,7 @@ if __name__ == '__main__':
         else:
             standard_scripts = ('BlindSearch.py', 'extractLatData.py',
                                 'refinePosition.py', 'LatGrbSpectrum.py',
-                                'afterglowData.py', 'afterglowLivetimeCube.py'
+                                'afterglowData.py', 'afterglowLivetimeCube.py',
                                 'afterglowDiffResps.py', 'afterglowExpMap.py', 
                                 'combineExpMaps.py', 'afterglowAnalysis.py')
             for script in standard_scripts:

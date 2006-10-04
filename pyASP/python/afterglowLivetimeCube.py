@@ -12,6 +12,7 @@ from parfile_parser import parfile_parser
 from combineExpMaps import writeExpMapBounds
 
 debug = False
+#debug = True
 
 os.chdir(os.environ['OUTPUTDIR'])
 grbName = parfile_parser(os.environ['GRBPARS'])['name']
@@ -35,7 +36,7 @@ gtexpmap['exposure_cube_file'] = gtlivetimecube['outfile']
 gtexpmap['outfile'] = 'expmap_' + grbName + '.fits'
 gtexpmap['source_region_radius'] = 25
 gtexpmap['rspfunc'] = 'DSS'
-gtexpmap.pars.write()
+gtexpmap.pars.write('gtexpmap.par')
 writeExpMapBounds()
 
 output = open(afterglowFiles, 'a')

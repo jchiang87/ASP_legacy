@@ -14,6 +14,7 @@ from combineExpMaps import readExpMapBounds
 
 debug = False
 
+os.chdir(os.environ['OUTPUTDIR'])
 bounds = readExpMapBounds()
 map_id = int(os.environ["EXPMAP_ID"])
 

@@ -58,7 +58,7 @@ def combineExpMaps(textfile=_defaultTextFile, outfile="expMap_sum.fits"):
 
 if __name__ == '__main__':
     import os
-    from import parfile_parser import parfile_parser
+    from parfile_parser import parfile_parser
     os.chdir(os.environ['OUTPUTDIR'])
     grbName = parfile_parser(os.environ['GRBPARS'])['name']
     outfile = 'expMap_' + grbName + '.fits'
