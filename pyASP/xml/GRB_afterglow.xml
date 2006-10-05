@@ -24,13 +24,13 @@
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/afterglowLivetimeCube.sh" maxCPU=20000/>
+      <job executable="${PYASPROOT}/python/afterglowLivetimeCube.sh" maxCPU="20000"/>
       <depends>
          <after process="afterglowData" status="SUCCESS"/>
       </depends>
    </process>
 
-   <process name="afterglowExposures" type="script">
+   <process name="afterglowExposures">
       <variables>
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
@@ -43,13 +43,13 @@
       pipeline.createSubstream("afterglowDiffResps", submaps+1)
       ]]>
       </script>
+      <depends>
+          <after process="afterglowLivetimeCube" status="SUCCESS"/>
+      </depends>
       <createsSubtasks>
           <subtask>afterglowExpMap</subtask>
           <subtask>afterglowDiffResps</subtask>
       </createsSubtasks>
-      <depends>
-          <after process="afterglowLivetimeCube" status="SUCCESS"/>
-      </depends>
    </process>
 
    <process name="combineExpMap">
@@ -70,11 +70,11 @@
       </variables>
       <job executable="${PYASPROOT}/python/afterglowAnalysis.sh" maxCPU="600"/>
       <depends>
-          <after process="combineExpMaps" status="SUCCESS"/>
+          <after process="combineExpMap" status="SUCCESS"/>
       </depends>
    </process>
 
-   <task name="afterglowExpMap" version="1.0" type="batch">
+   <task name="afterglowExpMap" version="1.0" type="Data">
       <prerequisites>
          <prerequisite name="output_dir" type="string"/>
          <prerequisite name="GRB_parfile" type="string"/>
@@ -86,11 +86,11 @@
             <var name="GRBPARS">${GRB_parfile}</var>
             <var name="EXPMAP_ID">${format(pipeline.getStream(), "%d")}</var>
          </variables>
-         <job executable="${PYASPROOT}/python/afterglowExpMap.sh" maxCPU=20000"/>
+         <job executable="${PYASPROOT}/python/afterglowExpMap.sh" maxCPU="20000"/>
       </process>
    </task>
 
-   <task name="afterglowDiffResps" version="1.0" type="batch">
+   <task name="afterglowDiffResps" version="1.0" type="Data">
       <prerequisites>
          <prerequisite name="output_dir" type="string"/>
          <prerequisite name="GRB_parfile" type="string"/>
@@ -101,7 +101,7 @@
             <var name="OUTPUTDIR">${output_dir}</var>
             <var name="GRBPARS">${GRB_parfile}</var>
          </variables>
-         <job executable="${PYASPROOT}/python/afterglowDiffResps.sh" maxCPU=20000/>
+         <job executable="${PYASPROOT}/python/afterglowDiffResps.sh" maxCPU="20000"/>
       </process>
    </task>
 
