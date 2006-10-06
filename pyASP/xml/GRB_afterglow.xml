@@ -57,7 +57,7 @@
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/combineExpMap.sh" maxCPU="600"/>
+      <job executable="${PYASPROOT}/python/combineExpMaps.sh" maxCPU="600"/>
       <depends>
           <after process="afterglowExposures" status="SUCCESS"/>
       </depends>
