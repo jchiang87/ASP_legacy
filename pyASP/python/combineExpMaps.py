@@ -8,8 +8,11 @@ a text file.
 # $Header$
 #
 
+import os
 from GtApp import GtApp
 import pyfits
+
+os.chdir(os.environ['OUTPUTDIR'])
 
 gtexpmap = GtApp("gtexpmap")
 

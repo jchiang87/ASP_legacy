@@ -33,7 +33,7 @@ gtexpmap = GtApp('gtexpmap')
 gtexpmap['evfile'] = pars['ft1File']
 gtexpmap['scfile'] = pars['ft2File']
 gtexpmap['exposure_cube_file'] = gtlivetimecube['outfile']
-gtexpmap['outfile'] = 'expmap_' + grbName + '.fits'
+gtexpmap['outfile'] = 'expMap_' + grbName + '.fits'
 gtexpmap['source_region_radius'] = 25
 gtexpmap['rspfunc'] = 'DSS'
 gtexpmap.pars.write('gtexpmap.par')
