@@ -11,6 +11,11 @@ import os
 import glob
 import time
 
+# import these to ensure they are available for the various streams
+import pyASP
+import pyIrfLoader
+import BayesBlocks
+
 def pyASProot():
     version = os.environ['PYASPROOT'].split(os.path.sep)[-1]
     return os.path.join('/nfs/farm/g/glast/u33/jchiang/ASP/pyASP', version)
