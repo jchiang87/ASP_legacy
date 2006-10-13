@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="GRB_afterglow" version="2.1" type="Data">
+<task name="GRB_afterglow" version="2.3" type="Data">
    <prerequisites>
       <prerequisite name="output_dir" type="string"/>
       <prerequisite name="GRB_parfile" type="string"/>
@@ -39,8 +39,8 @@
       <![CDATA[
       submaps = 4
       for i in range(submaps):
-          pipeline.createSubstream("afterglowExpMap", i)
-      pipeline.createSubstream("afterglowDiffResps", submaps+1)
+          pipeline.createSubstream("afterglowExpMap", i+1)
+      pipeline.createSubstream("afterglowDiffResps", submaps+2)
       ]]>
       </script>
       <depends>
@@ -59,7 +59,8 @@
       </variables>
       <job executable="${PYASPROOT}/python/combineExpMaps.sh" maxCPU="600"/>
       <depends>
-          <after process="afterglowExposures" status="SUCCESS"/>
+          <after process="afterglowExpMap.expmaps" status="SUCCESS"/>
+          <after process="afterglowDiffResps.diffresps" status="SUCCESS"/>
       </depends>
    </process>
 
@@ -74,7 +75,7 @@
       </depends>
    </process>
 
-   <task name="afterglowExpMap" version="1.0" type="Data">
+   <task name="afterglowExpMap" version="1.1" type="Data">
       <prerequisites>
          <prerequisite name="output_dir" type="string"/>
          <prerequisite name="GRB_parfile" type="string"/>
@@ -84,7 +85,7 @@
          <variables>
             <var name="OUTPUTDIR">${output_dir}</var>
             <var name="GRBPARS">${GRB_parfile}</var>
-            <var name="EXPMAP_ID">${format(pipeline.getStream(), "%d")}</var>
+            <var name="EXPMAP_ID">${pipeline.stream}</var>
          </variables>
          <job executable="${PYASPROOT}/python/afterglowExpMap.sh" maxCPU="20000"/>
       </process>

@@ -16,7 +16,9 @@ debug = False
 
 os.chdir(os.environ['OUTPUTDIR'])
 bounds = readExpMapBounds()
-map_id = int(os.environ["EXPMAP_ID"])
+
+# account for off-by-one error in how jobs can be numbered in P-II xml code
+map_id = int(os.environ["EXPMAP_ID"]) - 1  
 
 gtexpmap = GtApp('gtexpmap')
 gtexpmap['outfile'] = bounds[map_id].filename
