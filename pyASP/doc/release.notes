@@ -5,6 +5,8 @@
     $Id$
 
     @verbatim
+    v0r5   24-Oct-06   JC   generate wrapper scripts as a document, update
+                            xml definitions
     v0r4   13-Oct-06   JC   various bug-fixes in GRB_afterglow.xml
     v0r3p1 03-Oct-06   JC   update xml files for P-II v2.0.1 schema
     v0r3   22-Aug-06   JC   add PsfClusters, ScData, refactored blind search
