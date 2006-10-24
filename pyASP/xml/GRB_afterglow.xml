@@ -10,13 +10,14 @@
       <prerequisite name="output_dir" type="string"/>
       <prerequisite name="GRB_parfile" type="string"/>
       <prerequisite name="PYASPROOT" type="string"/>
+      <prerequisite name="BINDIR" type="string"/>
    </prerequisites>
    <process name="afterglowData">
       <variables>
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/afterglowData.sh" maxCPU="600"/>
+      <job executable="${PYASPROOT}/${BINDIR}/afterglowData.sh" maxCPU="600"/>
    </process>
 
    <process name="afterglowLivetimeCube">
@@ -24,7 +25,7 @@
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/afterglowLivetimeCube.sh" maxCPU="20000"/>
+      <job executable="${PYASPROOT}/${BINDIR}/afterglowLivetimeCube.sh" maxCPU="20000"/>
       <depends>
          <after process="afterglowData" status="SUCCESS"/>
       </depends>
@@ -57,7 +58,7 @@
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/combineExpMaps.sh" maxCPU="600"/>
+      <job executable="${PYASPROOT}/${BINDIR}/combineExpMaps.sh" maxCPU="600"/>
       <depends>
           <after process="afterglowExpMap.expmaps" status="SUCCESS"/>
           <after process="afterglowDiffResps.diffresps" status="SUCCESS"/>
@@ -69,7 +70,7 @@
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="GRBPARS">${GRB_parfile}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/afterglowAnalysis.sh" maxCPU="600"/>
+      <job executable="${PYASPROOT}/${BINDIR}/afterglowAnalysis.sh" maxCPU="600"/>
       <depends>
           <after process="combineExpMap" status="SUCCESS"/>
       </depends>
@@ -87,7 +88,7 @@
             <var name="GRBPARS">${GRB_parfile}</var>
             <var name="EXPMAP_ID">${pipeline.stream}</var>
          </variables>
-         <job executable="${PYASPROOT}/python/afterglowExpMap.sh" maxCPU="20000"/>
+         <job executable="${PYASPROOT}/${BINDIR}/afterglowExpMap.sh" maxCPU="20000"/>
       </process>
    </task>
 
@@ -102,7 +103,7 @@
             <var name="OUTPUTDIR">${output_dir}</var>
             <var name="GRBPARS">${GRB_parfile}</var>
          </variables>
-         <job executable="${PYASPROOT}/python/afterglowDiffResps.sh" maxCPU="20000"/>
+         <job executable="${PYASPROOT}/${BINDIR}/afterglowDiffResps.sh" maxCPU="20000"/>
       </process>
    </task>
 

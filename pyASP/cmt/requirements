@@ -15,3 +15,6 @@ path_append PYTHONPATH $(PYASPROOT)/$(BINDIR)
 path_append PYTHONPATH $(PYASPROOT)/python
 
 apply_pattern swig_module name="pyASP"
+
+make_fragment generateWrappers -header=generateWrappers
+document generateWrappers wrappers

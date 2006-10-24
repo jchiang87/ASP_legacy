@@ -10,13 +10,14 @@
       <prerequisite name="Downlink_file" type="string"/>
       <prerequisite name="output_dir" type="string"/>
       <prerequisite name="PYASPROOT" type="string"/>
+      <prerequisite name="BINDIR" type="string"/>
    </prerequisites>
    <process name="blind_search">
       <variables>
          <var name="OUTPUTDIR">${output_dir}</var>
          <var name="DOWNLINKFILE">${Downlink_file}</var>
       </variables>
-      <job executable="${PYASPROOT}/python/BlindSearch.sh" maxCPU="600">
+      <job executable="${PYASPROOT}/${BINDIR}/BlindSearch.sh" maxCPU="600">
       </job>
    </process>
 </task>

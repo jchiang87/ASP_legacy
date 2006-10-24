@@ -21,7 +21,9 @@ _asp_python = "/usr/local/bin/python"
 def wrapperGenerator(scriptName):
     prefix = scriptName.split(".py")[0]
     pyScript = os.path.abspath(scriptName)
-    output = open(prefix + ".sh", "w")
+    outfile = os.path.join(os.environ['PYASPROOT'], os.environ['BINDIR'],
+                           prefix + ".sh")
+    output = open(outfile, "w")
     output.write("#!/usr/local/bin/bash\n")
     output.write("CMTSITE=SLAC_UNIX; export CMTSITE\n")
     output.write("CMTVERSION=v1r16p20040701; export CMTVERSION\n")
@@ -37,7 +39,7 @@ def wrapperGenerator(scriptName):
     output.write("source %s\n" % os.path.join(_pyASP_root, 'cmt', 'setup.sh'))
     output.write('exec %s %s\n' % (_asp_python, pyScript))
     output.close()
-    os.system('chmod +x %s' % (prefix + '.sh',))
+    os.system('chmod +x %s' % outfile)
 
 if __name__ == '__main__':
     import sys
