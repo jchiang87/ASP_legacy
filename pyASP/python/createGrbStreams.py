@@ -22,12 +22,17 @@ def pyASProot():
 
 _pyASProot = pyASProot()
 _outputDir = os.environ['OUTPUTDIR']
+_bindir = os.environ['BINDIR']
 
-print "Using:\n\nPYASPROOT = %s\nOUTPUTDIR = %s\n" % (_pyASProot, _outputDir)
+print "Using:\n\nPYASPROOT = %s\nOUTPUTDIR = %s" % (_pyASProot, _outputDir)
+print "BINDIR = %s\n" % _bindir
+
+_runCommand = os.system
+#_runCommand = lambda x : 0
 
 def argString(argDict):
-    arg_string = (','.join(('output_dir=%s', 'PYASPROOT=%s'))
-               % (_outputDir, _pyASProot))
+    arg_string = (','.join(('output_dir=%s', 'PYASPROOT=%s', 'BINDIR=%s'))
+               % (_outputDir, _pyASProot, _bindir))
     for item in argDict:
         arg_string += ',%s=%s' % (item, argDict[item])
     return arg_string    
@@ -55,7 +60,7 @@ def blindSearchStreams(downlinks=None):
         args = argString({'Downlink_file': downlink})
         command = pipelineCommand('GRB_blind_search', args)
         print command
-        rc = os.system(command)
+        rc = _runCommand(command)
         if rc != 0:
             raise PipelineError, ("pipeline return code: %i" % rc)
 
@@ -69,7 +74,7 @@ def refinementStreams(notices=None):
         args = argString({'GBM_Notice': notice})
         command = pipelineCommand('GRB_refinement', args)
         print command
-        rc = os.system(command)
+        rc = _runCommand(command)
         if rc != 0:
             raise PipelineError, ("pipeline return code: %i" % rc)
 
@@ -83,7 +88,7 @@ def afterglowStreams(parfiles=None):
         args = argString({'GRB_parfile': parfile})
         command = pipelineCommand('GRB_afterglow', args)
         print command
-        rc = os.system(command)
+        rc = _runCommand(command)
         if rc != 0:
             raise PipelineError, ("pipeline return code: %i" % rc)
 

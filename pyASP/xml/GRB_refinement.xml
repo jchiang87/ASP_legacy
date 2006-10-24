@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="GRB_refinement" version="1.4" type="Data">
+<task name="GRB_refinement" version="1.5" type="Data">
    <prerequisites>
       <prerequisite name="GBM_Notice" type="string"/>
       <prerequisite name="output_dir" type="string"/>
