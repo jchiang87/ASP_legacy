@@ -6,6 +6,9 @@ plan.
 
 @author J. Carson <carson@slac.stanford.edu>
 """
+#
+# $Header$
+#
 
 import sys
 sys.path.insert(0,'.')

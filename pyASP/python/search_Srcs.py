@@ -13,6 +13,10 @@
 #
 #
 ##############################################
+#
+# $Header$
+#
+
 import sys,re,os
 
 from xml.dom import minidom
@@ -23,7 +27,6 @@ Class for transforming between Equatorial and Galactic coordinates.
 
 @author J. Chiang <jchiang@slac.stanford.edu>
 
-$Header$
 """
 
 try:
