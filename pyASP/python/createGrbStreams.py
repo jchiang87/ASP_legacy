@@ -31,17 +31,28 @@ _runCommand = os.system
 #_runCommand = lambda x : 0
 
 def argString(argDict):
-    arg_string = (','.join(('output_dir=%s', 'PYASPROOT=%s', 'BINDIR=%s'))
-               % (_outputDir, _pyASProot, _bindir))
-    for item in argDict:
-        arg_string += ',%s=%s' % (item, argDict[item])
-    return arg_string    
+    """Construct the argument stream for a pipeline task.  Entries in
+    the default dictionary can be over-ridden by key-value pairs in
+    the argDict.
+    """
+    defaultDict = {'output_dir' : _outputDir,
+                   'PYASPROOT' : _pyASProot,
+                   'BINDIR' : _bindir}
+    defaultDict.update(argDict)
+    arg_string = ""
+    for item in defaultDict:
+        arg_string += '%s=%s,' % (item, defaultDict[item])
+    return arg_string.strip(',')
 
 def streamNumber():
+    """Provide a unique stream number for the pipeline based on the
+    current date and time.
+    """
     time.sleep(1)     # to ensure unique stream numbers
     return "%i%02i%02i%02i%02i" % time.localtime()[1:6]
 
 def pipelineCommand(taskname, args, stream=None):
+    "Construct the pipeline II command line submission string."
     command = '~glast/pipeline-II/pipeline createStream %s %s "%s"'
     if stream is None:
         stream = streamNumber()
@@ -50,42 +61,48 @@ def pipelineCommand(taskname, args, stream=None):
 class PipelineError(EnvironmentError):
     "Pipeline stream creation failed"
 
-def blindSearchStreams(downlinks=None):
-    os.chdir(_outputDir)
+def blindSearchStreams(downlinks=None, grbroot_dir=None,
+                       output_dir=_outputDir):
+    os.chdir(output_dir)
     if downlinks is None:
         raise ValueError, "No downlink files specified"
+    if grbroot_dir is None:
+        grbroot_dir = os.path.abspath(os.environ['GRBROOTDIR'])
     if isinstance(downlinks, str):
         downlinks = (downlinks, )
     for downlink in downlinks:
-        args = argString({'Downlink_file': downlink})
+        args = argString({'Downlink_file': downlink,
+                          'GRBROOTDIR' : grbroot_dir})
         command = pipelineCommand('GRB_blind_search', args)
         print command
         rc = _runCommand(command)
         if rc != 0:
             raise PipelineError, ("pipeline return code: %i" % rc)
 
-def refinementStreams(notices=None):
-    os.chdir(_outputDir)
+def refinementStreams(notices=None, output_dir=_outputDir):
+    os.chdir(output_dir)
     if notices is None:
         notices = glob.glob('GRB*_Notice.txt')
     if isinstance(notices, str):
         notices = (notices, )
     for notice in notices:
-        args = argString({'GBM_Notice': notice})
+        args = argString({'GBM_Notice' : notice,
+                          'output_dir' : output_dir})
         command = pipelineCommand('GRB_refinement', args)
         print command
         rc = _runCommand(command)
         if rc != 0:
             raise PipelineError, ("pipeline return code: %i" % rc)
 
-def afterglowStreams(parfiles=None):
-    os.chdir(_outputDir)
+def afterglowStreams(parfiles=None, output_dir=_outputDir):
+    os.chdir(output_dir)
     if parfiles is None:
         parfiles = glob.glob('GRB*_pars.txt')
     if isinstance(parfiles, str):
         parfiles = (parfiles, )
     for parfile in parfiles:
-        args = argString({'GRB_parfile': parfile})
+        args = argString({'GRB_parfile' : parfile,
+                          'output_dir' : output_dir})
         command = pipelineCommand('GRB_afterglow', args)
         print command
         rc = _runCommand(command)

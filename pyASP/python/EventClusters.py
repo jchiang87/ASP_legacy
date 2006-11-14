@@ -13,6 +13,9 @@ from pyIrfLoader import SkyDir
 
 _eventId = 0
 class Event(object):
+    """Encapsulation of a LAT photon event in terms of apparent direction,
+    arrival time, apparent energy, and event class.
+    """
     def __init__(self, ra, dec, time, energy, evt_class):
         self.dir = SkyDir(ra, dec)
         self.ra, self.dec, self.energy = ra, dec, energy
@@ -22,6 +25,7 @@ class Event(object):
         self.id = _eventId
         _eventId += 1
     def sep(self, event):
+        "Separation in degrees from another Event"
         return self.dir.difference(event.dir)*180./num.pi
     def __eq__(self, other):
         return self.id == other.id
@@ -32,6 +36,10 @@ class Event(object):
         return `self.id`
 
 def convert(events, imin=0, imax=None):
+    """Used by BlindSearch to convert a FitsNTuple of an FT1 file(s)
+    to a list of Event objects over a range if indices, generally
+    indicating a time range.
+    """
     if imax is None:
         imax = len(events.RA)
     my_events = []
@@ -42,7 +50,9 @@ def convert(events, imin=0, imax=None):
     return my_events
 
 class EventClusters(object):
+    "Jay Norris and Jerry Bonnell's photon clustering algorithm."
     def __init__(self, events):
+        "events is a list of Event objects"
         dists = {}
         for evt in events:
             dists[evt] = []
@@ -84,6 +94,10 @@ class EventClusters(object):
             dists.append(item.dir.difference(mDir))
         return num.array(dists)
     def logLike(self, radius=17, bg_rate=None):
+        """Compute the log-likelihood that the stored events are
+        *not* clustered in time or position, i.e., the log-likelihood of
+        the null hypothesis.
+        """
         times = []
         for evt in self.dists:
             times.append(evt.time)
@@ -103,6 +117,10 @@ class EventClusters(object):
 
         return logPdts, logPdists
     def localize(self, cluster=None, radius=5):
+        """Return the cluster (or largest, most significant cluster by 
+        default) mean direction as a SkyDir object along with the
+        (ra, dec) values of each event in the cluster.
+        """
         if cluster is None:
             cluster = self._largestCluster(radius)
         ras, decs = [], []

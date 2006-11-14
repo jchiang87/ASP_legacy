@@ -40,6 +40,15 @@ def triggerTimes(time, logLike, threshold=112, deadtime=0):
 class BlindSearch(object):
     def __init__(self, events, dn=20, deadtime=1000, threshold=112,
                  clusterAlg=EventClusters):
+        """events is a FitsNTuple of an FT1 file(s);
+        dn is the number of consecutive events (in time) to consider;
+        deadtime is the time in seconds to wait for the current trigger state
+           to expire (for long bursts or Solar flares);
+        threshold is the trigger threshold in terms of -log-likelihood for
+           identifying a burst;
+        clusterAlg is the clustering algorithm, either EventClusters to use
+           JPN and JB's algorithm or PsfClusters to use the Psf.
+        """
         self.clusterAlg = clusterAlg 
         self.events = events
         nevts = len(events.RA)
@@ -66,6 +75,9 @@ class BlindSearch(object):
                                                   deadtime=deadtime,
                                                   threshold=threshold)
     def grbDirs(self, radius=5):
+        """Go through the list of candidate bursts, and return a list
+        of SkyDirs, event (ras, decs), and peak times.
+        """
         events = self.events
         grb_dirs = []
         for tpeak in self.tpeaks:
@@ -90,8 +102,12 @@ if __name__ == '__main__':
     except ValueError:
         makePlots = False
     
-    os.chdir(os.environ['OUTPUTDIR'])
-    downlink_file = os.environ['DOWNLINKFILE']
+    grbroot_dir = os.path.abspath(os.environ['GRBROOTDIR'])
+    output_dir = os.path.abspath(os.environ['OUTPUTDIR'])
+    downlink_file = os.path.abspath(os.environ['DOWNLINKFILE'])
+
+    os.chdir(grbroot_dir)  # test to see if this directory exists
+    os.chdir(output_dir)   # move to the working directory
 
     events = FitsNTuple(downlink_file)
 
@@ -114,13 +130,22 @@ if __name__ == '__main__':
     for item in grbDirs:
         grb_dir, ras, decs, tpeak = item
         notice = LatGcnNotice(tpeak, grb_dir.ra(), grb_dir.dec())
-        notice.write(notice.name + '_Notice.txt')
+        grb_output = os.path.join(grbroot_dir, notice.name)
+        try:
+            os.mkdir(grb_output)
+        except OSError:
+            if os.path.isdir(grb_output):
+                pass
+            else:
+                raise OSError, "Error creating directory: " + grb_output
+        outfile = os.path.join(grb_output, notice.name + '_Notice.txt')
+        notice.write(outfile)
+        os.system('chmod 777 %s' %  outfile) 
         print grb_dir.ra(), grb_dir.dec(), tpeak
         
         if makePlots:
             plot.xyhist(ras, decs)
             plot.vline(grb_dir.ra())
             plot.hline(grb_dir.dec())
-
-    if not makePlots:
-        createGrbStreams.refinementStreams()
+        else:
+            createGrbStreams.refinementStreams(output_dir=grb_output)
