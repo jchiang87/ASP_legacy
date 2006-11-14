@@ -133,14 +133,15 @@ if __name__ == '__main__':
         grb_output = os.path.join(grbroot_dir, notice.name)
         try:
             os.mkdir(grb_output)
+            os.system('chmod 777 %s' % grb_output)
         except OSError:
             if os.path.isdir(grb_output):
-                pass
+                os.system('chmod 777 %s' % grb_output)
             else:
                 raise OSError, "Error creating directory: " + grb_output
         outfile = os.path.join(grb_output, notice.name + '_Notice.txt')
         notice.write(outfile)
-        os.system('chmod 777 %s' %  outfile) 
+        os.system('chmod 666 %s' %  outfile) 
         print grb_dir.ra(), grb_dir.dec(), tpeak
         
         if makePlots:

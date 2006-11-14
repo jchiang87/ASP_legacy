@@ -68,3 +68,5 @@ if __name__ == '__main__':
     outfile.write('ft2File = %s\n' % ft2)
     outfile.write('xmlFile = %s\n' % srcModel.filename)
     outfile.close()
+
+    os.system('chmod 666 *')

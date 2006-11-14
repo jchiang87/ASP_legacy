@@ -1,6 +1,5 @@
 """
 @brief Use gtfindsrc to refine the burst position based on a GBM Notice
-and create a TS map using gttsmap.
 
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
@@ -72,7 +71,11 @@ def refinePosition(gbm_notice, extracted=False, ft1Input=_LatFt1File,
         gttsmap['dec_min'] = dec - mapsize
         gttsmap['dec_max'] = dec + mapsize
         gttsmap['ndec'] = npix
-        gttsmap.run()
+        print gttsmap.command()
+        outfile = os.path.join(os.environ['OUTPUTDIR'], 'gttsmap.par')
+        print "writing " + outfile
+        gttsmap.pars.write(outfile)
+        #gttsmap.run()
 
     gtis = FitsNTuple(gtfindsrc['evfile'], 'GTI')
     tmin = gtis.START[0]
@@ -98,7 +101,7 @@ if __name__ == '__main__':
     ft2File = infiles.readline().strip()
     infiles.close()
     gbmNotice = refinePosition(gbmNotice, extracted=True, ft1Input=ft1File,
-                               ft2Input=ft2File, tsmap=False, duration=100,
+                               ft2Input=ft2File, tsmap=True, duration=100,
                                radius=15)
     parfile = '%s_pars.txt' % gbmNotice.Name
     outfile = open(parfile, 'w')
@@ -109,6 +112,8 @@ if __name__ == '__main__':
     outfile.write('tstart = %.6f\n' % gbmNotice.tmin)
     outfile.write('tstop = %.6f\n' % gbmNotice.tmax)
     outfile.close()
+
+    os.system('chmod 666 *')
 
     createGrbStreams.afterglowStreams((os.path.join(os.environ['OUTPUTDIR'],
                                                     parfile), ))

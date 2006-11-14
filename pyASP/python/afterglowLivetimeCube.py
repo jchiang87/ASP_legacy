@@ -36,10 +36,12 @@ gtexpmap['exposure_cube_file'] = gtlivetimecube['outfile']
 gtexpmap['outfile'] = 'expMap_' + grbName + '.fits'
 gtexpmap['source_region_radius'] = 25
 gtexpmap['rspfunc'] = 'DSS'
-gtexpmap.pars.write('gtexpmap.par')
+gtexpmap.pars.write(os.path.join(os.environ['OUTPUTDIR'], 'gtexpmap.par'))
 writeExpMapBounds()
 
 output = open(afterglowFiles, 'a')
 output.write('expcube = %s\n' % gtlivetimecube['outfile'])
 output.write('expmap = %s\n' % gtexpmap['outfile'])
 output.close()
+
+os.system('chmod 666 *')

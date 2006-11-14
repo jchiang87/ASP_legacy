@@ -32,3 +32,5 @@ if debug:
     print gtexpmap.command()
 else:
     gtexpmap.run()
+
+os.system('chmod 666 *')

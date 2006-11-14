@@ -28,3 +28,5 @@ if debug:
     print gtdiffresp.command()
 else:
     gtdiffresp.run()
+
+os.system('chmod 666 *')
