@@ -20,7 +20,7 @@
    </process>
 
    <process name="diffuseResponses">
-     <job exectuable="${PYASPROOT}/${BINDIR}/diffuseResponses.sh"
+     <job executable="${PYASPROOT}/${BINDIR}/diffuseResponses.sh"
           maxCPU="20000"/>
      <depends>
        <after process="getIntervalData" status="SUCCESS"/>
@@ -28,7 +28,7 @@
    </process>
 
    <process name="livetimecube">
-     <job exectuable="${PYASPROOT}/${BINDIR}/livetimecube.sh"
+     <job executable="${PYASPROOT}/${BINDIR}/livetimecube.sh"
           maxCPU="20000"/>
      <depends>
        <after process="getIntervalData" status="SUCCESS"/>
@@ -57,7 +57,7 @@
        <variables>
          <var name="ROI_ID">${pipeline.stream}</var>
        </variables>
-       <job exectuable="${PYASPROOT}/${BINDIR}/getRoiData.sh" maxCPU="600"/>
+       <job executable="${PYASPROOT}/${BINDIR}/getRoiData.sh" maxCPU="600"/>
      </process>
 
      <process name="exposureMap">
@@ -91,7 +91,7 @@
        <variables>
          <var name="ROI_ID">${pipeline.stream}</var>
        </variables>
-       <job exectuable="${PYASPROOT}/${BINDIR}/sourceAnalysis.sh"
+       <job executable="${PYASPROOT}/${BINDIR}/sourceAnalysis.sh"
             maxCPU="20000"/>
        <depends>
          <after process="combineExpMaps" status="SUCCESS"/>
