@@ -1,0 +1,5 @@
+roirad = 10.
+sourcerad = 20.
+respfunc = DC1A
+tstart = 0.
+tstop = 86400.
