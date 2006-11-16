@@ -20,6 +20,17 @@
       <job executable="${PYASPROOT}/${BINDIR}/afterglowData.sh" maxCPU="600"/>
    </process>
 
+   <process name="afterglowDiffResps">
+      <variables>
+         <var name="OUTPUTDIR">${output_dir}</var>
+         <var name="GRBPARS">${GRB_parfile}</var>
+      </variables>
+      <job executable="${PYASPROOT}/${BINDIR}/afterglowDiffResps.sh" maxCPU="20000"/>
+      <depends>
+         <after process="afterglowData" status="SUCCESS"/>
+      </depends>
+   </process>
+
    <process name="afterglowLivetimeCube">
       <variables>
          <var name="OUTPUTDIR">${output_dir}</var>
@@ -41,7 +52,6 @@
       submaps = 4
       for i in range(submaps):
           pipeline.createSubstream("afterglowExpMap", i+1)
-      pipeline.createSubstream("afterglowDiffResps", submaps+2)
       ]]>
       </script>
       <depends>
@@ -49,7 +59,6 @@
       </depends>
       <createsSubtasks>
           <subtask>afterglowExpMap</subtask>
-          <subtask>afterglowDiffResps</subtask>
       </createsSubtasks>
    </process>
 
@@ -61,7 +70,6 @@
       <job executable="${PYASPROOT}/${BINDIR}/combineExpMaps.sh" maxCPU="600"/>
       <depends>
           <after process="afterglowExpMap.expmaps" status="SUCCESS"/>
-          <after process="afterglowDiffResps.diffresps" status="SUCCESS"/>
       </depends>
    </process>
 
@@ -73,6 +81,7 @@
       <job executable="${PYASPROOT}/${BINDIR}/afterglowAnalysis.sh" maxCPU="600"/>
       <depends>
           <after process="combineExpMap" status="SUCCESS"/>
+          <after process="afterglowDiffResps" status="SUCCESS"/>
       </depends>
    </process>
 
@@ -89,21 +98,6 @@
             <var name="EXPMAP_ID">${pipeline.stream}</var>
          </variables>
          <job executable="${PYASPROOT}/${BINDIR}/afterglowExpMap.sh" maxCPU="20000"/>
-      </process>
-   </task>
-
-   <task name="afterglowDiffResps" version="1.0" type="Data">
-      <prerequisites>
-         <prerequisite name="output_dir" type="string"/>
-         <prerequisite name="GRB_parfile" type="string"/>
-         <prerequisite name="PYASPROOT" type="string"/>
-      </prerequisites>
-      <process name="diffresps">
-         <variables>
-            <var name="OUTPUTDIR">${output_dir}</var>
-            <var name="GRBPARS">${GRB_parfile}</var>
-         </variables>
-         <job executable="${PYASPROOT}/${BINDIR}/afterglowDiffResps.sh" maxCPU="20000"/>
       </process>
    </task>
 
