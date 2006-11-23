@@ -9,9 +9,11 @@ as appropriate.
 # $Header$
 #
 
+import os
+
 class Parfile(dict):
     def __init__(self, filename):
-        self.filename = filename
+        self.filename = os.path.abspath(filename)
         self.keylist = []
         try:
             self._readfile()
@@ -30,7 +32,7 @@ class Parfile(dict):
         dict.__setitem__(self, key, value)
     def write(self, outfile=None):
         if outfile is not None:
-            self.filename = outfile
+            self.filename = os.path.abspath(outfile)
         output = open(self.filename, 'w')
         for key in self.keylist:
             output.write('%s = %s\n' % (key, `self[key]`))
