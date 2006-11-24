@@ -19,6 +19,9 @@ fmerge = GtApp('fmerge')
 
 def _fileList(infiles, extnum=1):
     filelist = 'ft1merge_file_list'
+    if len(infiles) > 1000:
+        raise RuntimeError, ('Number of input files exceeds 1000, '
+                             + 'the fmerge maximum.')
     infile_list = open(filelist, 'w')
     for item in infiles:
         infile_list.write(item + ('[%s]\n' % extnum))

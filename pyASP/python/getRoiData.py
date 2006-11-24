@@ -1,0 +1,69 @@
+"""
+@brief Retrieve RoI-specific data.
+
+@author J. Carson <carson@slac.stanford.edu>
+@author J. Chiang <jchiang@slac.stanford.edu>
+"""
+#
+# $Header$
+#
+
+import os
+from GtApp import GtApp
+import readXml
+import xmlSrcLib
+from combineExpMaps import writeExpMapBounds
+from search_Srcs import search_Srcs
+from parfile_parser import Parfile
+
+from drpRoiSetup import rootpath, pars, rois
+
+id = int(os.environ['ROI_ID'])   # This env var is set in DRP_monitoring.xml
+name, ra, dec, radius, sourcerad = rois[id]
+    
+# Create the region subdirectory and cd to it.
+
+os.mkdir(name)
+os.chmod(name, 0777)
+os.chdir(name)
+
+# Extract events for this region.
+
+gtselect['infile'] = pars['ft1file']
+gtselect['outfile'] = name + '_events.fits'
+gtselect['ra'] = ra
+gtselect['dec'] = dec
+gtselect['rad'] = radius
+gtselect.run()
+
+# Build the source model xml file based on a 10 degree radius region.
+# (Revisit this choice of radius).
+
+modelRequest = 'dist((RA,DEC),(%f,%f))<10.' % (ra, dec)
+outputModel = name + '_ptsrcs_model.xml'
+model = search_Srcs(sourceModel, modelRequest, outputModel)
+
+srcModel = readXml.SourceModel(outputModel)
+GalProp = readXml.Source(xmlSrcLib.GalProp())
+EGDiffuse = readXml.Source(xmlSrcLib.EGDiffuse())
+srcModel['Galactic Diffuse'] = GalProp
+srcModel['Galactic Diffuse'].name = 'Galactic Diffuse'
+srcModel['Galactic Diffuse'].spectrum.Value.free = 1
+srcModel['Extragalactic Diffuse'] = EGDiffuse
+srcModel['Extragalactic Diffuse'].spectrum.Prefactor.free = 1
+srcModel.filename = name + '_model.xml'
+srcModel.writeTo()
+
+# Write gtexpmap.par file for subsequent exposureMap.py calculations.
+
+gtexpmap = GtApp('gtexpmap')
+gtexpmap['evfile'] = gtselect['outfile']
+gtexpmap['scfile'] = pars['ft2file']
+gtexpmap['exposure_cube_file'] = pars['expCube']
+gtexpmap['outfile'] = 'expMap_' + name + '.fits'
+gtexpmap['source_region_radius'] = sourcerad
+gtexpmap['rspfunc'] = 'DSS'
+gtexpmap.pars.write('gtexpmap.par')
+writeExpMapBounds()
+
+os.system('chmod 666 *')

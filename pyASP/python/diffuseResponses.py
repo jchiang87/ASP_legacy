@@ -1,8 +1,9 @@
 """
 @brief Compute diffuse response columns for standard diffuse
 emission components.
-@author J. Chiang <jchiang@slac.stanford.edu>
+
 @author J. Carson <carson@slac.stanford.edu>
+@author J. Chiang <jchiang@slac.stanford.edu>
 """
 #
 # $Header$
@@ -34,3 +35,5 @@ gtdiffresp['scfile'] = pars['ft2file']
 gtdiffresp['rspfunc'] = pars['respfunc']
 gtdiffresp['source_model_file'] = srcModel.filename
 gtdiffresp.run()
+
+os.system('chmod 666 *')

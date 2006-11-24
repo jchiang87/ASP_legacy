@@ -17,6 +17,7 @@ _dtime = 10800
 _startTime = 220838400.
 
 def getL1Data(tmin, tmax):
+    "Return full paths to FT1 and FT2 files."
     ifile0 = int((tmin - _startTime)/_dtime)
     ifile1 = int((tmax - _startTime)/_dtime)
 

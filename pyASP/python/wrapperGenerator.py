@@ -51,11 +51,23 @@ if __name__ == '__main__':
         if sys.argv[1:]:
             wrapperGenerator(sys.argv[1])
         else:
-            standard_scripts = ('BlindSearch.py', 'extractLatData.py',
-                                'refinePosition.py', 'tsMap.py',
+            standard_scripts = ('BlindSearch.py',
+                                'extractLatData.py',
+                                'refinePosition.py',
+                                'tsMap.py',
                                 'LatGrbSpectrum.py',
-                                'afterglowData.py', 'afterglowLivetimeCube.py',
-                                'afterglowDiffResps.py', 'afterglowExpMap.py', 
-                                'combineExpMaps.py', 'afterglowAnalysis.py')
+                                'afterglowData.py',
+                                'afterglowLivetimeCube.py',
+                                'afterglowDiffResps.py',
+                                'afterglowExpMap.py', 
+                                'combineExpMaps.py',
+                                'afterglowAnalysis.py',
+                                'getIntervalData.py',
+                                'diffuseResponses.py',
+                                'livetimecube.py',
+                                'getRoiData.py',
+                                'exposureSubMap.py', 
+                                'combineDrpExpMaps.py',
+                                'sourceAnalysis.py')
             for script in standard_scripts:
                 wrapperGenerator(script)
