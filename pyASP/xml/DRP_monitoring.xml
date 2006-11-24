@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="DRP_monitoring" version="1.0" type="Data">
+<task name="DRP_monitoring" version="1.1" type="Data">
    <prerequisites>
       <prerequisite name="root_output_dir" type="string"/>
       <prerequisite name="start_time" type="string"/>
@@ -66,9 +66,10 @@
        </variables>
        <script language="python">
        <![CDATA[
+       args = "ROI_ID=%s" % pipeline.stream
        submaps = 4
        for i in range(submaps):
-           pipeline.createSubstream("exposureSubMap", i+1)
+           pipeline.createSubstream("exposureSubMap", i+1, args)
        ]]>
        </script>
        <depends>
@@ -80,6 +81,9 @@
      </process>
 
      <process name="combineExpMaps">
+       <variables>
+         <var name="ROI_ID">${pipeline.stream}</var>
+       </variables>
        <job executable="${PYASPROOT}/${BINDIR}/combineExpMaps.sh" 
             maxCPU="600"/>
        <depends>
@@ -99,6 +103,9 @@
      </process>
 
      <task name="exposureSubMap" version="1.0" type="Data">
+       <prerequisites>
+         <prerequisite name="ROI_ID" type="string"/>
+       </prerequisites>
        <process name="expmap">
          <variables>
            <var name="EXPMAP_ID">${pipeline.stream}</var>
