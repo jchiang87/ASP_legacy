@@ -36,4 +36,4 @@ os.chdir(root_output_dir)
 
 rootpath = lambda x : os.path.join(root_output_dir, x)
 pars = Parfile('drp_pars.txt')
-rois = RoIs(pars['RoI_file'])
+rois = RoiList(pars['RoI_file'])

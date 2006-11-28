@@ -12,10 +12,9 @@ import os
 from GtApp import GtApp
 from parfile_parser import Parfile
 
-debug = True
+debug = False
 
 root_output_dir = os.environ['root_output_dir']
-rootpath = lambda x : os.path.join(root_output_dir, x)
 os.chdir(root_output_dir)
 
 pars = Parfile('drp_pars.txt')
@@ -32,7 +31,7 @@ else:
 
 # record output file in local parameter file
 
-pars['expCube'] = rootpath(gtlivetimecube['outfile'])
+pars['expCube'] = gtlivetimecube['outfile']
 pars.write()
 
 os.system('chmod 666 *')

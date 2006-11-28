@@ -18,20 +18,28 @@ from parfile_parser import Parfile
 
 from drpRoiSetup import rootpath, pars, rois
 
-debug = True
+debug = False
 
-id = int(os.environ['ROI_ID'])   # This env var is set in DRP_monitoring.xml
-name, ra, dec, radius, sourcerad = rois[id]
+id = int(os.environ['ROI_ID']) - 1   # This env var is set in DRP_monitoring.xml
+name = rois[id].name
+ra = rois[id].ra
+dec = rois[id].dec
+radius = rois[id].radius
+sourcerad = rois[id].sourcerad
     
 # Create the region subdirectory and cd to it.
 
-os.mkdir(name)
-os.chmod(name, 0777)
+try:
+    os.mkdir(name)
+except OSError:
+    pass
+os.system('chmod 777 %s' % name)
 os.chdir(name)
 
 # Extract events for this region.
 
-gtselect['infile'] = pars['ft1file']
+gtselect = GtApp('gtselect')
+gtselect['infile'] = rootpath(pars['ft1file'])
 gtselect['outfile'] = name + '_events.fits'
 gtselect['ra'] = ra
 gtselect['dec'] = dec
@@ -44,6 +52,9 @@ else:
 # Build the source model xml file based on a 10 degree radius region.
 # (Revisit this choice of radius).
 
+# sourceModel needs to be generalized to include sources other than just
+# the DRP sources.
+sourceModel = os.path.join(os.environ['PYASPROOT'], 'data', 'source_model.xml')
 modelRequest = 'dist((RA,DEC),(%f,%f))<10.' % (ra, dec)
 outputModel = name + '_ptsrcs_model.xml'
 model = search_Srcs(sourceModel, modelRequest, outputModel)
@@ -64,11 +75,12 @@ srcModel.writeTo()
 gtexpmap = GtApp('gtexpmap')
 gtexpmap['evfile'] = gtselect['outfile']
 gtexpmap['scfile'] = pars['ft2file']
-gtexpmap['exposure_cube_file'] = pars['expCube']
+gtexpmap['exposure_cube_file'] = rootpath(pars['expCube'])
 gtexpmap['outfile'] = 'expMap_' + name + '.fits'
 gtexpmap['source_region_radius'] = sourcerad
 gtexpmap['rspfunc'] = 'DSS'
 gtexpmap.pars.write('gtexpmap.par')
-writeExpMapBounds()
+
+writeExpMapBounds(gtexpmap)
 
 os.system('chmod 666 *')

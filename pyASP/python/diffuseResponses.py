@@ -15,7 +15,7 @@ import readXml
 import xmlSrcLib
 from parfile_parser import Parfile
 
-debug = True
+debug = False
 
 os.chdir(os.environ['root_output_dir'])
 

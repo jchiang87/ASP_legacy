@@ -15,15 +15,23 @@ from getL1Data import getL1Data
 from ft1merge import ft1merge
 from parfile_parser import Parfile
 
+_L1DataPath = '/nfs/farm/g/glast/u33/jchiang/ASP/testdata/downlinks'
+_ft2File = '/nfs/farm/g/glast/u33/jchiang/ASP/testdata/eg_diffuse_scData_0000.fits'
+
 debug = False
 
-os.chdir(os.environ['root_output_dir'])
+root_output_dir = os.environ['root_output_dir']
+os.chdir(root_output_dir)
 
 start_time = float(os.environ['start_time'])
 stop_time = float(os.environ['stop_time'])
 
 gtselect = GtApp('gtselect')
 
+#ft1, ft2 = getL1Data(start_time, stop_time, l1DataPath=_L1DataPath,
+#                     ft2File=_ft2File)
+
+# use DC2 data
 ft1, ft2 = getL1Data(start_time, stop_time)
 
 ft1Merged = 'FT1_merged.fits'
@@ -43,7 +51,7 @@ else:
 parfile_basename = 'drp_pars.txt'
 pars = Parfile(os.path.join(os.environ['PYASPROOT'], 'data', parfile_basename))
 pars['ft1file'] = gtselect['outfile']
-pars['ft2file'] = ft2    # need to generalize this for multiple FT2 files
+pars['ft2file'] = ft2[0]    # need to generalize this for multiple FT2 files
 pars['start_time'] = start_time
 pars['stop_time'] = stop_time
 pars['RoI_file'] = os.environ['RoI_file']

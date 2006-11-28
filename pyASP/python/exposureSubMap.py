@@ -14,10 +14,10 @@ from combineExpMaps import readExpMapBounds
 
 from drpRoiSetup import rootpath, pars, rois
 
-debug = True
+debug = False
 
-id = int(os.environ['ROI_ID'])
-name, ra, dec, radius, sourcerad = rois[id]
+id = int(os.environ['ROI_ID']) - 1
+name = rois[id].name
 os.chdir(name)
 
 bounds = readExpMapBounds()

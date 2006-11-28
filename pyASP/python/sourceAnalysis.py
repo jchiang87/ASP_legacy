@@ -8,13 +8,15 @@
 # $Header$
 #
 
+import os
 from GtApp import GtApp
+from UnbinnedAnalysis import *
 from drpRoiSetup import rootpath, pars, rois
 
-debug = True
+debug = False
 
-id = int(os.environ['ROI_ID'])
-name, ra, dec, radius, sourcerad = rois[id]
+id = int(os.environ['ROI_ID']) - 1
+name = rois[id].name
 os.chdir(name)
 
 ft1file = name + '_events.fits'
@@ -23,8 +25,11 @@ srcModel = name + '_model.xml'
 if debug:
     print "analyzing ", ft1file, srcModel
 else:
+    irfs = pars['rspfunc']
+    if irfs == 'DSS':
+        irfs = 'DC2'
     obs = UnbinnedObs(ft1file, pars['ft2file'], expMap=pars['expMap'],
-                      expCube=pars['expCube'], irfs=pars['rspfunc'])
+                      expCube=rootpath(pars['expCube']), irfs=irfs)
     like = UnbinnedAnalysis(obs, srcModel, 'Minuit')
 
     like.fit()

@@ -23,12 +23,12 @@ def getL1Data(tmin, tmax, l1DataPath=_L1DataPath, ft2File=_ft2File):
 
     ft1Files = []
     for i in range(ifile0, ifile1 + 1):
-        ft1Files.append(os.path.join(_L1DataPath, 'downlink_%04i.fits' % i))
+        ft1Files.append(os.path.join(l1DataPath, 'downlink_%04i.fits' % i))
 
     if len(ft1Files) == 0:
         raise LookupError, ("No FT1 files found for METs %s to %s"
                             % (tmin, tmax))
-    return tuple(ft1Files), (_ft2File,)
+    return tuple(ft1Files), (ft2File,)
 
 if __name__ == '__main__':
     from FitsNTuple import FitsNTuple
