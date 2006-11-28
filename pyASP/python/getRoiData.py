@@ -18,6 +18,8 @@ from parfile_parser import Parfile
 
 from drpRoiSetup import rootpath, pars, rois
 
+debug = True
+
 id = int(os.environ['ROI_ID'])   # This env var is set in DRP_monitoring.xml
 name, ra, dec, radius, sourcerad = rois[id]
     
@@ -34,7 +36,10 @@ gtselect['outfile'] = name + '_events.fits'
 gtselect['ra'] = ra
 gtselect['dec'] = dec
 gtselect['rad'] = radius
-gtselect.run()
+if debug:
+    print gtselect.command()
+else:
+    gtselect.run()
 
 # Build the source model xml file based on a 10 degree radius region.
 # (Revisit this choice of radius).

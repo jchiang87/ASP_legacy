@@ -14,7 +14,7 @@ from combineExpMaps import readExpMapBounds
 
 from drpRoiSetup import rootpath, pars, rois
 
-debug = False
+debug = True
 
 id = int(os.environ['ROI_ID'])
 name, ra, dec, radius, sourcerad = rois[id]

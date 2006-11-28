@@ -44,10 +44,10 @@ class Parfile(dict):
             raise KeyError, "Invalid parameter key: " + key
         self._addkey(key)
         dict.__setitem__(self, key, value)
-    def __getitem__(self, key):
-        value = dict.__getitem__(self, key)
-        if value = "":
-            raise ValueError, "Empty string returned for key %s" % key
+#    def __getitem__(self, key):
+#        value = dict.__getitem__(self, key)
+#        if value == "":
+#            raise ValueError, "Empty string returned for key %s" % key
     def write(self, outfile=None):
         """Write current set of parameters to an output par file. If
         outfile is given, then reset self.filename to the absolute

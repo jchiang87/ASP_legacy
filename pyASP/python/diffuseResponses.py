@@ -15,6 +15,8 @@ import readXml
 import xmlSrcLib
 from parfile_parser import Parfile
 
+debug = True
+
 os.chdir(os.environ['root_output_dir'])
 
 pars = Parfile('drp_pars.txt')
@@ -30,10 +32,15 @@ srcModel['Extragalactic Diffuse'].spectrum.Prefactor.free = 1
 srcModel.filename = 'diffuse_model.xml'
 srcModel.writeTo()
 
+gtdiffresp = GtApp('gtdiffresp')
 gtdiffresp['evfile'] = pars['ft1file']
 gtdiffresp['scfile'] = pars['ft2file']
-gtdiffresp['rspfunc'] = pars['respfunc']
+gtdiffresp['rspfunc'] = pars['rspfunc']
 gtdiffresp['source_model_file'] = srcModel.filename
-gtdiffresp.run()
+
+if debug:
+    print gtdiffresp.command()
+else:
+    gtdiffresp.run()
 
 os.system('chmod 666 *')

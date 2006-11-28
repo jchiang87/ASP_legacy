@@ -15,6 +15,10 @@ from getL1Data import getL1Data
 from ft1merge import ft1merge
 from parfile_parser import Parfile
 
+debug = False
+
+os.chdir(os.environ['root_output_dir'])
+
 start_time = float(os.environ['start_time'])
 stop_time = float(os.environ['stop_time'])
 
@@ -30,7 +34,11 @@ gtselect['outfile'] = 'time_filtered_events.fits'
 gtselect['tmin'] = start_time
 gtselect['tmax'] = stop_time
 gtselect['rad'] = 180.
-gtselect.run()
+
+if debug:
+    print gtselect.command()
+else:
+    gtselect.run()
 
 parfile_basename = 'drp_pars.txt'
 pars = Parfile(os.path.join(os.environ['PYASPROOT'], 'data', parfile_basename))
