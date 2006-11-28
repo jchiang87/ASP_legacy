@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="DRP_monitoring" version="1.2" type="Data">
+<task name="DRP_monitoring" version="1.5" type="Data">
    <prerequisites>
       <prerequisite name="root_output_dir" type="string"/>
       <prerequisite name="start_time" type="string"/>
@@ -38,7 +38,7 @@
    <process name="launchRoiAnalyses">
      <script language="python">
        <![CDATA[
-       rois = 11
+       rois = 12
        for i in range(rois):
            pipeline.createSubstream("roiAnalysis", i+1)
        ]]>
@@ -107,9 +107,6 @@
          <prerequisite name="ROI_ID" type="string"/>
        </prerequisites>
        <process name="expmap">
-         <prerequisites>
-           <prerequisite name="ROI_ID" type="string"/>
-         </prerequisites>
          <variables>
            <var name="EXPMAP_ID">${pipeline.stream}</var>
          </variables>
