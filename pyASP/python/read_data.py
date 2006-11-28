@@ -45,4 +45,3 @@ def read_data(file, delimiter=None, nskip=0, ncols=0, nmax=0, comment="#"):
 if __name__ == '__main__':
     for foo in zip(*read_data('rois.txt')):
         print foo
-    
