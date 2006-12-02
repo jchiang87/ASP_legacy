@@ -15,9 +15,9 @@ import readXml
 import xmlSrcLib
 from parfile_parser import Parfile
 
-debug = False
+debug = True
 
-os.chdir(os.environ['root_output_dir'])
+os.chdir(os.environ['output_dir'])
 
 pars = Parfile('drp_pars.txt')
 

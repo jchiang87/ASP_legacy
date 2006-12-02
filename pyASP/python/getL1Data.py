@@ -14,12 +14,14 @@ _L1DataPath = '/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks'
 
 _dtime = 10800
 
-_startTime = 220838400.
+_startTime = 220838400.   # for DC2 data
+#_startTime = 0.            # for testdata
 
-def getL1Data(tmin, tmax, l1DataPath=_L1DataPath, ft2File=_ft2File):
+def getL1Data(tmin, tmax, l1DataPath=_L1DataPath, ft2File=_ft2File,
+              startTime=_startTime):
     "Return full paths to FT1 and FT2 files."
-    ifile0 = int((tmin - _startTime)/_dtime)
-    ifile1 = int((tmax - _startTime)/_dtime)
+    ifile0 = int((tmin - startTime)/_dtime)
+    ifile1 = int((tmax - startTime)/_dtime)
 
     ft1Files = []
     for i in range(ifile0, ifile1 + 1):

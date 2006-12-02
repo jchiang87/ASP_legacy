@@ -92,9 +92,11 @@ def refinePosition(gbm_notice, extracted=False, ft1Input=_LatFt1File,
 if __name__ == '__main__':
     import os, sys
     from GbmNotice import GbmNotice
-    import createGrbStreams
+    from parfile_parser import Parfile
+    from createGrbStreams import afterglowStreams
     
-    os.chdir(os.environ['OUTPUTDIR'])
+    output_dir = os.environ['OUTPUTDIR']
+    os.chdir(output_dir)
     gbmNotice = GbmNotice(os.environ['GBMNOTICE'])
     infiles = open(gbmNotice.Name + '_files')
     ft1File = infiles.readline().strip()
@@ -104,16 +106,15 @@ if __name__ == '__main__':
                                ft2Input=ft2File, tsmap=True, duration=100,
                                radius=15)
     parfile = '%s_pars.txt' % gbmNotice.Name
-    outfile = open(parfile, 'w')
-    outfile.write('name = %s\n' % gbmNotice.Name)
-    outfile.write('ra = %.3f\n' % gbmNotice.ra)
-    outfile.write('dec = %.3f\n' % gbmNotice.dec)
-    outfile.write('loc_err = %.5f\n' % gbmNotice.pos_error)
-    outfile.write('tstart = %.6f\n' % gbmNotice.tmin)
-    outfile.write('tstop = %.6f\n' % gbmNotice.tmax)
-    outfile.close()
+    pars = Parfile(parfile, fixed_keys=False)
+    pars['name'] = gbmNotice.Name
+    pars['ra'] = gbmNotice.ra
+    pars['dec'] = gbmNotice.dec
+    pars['loc_err'] = gbmNotice.pos_error
+    pars['tstart'] = gbmNotice.tmin
+    pars['tstop'] = gbmNotice.tmax
+    pars.write()
 
     os.system('chmod 666 *')
 
-    createGrbStreams.afterglowStreams((os.path.join(os.environ['OUTPUTDIR'],
-                                                    parfile), ))
+    afterglowStreams((os.path.join(output_dir, parfile), ))

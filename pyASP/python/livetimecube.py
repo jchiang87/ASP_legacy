@@ -14,8 +14,8 @@ from parfile_parser import Parfile
 
 debug = False
 
-root_output_dir = os.environ['root_output_dir']
-os.chdir(root_output_dir)
+output_dir = os.environ['output_dir']
+os.chdir(output_dir)
 
 pars = Parfile('drp_pars.txt')
 
