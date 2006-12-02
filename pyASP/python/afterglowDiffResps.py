@@ -9,15 +9,15 @@
 
 import os
 from GtApp import GtApp
-from parfile_parser import parfile_parser
+from parfile_parser import Parfile
 
 debug = False
 
 os.chdir(os.environ['OUTPUTDIR'])
-grbName = parfile_parser(os.environ['GRBPARS'])['name']
+grbName = Parfile(os.environ['GRBPARS'])['name']
 
 afterglowFiles = grbName + '_afterglow_files'
-pars = parfile_parser(afterglowFiles)
+pars = Parfile(afterglowFiles)
 
 gtdiffresp = GtApp('gtdiffresp')
 gtdiffresp['evfile'] = pars['ft1File']

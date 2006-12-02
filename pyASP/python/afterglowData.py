@@ -10,7 +10,7 @@ import os, sys
 from GtApp import GtApp
 from getL1Data import getL1Data
 from ft1merge import ft1merge
-from parfile_parser import parfile_parser
+from parfile_parser import Parfile
 import readXml
 import xmlSrcLib
 import FuncFactory
@@ -54,7 +54,7 @@ def getData(time, ra, dec, srcName, duration=5*3600, radius=15,
     return srcModel, gtselect['outfile'], ft2[0]
 
 def afterglow_pars(infile):
-    pars = parfile_parser(infile)
+    pars = Parfile(infile)
     return pars['name'], pars['ra'], pars['dec'], pars['tstart'], pars['tstop']
 
 if __name__ == '__main__':

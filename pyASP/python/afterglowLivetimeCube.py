@@ -8,17 +8,17 @@
 
 import os
 from GtApp import GtApp
-from parfile_parser import parfile_parser
+from parfile_parser import Parfile
 from combineExpMaps import writeExpMapBounds
 
 debug = False
 #debug = True
 
 os.chdir(os.environ['OUTPUTDIR'])
-grbName = parfile_parser(os.environ['GRBPARS'])['name']
+grbName = Parfile(os.environ['GRBPARS'])['name']
 
 afterglowFiles = grbName + '_afterglow_files'
-pars = parfile_parser(afterglowFiles)
+pars = Parfile(afterglowFiles)
 
 gtlivetimecube = GtApp('gtlivetimecube')
 gtlivetimecube['evfile'] = pars['ft1File']

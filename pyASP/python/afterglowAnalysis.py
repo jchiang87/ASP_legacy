@@ -7,14 +7,14 @@
 #
 
 import os
-from parfile_parser import parfile_parser
+from parfile_parser import Parfile
 from UnbinnedAnalysis import *
 
 os.chdir(os.environ['OUTPUTDIR'])
-grbName = parfile_parser(os.environ['GRBPARS'])['name']
+grbName = Parfile(os.environ['GRBPARS'])['name']
 
 afterglowFiles = grbName + '_afterglow_files'
-pars = parfile_parser(afterglowFiles)
+pars = Parfile(afterglowFiles)
 
 obs = UnbinnedObs(pars['ft1File'], pars['ft2File'], expMap=pars['expmap'],
                   expCube=pars['expcube'], irfs='DC2')
