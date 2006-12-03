@@ -16,12 +16,14 @@ def pyASProot():
     return os.path.join('/nfs/farm/g/glast/u33/jchiang/ASP/pyASP', version)
 
 _pyASProot = pyASProot()
-_outputDir = os.environ['OUTPUTDIR']
 _bindir = os.environ['BINDIR']
+_outputDir = os.environ['OUTPUTDIR']
 
-print "Using:\n\nPYASPROOT = %s" % _pyASProot
+print "Using:\n"
+print "PYASPROOT = %s" % _pyASProot
+print "BINDIR = %s" % _bindir
 print "OUTPUTDIR = %s" % _outputDir
-print "BINDIR = %s\n" % _bindir
+print ""
 
 class PipelineError(EnvironmentError):
     "Pipeline stream creation failed"

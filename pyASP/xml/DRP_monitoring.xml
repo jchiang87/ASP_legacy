@@ -5,12 +5,13 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="DRP_monitoring" version="1.8" type="Data">
+<task name="DRP_monitoring" version="1.9" type="Data">
    <prerequisites>
       <prerequisite name="output_dir" type="string"/>
       <prerequisite name="start_time" type="string"/>
       <prerequisite name="stop_time" type="string"/>
       <prerequisite name="RoI_file" type="string"/>
+      <prerequisite name="num_RoIs" type="integer"/>
       <prerequisite name="PYASPROOT" type="string"/>
       <prerequisite name="BINDIR" type="string"/>
    </prerequisites>
@@ -38,8 +39,7 @@
    <process name="launchRoiAnalyses">
      <script language="python">
        <![CDATA[
-       rois = 12
-       for i in range(rois):
+       for i in range(num_RoIs):
            pipeline.createSubstream("roiAnalysis", i+1)
        ]]>
      </script>
@@ -106,11 +106,11 @@
        <prerequisites>
          <prerequisite name="ROI_ID" type="string"/>
        </prerequisites>
-       <process name="expmap">
+       <process name="drpExpMap">
          <variables>
            <var name="EXPMAP_ID">${pipeline.stream}</var>
          </variables>
-         <job executable="${PYASPROOT}/${BINDIR}/exposureSubMap.sh"
+         <job executable="${PYASPROOT}/${BINDIR}/drpExpMap.sh"
               maxCPU="20000"/>
        </process>
      </task> <!--exposureSubMap-->

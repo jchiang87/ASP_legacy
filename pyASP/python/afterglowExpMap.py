@@ -9,28 +9,6 @@ to be run in parallel.
 #
 
 import os
-from GtApp import GtApp
-from combineExpMaps import readExpMapBounds
+from exposureSubMap import exposureSubMap
 
-debug = False
-
-os.chdir(os.environ['OUTPUTDIR'])
-bounds = readExpMapBounds()
-
-# account for off-by-one error in how jobs can be numbered in P-II xml code
-map_id = int(os.environ["EXPMAP_ID"]) - 1  
-
-gtexpmap = GtApp('gtexpmap')
-gtexpmap['outfile'] = bounds[map_id].filename
-gtexpmap['compute_submap'] = 'yes'
-gtexpmap['nlongmin'] = bounds[map_id].xmin
-gtexpmap['nlongmax'] = bounds[map_id].xmax
-gtexpmap['nlatmin'] = bounds[map_id].ymin
-gtexpmap['nlatmax'] = bounds[map_id].ymax
-
-if debug:
-    print gtexpmap.command()
-else:
-    gtexpmap.run()
-
-os.system('chmod 666 *')
+exposureSubMap(os.environ['OUTPUTDIR']), debug=False)

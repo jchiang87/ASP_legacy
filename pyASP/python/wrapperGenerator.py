@@ -66,7 +66,7 @@ if __name__ == '__main__':
                                 'diffuseResponses.py',
                                 'livetimecube.py',
                                 'getRoiData.py',
-                                'exposureSubMap.py', 
+                                'drpExpMap.py', 
                                 'combineDrpExpMaps.py',
                                 'sourceAnalysis.py')
             for script in standard_scripts:
