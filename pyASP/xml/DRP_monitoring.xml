@@ -87,7 +87,7 @@
        <job executable="${PYASPROOT}/${BINDIR}/combineDrpExpMaps.sh" 
             maxCPU="600"/>
        <depends>
-         <after process="exposureSubMap.expmap" status="SUCCESS"/>
+         <after process="exposureSubMap.drpExpMap" status="SUCCESS"/>
        </depends>
      </process>
 
