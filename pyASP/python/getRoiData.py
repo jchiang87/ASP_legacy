@@ -44,6 +44,8 @@ gtselect['outfile'] = name + '_events.fits'
 gtselect['ra'] = ra
 gtselect['dec'] = dec
 gtselect['rad'] = radius
+gtselect['emin'] = 30
+gtselect['emax'] = 2e5
 if debug:
     print gtselect.command()
 else:
@@ -78,7 +80,7 @@ gtexpmap['scfile'] = pars['ft2file']
 gtexpmap['exposure_cube_file'] = rootpath(pars['expCube'])
 gtexpmap['outfile'] = 'expMap_' + name + '.fits'
 gtexpmap['source_region_radius'] = sourcerad
-gtexpmap['rspfunc'] = 'DSS'
+gtexpmap['rspfunc'] = pars['rspfunc']
 gtexpmap.pars.write('gtexpmap.par')
 
 writeExpMapBounds(gtexpmap)

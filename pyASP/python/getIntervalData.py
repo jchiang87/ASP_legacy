@@ -51,12 +51,13 @@ else:
     gtselect.run()
 
 parfile_basename = 'drp_pars.txt'
-pars = Parfile(os.path.join(os.environ['PYASPROOT'], 'data', parfile_basename))
+#pars = Parfile(os.path.join(os.environ['PYASPROOT'], 'data', parfile_basename))
+pars = Parfile(parfile_basename)
 pars['ft1file'] = gtselect['outfile']
 pars['ft2file'] = ft2[0]    # need to generalize this for multiple FT2 files
 pars['start_time'] = start_time
 pars['stop_time'] = stop_time
 pars['RoI_file'] = os.environ['RoI_file']
-pars.write(parfile_basename)
+pars.write()
 
 os.system('chmod 666 *')
