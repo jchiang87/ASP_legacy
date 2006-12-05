@@ -55,6 +55,7 @@ def LatGrbSpectrum(ra, dec=None, tmin=None, tmax=None, name=None, radius=15,
     like[0].setBounds(0, 1e7)
     like.fit()
     like.writeXml()
+    like.writeCountsSpectra(name + '_prompt_spectra.fits')
     return like
 
 def grbCoords(gbmNotice):
