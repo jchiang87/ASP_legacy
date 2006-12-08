@@ -11,4 +11,4 @@ to be run in parallel.
 import os
 from exposureSubMap import exposureSubMap
 
-exposureSubMap(os.environ['OUTPUTDIR']), debug=False)
+exposureSubMap(os.environ['OUTPUTDIR'], debug=False)
