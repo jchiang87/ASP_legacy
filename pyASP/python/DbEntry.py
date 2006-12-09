@@ -13,10 +13,8 @@ class DbEntryError(EnvironmentError):
 
 class DbEntry(object):
     def __init__(self, source, variable, tstart, tstop, cadence="daily"):
-#        args = ("/afs/slac/g/glast/ground/bin/createTrendableDataEntry",
-#                source, variable, cadence, "%i" % tstart, "%i" % tstop)
         args = ("/afs/slac/g/glast/ground/bin/createTrendableDataEntry",
-                source, variable, "%i" % tstart, "%i" % tstop)
+                source, variable, cadence, "%i" % tstart, "%i" % tstop)
         self.dataId = self._subprocess(*args)
     def setValues(self, value, error):
         self._subprocess("/afs/slac/g/glast/ground/bin/addTrendableData",
@@ -35,7 +33,7 @@ class DbEntry(object):
         return out.strip()
         
 if __name__ == '__main__':
-    dbEntry = DbEntry("3C 279", "Flux", 0, 86400)
+    dbEntry = DbEntry("3C279", "Flux", 0, 86400)
     dbEntry.setValues(100., 13.)
     dbEntry.setMetaData("xmlFile", "srcModel.xml")
     print dbEntry.dataId
