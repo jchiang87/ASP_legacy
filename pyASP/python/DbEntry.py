@@ -25,7 +25,7 @@ class DbEntry(object):
         self._subprocess("/afs/slac/g/glast/ground/bin/addTrendableMetaData",
                          self.dataId, type, value)
     def _subprocess(self, *args):
-        self._checkArgs(args)
+#        self._checkArgs(args)
         process = subprocess.Popen(args, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         out, err = process.communicate()
@@ -40,11 +40,7 @@ class DbEntry(object):
                 raise DbEntryError, message
         
 if __name__ == '__main__':
-    try:
-        dbEntry = DbEntry("3C 279", "Flux", 0, 86400)
-    except DbEntryError:
-        pass
-    dbEntry = DbEntry("3C279", "Flux", 0, 86400)
+    dbEntry = DbEntry("3C 279", "Flux", 0, 86400)
     dbEntry.setValues(100., 13.)
     dbEntry.setMetaData("xmlFile", "srcModel.xml")
     print dbEntry.dataId
