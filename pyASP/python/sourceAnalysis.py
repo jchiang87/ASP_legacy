@@ -12,6 +12,7 @@ import os, sys
 from GtApp import GtApp
 from UnbinnedAnalysis import *
 from drpRoiSetup import rootpath, pars, rois, output_dir
+from DbEntry import DbEntry
 
 debug = False
 
@@ -20,7 +21,7 @@ name = rois[id].name
 os.chdir(name)
 
 ft1file = name + '_events.fits'
-srcModel = name + '_model.xml'
+srcModel = os.path.join(os.getcwd(), name + '_model.xml')
 
 if debug:
     print "analyzing ", ft1file, srcModel
@@ -69,12 +70,18 @@ else:
     gtselect = GtApp('gtselect')
 
     class SourceFluxes(dict):
-        def __init__(self, name):
+        def __init__(self, name, srcModel):
             self.name = name
+            self.srcModel = srcModel
         def update(self, emin, emax, flux, fluxerr):
-            self[(emin, emax)] = (flux, fluxerr)
+            variable = "flux_%i_%i" % (emin, emax)
+            dbEntry = DbEntry(self.name, variable, pars['start_time'],
+                              pars['stop_time'])
+            dbEntry.setValues(flux, fluxerr)
+            dbEntry.setMetaData("xmlFile", self.srcModel)
+            self[(emin, emax)] = (flux, fluxerr, dbEntry)
         def write(self, fileobj, elims):
-            fileobj.write('%e  %e  ' % self[elims])
+            fileobj.write('%e  %e  ' % self[elims][:2])
 
     def fitEnergyBand(emin, emax, sources, srcModel):
         gtselect['infile'] = ft1file
