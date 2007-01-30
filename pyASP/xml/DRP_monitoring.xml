@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="DRP_monitoring" version="1.9" type="Data">
+<task name="DRP_monitoring" version="2.0" type="Data">
    <prerequisites>
       <prerequisite name="output_dir" type="string"/>
       <prerequisite name="start_time" type="string"/>

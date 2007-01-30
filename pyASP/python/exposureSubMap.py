@@ -15,6 +15,22 @@ def exposureSubMap(outputDir, debug=False):
     os.chdir(outputDir)
     bounds = readExpMapBounds()
 
+# create a subdirectory to hold gtexpmap.par to avoid collisions with
+# other getexp processes being run in parallel
+    submap = int(os.environ['EXPMAP_ID'])
+    try:
+        submap_dir = 'gtexpmap_subdir_%02i' % submap
+        os.mkdir(submap_dir)
+        os.system('chmod 777 %s' % submap_dir)
+    except OSError:
+        if os.path.isdir(submap_dir):
+            os.system('chmod 777 %s' % submap_dir)
+        else:
+            raise OSError, "Error creating directory: " + submap_dir
+    pfiles = os.environ['PFILES'].split(';')
+    os.environ['PFILES'] = submap_dir + ';' + pfiles[1]
+    os.system('cp gtexpmap.par %s' % submap_dir)
+
 # Account for off-by-one error in how jobs can be numbered in P-II xml code.
     map_id = int(os.environ["EXPMAP_ID"]) - 1  
 

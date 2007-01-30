@@ -128,7 +128,9 @@ else:
             flux = integral.getTrueValue()
             fluxerr = integral.error()*integral.getScale()
             if srcname not in sources.keys():
-                sources[srcname] = SourceFluxes(srcname)
+                srcModelFile = os.path.basename(srcModel)
+#                sources[srcname] = SourceFluxes(srcname, srcModelFile)
+                sources[srcname] = SourceFluxes(srcname, srcModel)
             sources[srcname].update(emin, emax, flux, fluxerr)
 
     sources = {}
