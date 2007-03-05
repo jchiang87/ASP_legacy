@@ -134,8 +134,10 @@ else:
             sources[srcname].update(emin, emax, flux, fluxerr)
 
     sources = {}
-    emins = [100, 300, 1e3, 3e3, 1e4, 100]
-    emaxs = [300, 1e3, 3e3, 1e4, 2e5, 2e5]
+#    emins = [100, 300, 1e3, 3e3, 1e4, 100]
+#    emaxs = [300, 1e3, 3e3, 1e4, 2e5, 2e5]
+    emins = [100]
+    emaxs = [2e5]
 
     for emin, emax in zip(emins, emaxs):
         fitEnergyBand(emin, emax, sources, srcModel)
