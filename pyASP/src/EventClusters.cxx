@@ -56,31 +56,35 @@ double EventClusters::logLikePosition() const {
    return logLike;
 }
 
-astro::SkyDir EventClusters::meanDir(const Event & event) const {
+astro::SkyDir EventClusters::meanDir(const Event & event, 
+                                     double radius) const {
+   if (radius == 0) {
+      radius = m_radius;
+   }
    double xhat(0);
    double yhat(0);
    double zhat(0);
    size_t nevents(0);
    for (std::vector<Event>::const_iterator evt(m_events.begin());
         evt != m_events.end(); ++evt) {
-      if (event.sep(*evt) < m_radius) {
+      if (event.sep(*evt) < radius) {
          xhat += evt->dir().dir().x();
          yhat += evt->dir().dir().y();
          zhat += evt->dir().dir().z();
          nevents++;
       }
-      xhat /= nevents;
-      yhat /= nevents;
-      zhat /= nevents;
    }
+   xhat /= nevents;
+   yhat /= nevents;
+   zhat /= nevents;
    return astro::SkyDir(CLHEP::Hep3Vector(xhat, yhat, zhat));
 }
 
-const Event & EventClusters::findLargestCluster() const {
+const Event & EventClusters::findLargestCluster(double radius) const {
    size_t ilargest(0);
-   size_t maxSize(clusterSize(m_events.front()));
+   size_t maxSize(clusterSize(m_events.front(), radius));
    for (size_t i(1); i < m_events.size(); i++) {
-      size_t currentSize(clusterSize(m_events.at(i)));
+      size_t currentSize(clusterSize(m_events.at(i), radius));
       if (currentSize > maxSize) {
          ilargest = i;
          maxSize = currentSize;
@@ -89,10 +93,13 @@ const Event & EventClusters::findLargestCluster() const {
    return m_events.at(ilargest);
 }
 
-size_t EventClusters::clusterSize(const Event & event) const {
+size_t EventClusters::clusterSize(const Event & event, double radius) const {
+   if (radius == 0) {
+      radius = m_radius;
+   }
    size_t num(0);
    for (size_t j(0); j < m_events.size(); j++) {
-      if (event.sep(m_events.at(j)) < m_radius) {
+      if (event.sep(m_events.at(j)) < radius) {
          num++;
       }
    }
