@@ -32,9 +32,11 @@ public:
 
    double logLikeTime(double bg_rate=0) const;
 
-   double logLikePosition(astro::SkyDir & clusterDir, 
-                          std::vector<double> & ras,
-                          std::vector<double> & decs) const;
+   double logLikePosition() const;
+
+   astro::SkyDir clusterDir() const {
+      return meanDir(findLargestCluster());
+   }
 
 private:
 
@@ -43,6 +45,8 @@ private:
    double m_radius;
 
    const Event & findLargestCluster() const;
+
+   astro::SkyDir meanDir(const Event & event) const;
 
    size_t clusterSize(const Event & event) const;
 
