@@ -9,7 +9,6 @@
 #ifndef pyASP_EventClusters_h
 #define pyASP_EventClusters_h
 
-#include <map>
 #include <vector>
 
 #include "pyASP/Event.h"
@@ -33,9 +32,9 @@ public:
 
 private:
 
-   double m_radius;
+   const std::vector<Event> & m_events;
 
-   std::map<Event, std::vector<double> > m_dists;
+   double m_radius;
 
 };
 
