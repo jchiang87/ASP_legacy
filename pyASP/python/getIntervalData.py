@@ -60,4 +60,4 @@ pars['stop_time'] = stop_time
 pars['RoI_file'] = os.environ['RoI_file']
 pars.write()
 
-os.system('chmod 666 *')
+os.system('chmod 777 *')

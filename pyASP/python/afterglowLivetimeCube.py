@@ -44,4 +44,4 @@ output.write('expcube = %s\n' % gtlivetimecube['outfile'])
 output.write('expmap = %s\n' % gtexpmap['outfile'])
 output.close()
 
-os.system('chmod 666 *')
+os.system('chmod 777 *')

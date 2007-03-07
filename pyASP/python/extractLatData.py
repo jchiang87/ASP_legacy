@@ -87,4 +87,4 @@ if __name__ == '__main__':
     outfile.write('%s\n%s\n' % (ft1_extracted, ft2[0]))
     outfile.close()
 
-    os.system('chmod 666 *')
+    os.system('chmod 777 *')

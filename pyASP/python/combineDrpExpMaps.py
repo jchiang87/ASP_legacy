@@ -24,4 +24,4 @@ if debug:
 else:
     combineExpMaps(outfile=pars['expMap'])
 
-os.system('chmod 666 *')
+os.system('chmod 777 *')

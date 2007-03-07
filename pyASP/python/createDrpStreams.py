@@ -17,8 +17,11 @@ import pyASP
 #_startTime = 220838400.   # for DC2 data
 _startTime = 0.            # for testdata
 
+_sourceModel = os.path.join(os.environ['PYASPROOT'], 'data',
+                            'source_model.xml')
+
 def drpStreams(daynum=1, output_dir=_outputDir, RoI_file='rois.txt',
-               startTime=_startTime, debug=False):
+               sourceModel=_sourceModel, startTime=_startTime, debug=False):
     start_time = (daynum-1)*8.64e4 + startTime
     stop_time = start_time + 8.64e4
     os.chdir(output_dir)
@@ -27,7 +30,8 @@ def drpStreams(daynum=1, output_dir=_outputDir, RoI_file='rois.txt',
             'start_time' : start_time,
             'stop_time' : stop_time,
             'RoI_file' : RoI_file,
-            'num_RoIs' : len(foo[0])}
+            'num_RoIs' : len(foo[0]),
+            'sourceModelFile' : sourceModel}
     command = PipelineCommand('DRP_monitoring', args)
     command.run(debug=debug)
 

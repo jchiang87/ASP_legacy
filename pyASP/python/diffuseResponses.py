@@ -43,4 +43,4 @@ if debug:
 else:
     gtdiffresp.run()
 
-os.system('chmod 666 *')
+os.system('chmod 777 *')

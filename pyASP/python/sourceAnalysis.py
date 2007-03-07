@@ -131,7 +131,7 @@ else:
                 srcModelFile = os.path.basename(srcModel)
 #                sources[srcname] = SourceFluxes(srcname, srcModelFile)
                 sources[srcname] = SourceFluxes(srcname, srcModel)
-            sources[srcname].update(emin, emax, flux, fluxerr)
+#            sources[srcname].update(emin, emax, flux, fluxerr)
 
     sources = {}
 #    emins = [100, 300, 1e3, 3e3, 1e4, 100]
@@ -142,12 +142,12 @@ else:
     for emin, emax in zip(emins, emaxs):
         fitEnergyBand(emin, emax, sources, srcModel)
 
-    for srcname in sources.keys():
-        output = open(os.path.join(output_dir, '..', srcname+'.txt'), 'a')
-        output.write("%i  %i  " % (pars['start_time'], pars['stop_time']))
-        for emin, emax in zip(emins, emaxs):
-            sources[srcname].write(output, (emin, emax))
-        output.write('\n')
-        output.close()
+#    for srcname in sources.keys():
+#        output = open(os.path.join(output_dir, '..', srcname+'.txt'), 'a')
+#        output.write("%i  %i  " % (pars['start_time'], pars['stop_time']))
+##        for emin, emax in zip(emins, emaxs):
+##            sources[srcname].write(output, (emin, emax))
+#        output.write('\n')
+#        output.close()
 
-    os.system('chmod 666 *')
+    os.system('chmod 777 *')

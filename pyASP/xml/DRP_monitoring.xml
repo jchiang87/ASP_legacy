@@ -12,6 +12,7 @@
       <prerequisite name="stop_time" type="string"/>
       <prerequisite name="RoI_file" type="string"/>
       <prerequisite name="num_RoIs" type="integer"/>
+      <prerequisite name="sourceModelFile" type="string"/>
       <prerequisite name="PYASPROOT" type="string"/>
       <prerequisite name="BINDIR" type="string"/>
    </prerequisites>

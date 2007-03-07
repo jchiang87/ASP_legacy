@@ -21,10 +21,10 @@ def exposureSubMap(outputDir, debug=False):
     try:
         submap_dir = 'gtexpmap_subdir_%02i' % submap
         os.mkdir(submap_dir)
-        os.system('chmod 777 %s' % submap_dir)
+        os.chmod(submap_dir, 0777)
     except OSError:
         if os.path.isdir(submap_dir):
-            os.system('chmod 777 %s' % submap_dir)
+            os.chmod(submap_dir, 0777)
         else:
             raise OSError, "Error creating directory: " + submap_dir
     pfiles = os.environ['PFILES'].split(';')
@@ -47,7 +47,7 @@ def exposureSubMap(outputDir, debug=False):
     else:
         gtexpmap.run()
 
-    os.system('chmod 666 *')
+    os.system('chmod 777 *')
 
 if __name__ == '__main__':
     pass

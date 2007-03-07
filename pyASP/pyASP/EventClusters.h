@@ -11,6 +11,10 @@
 
 #include <vector>
 
+namespace astro {
+   class SkyDir;
+}
+
 #include "pyASP/Event.h"
 
 namespace pyASP {
@@ -28,13 +32,19 @@ public:
 
    double logLikeTime(double bg_rate=0) const;
 
-   double logLikePosition() const;
+   double logLikePosition(astro::SkyDir & clusterDir, 
+                          std::vector<double> & ras,
+                          std::vector<double> & decs) const;
 
 private:
 
-   const std::vector<Event> & m_events;
+   std::vector<Event> m_events;
 
    double m_radius;
+
+   const Event & findLargestCluster() const;
+
+   size_t clusterSize(const Event & event) const;
 
 };
 

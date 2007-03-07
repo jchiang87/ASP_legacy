@@ -19,6 +19,7 @@ def triggerTimes(time, logLike, threshold=112, deadtime=0):
     artificial deadtime."""
     triggers = []
     tpeaks = []
+    ll_values = []
     trigger_is_set = True
     lmax = 0
     tmax = time[0]
@@ -33,9 +34,10 @@ def triggerTimes(time, logLike, threshold=112, deadtime=0):
                 tmax = tt
         if not trigger_is_set and ll <= threshold:
             tpeaks.append(tmax)
+            ll_values.append(lmax)
             lmax = 0
             trigger_is_set = True
-    return triggers, tpeaks
+    return triggers, tpeaks, ll_values
 
 class BlindSearch(object):
     def __init__(self, events, dn=20, deadtime=1000, threshold=112,
@@ -133,15 +135,15 @@ if __name__ == '__main__':
         grb_output = os.path.join(grbroot_dir, notice.name)
         try:
             os.mkdir(grb_output)
-            os.system('chmod 777 %s' % grb_output)
+            os.chmod(grb_output, 0777)
         except OSError:
             if os.path.isdir(grb_output):
-                os.system('chmod 777 %s' % grb_output)
+                os.chmod(grb_output, 0777)
             else:
                 raise OSError, "Error creating directory: " + grb_output
         outfile = os.path.join(grb_output, notice.name + '_Notice.txt')
         notice.write(outfile)
-        os.system('chmod 666 %s' %  outfile) 
+        os.chmod(outfile, 0666)
         print grb_dir.ra(), grb_dir.dec(), tpeak
         
         if makePlots:

@@ -87,4 +87,4 @@ if __name__ == '__main__':
     like = LatGrbSpectrum(ra, dec, tmin, tmax, gbmNotice.Name,
                           radius=15, ft1File=ft1File, ft2File=ft2File)
 
-    os.system('chmod 666 *')
+    os.system('chmod 777 *')

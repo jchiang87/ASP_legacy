@@ -115,6 +115,6 @@ if __name__ == '__main__':
     pars['tstop'] = gbmNotice.tmax
     pars.write()
 
-    os.system('chmod 666 *')
+    os.system('chmod 777 *')
 
     afterglowStreams((os.path.join(output_dir, parfile), ))

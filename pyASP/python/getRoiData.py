@@ -33,7 +33,7 @@ try:
     os.mkdir(name)
 except OSError:
     pass
-os.system('chmod 777 %s' % name)
+os.chmod(name, 0777)
 os.chdir(name)
 
 # Extract events for this region.
@@ -51,13 +51,10 @@ if debug:
 else:
     gtselect.run()
 
-# Build the source model xml file based on a 10 degree radius region.
-# (Revisit this choice of radius).
-
-# sourceModel needs to be generalized to include sources other than just
-# the DRP sources.
-sourceModel = os.path.join(os.environ['PYASPROOT'], 'data', 'source_model.xml')
-modelRequest = 'dist((RA,DEC),(%f,%f))<10.' % (ra, dec)
+# Build the source model xml file using the source region radius given
+# in the ROI definition file via the sourceModelFile env var.
+sourceModel = os.environ["sourceModelFile"]
+modelRequest = 'dist((RA,DEC),(%f,%f))<%e' % (ra, dec, sourcerad)
 outputModel = name + '_ptsrcs_model.xml'
 model = search_Srcs(sourceModel, modelRequest, outputModel)
 
@@ -85,4 +82,4 @@ gtexpmap.pars.write('gtexpmap.par')
 
 writeExpMapBounds(gtexpmap)
 
-os.system('chmod 666 *')
+os.system('chmod 777 *')

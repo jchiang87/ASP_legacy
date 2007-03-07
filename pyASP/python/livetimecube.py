@@ -34,4 +34,4 @@ else:
 pars['expCube'] = gtlivetimecube['outfile']
 pars.write()
 
-os.system('chmod 666 *')
+os.system('chmod 777 *')

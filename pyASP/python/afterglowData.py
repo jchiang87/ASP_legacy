@@ -69,4 +69,4 @@ if __name__ == '__main__':
     outfile.write('xmlFile = %s\n' % srcModel.filename)
     outfile.close()
 
-    os.system('chmod 666 *')
+    os.system('chmod 777 *')

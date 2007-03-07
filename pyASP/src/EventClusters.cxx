@@ -6,21 +6,32 @@
  * $Header$
  */
 
+#include <cmath>
+
+#include <algorithm>
+#include <iostream>
+
 #include "CLHEP/Vector/ThreeVector.h"
+
+#include "astro/SkyDir.h"
 
 #include "pyASP/EventClusters.h"
 
 namespace pyASP {
 
 EventClusters::EventClusters(const std::vector<Event> & events, double radius)
-   : m_events(events), m_radius(radius) {}
+   : m_events(events), m_radius(radius) {
+}
 
-double logLikeTime(double bg_rate) const {
+double EventClusters::logLikeTime(double bg_rate) const {
    std::vector<double> times;
-   for (std::vector<Event>::const_iterator event = m_events.begin();
-        event != m_dist.end(); ++event) {
-      times.push_back(event->time());
+   for (size_t i(0); i < m_events.size(); i++) {
+      times.push_back(m_events.at(i).time());
    }
+//    for (std::vector<Event>::const_iterator event = m_events.begin();
+//         event != m_events.end(); ++event) {
+//       times.push_back(event->time());
+//    }
 
    std::stable_sort(times.begin(), times.end());
    if (bg_rate == 0) {
@@ -35,51 +46,60 @@ double logLikeTime(double bg_rate) const {
    return logLike;
 }
 
-double EventCluster::logLikePosition() const {
+double EventClusters::logLikePosition(astro::SkyDir & clusterDir,
+                                      std::vector<double> & ras,
+                                      std::vector<double> & decs) const {
    typedef std::vector<Event>::const_iterator EventIterator_t;
 
-// Find the largest cluster
-   EventIterator_t event(m_events.begin());
-   const Event & largest(*event);
-   size_t maxSize(clusterSize(*event));
-   for ( ; event != m_events.end(); ++event) {
-      size_t currentSize(clusterSize(*event));
-      if (currentSize > maxSize) {
-         largest = *event;
-         maxSize = currentSize;
-      }
-   }
+   const Event & largest(findLargestCluster());
 
-// Compute the mean direction of this cluster.
+// Compute the mean direction of this cluster and fill output arrays.
    double xhat(0);
    double yhat(0);
    double zhat(0);
    size_t nevents(0);
+   ras.clear();
+   decs.clear();
    for (EventIterator_t event(m_events.begin());
         event != m_events.end(); ++event) {
-      if (largest.sep(event->first) < m_radius) {
-         xhat += event->first.dir().dir().x();
-         yhat += event->first.dir().dir().y();
-         zhat += event->first.dir().dir().z();
+      if (largest.sep(*event) < m_radius) {
+         xhat += event->dir().dir().x();
+         yhat += event->dir().dir().y();
+         zhat += event->dir().dir().z();
          nevents++;
+         ras.push_back(event->dir().ra());
+         decs.push_back(event->dir().dec());
       }
       xhat /= nevents;
       yhat /= nevents;
       zhat /= nevents;
    }
-   astro::SkyDir meanDir(CLHEP::Hep3Vector(xhat, yhat, zhat));
+   clusterDir = astro::SkyDir(CLHEP::Hep3Vector(xhat, yhat, zhat));
 
 // Compute the log-likelihood
    double logLike(0);
    for (EventIterator_t event(m_events.begin()); 
         event != m_events.end(); ++event) {
-      double sep(event->dir().difference(meanDir));
+      double sep(event->dir().difference(clusterDir));
       logLike += std::log(1 - std::cos(sep));
    }
    return logLike;
 }
 
-size_t clusterSize(const Event & event) const {
+const Event & EventClusters::findLargestCluster() const {
+   size_t ilargest(0);
+   size_t maxSize(clusterSize(m_events.front()));
+   for (size_t i(1); i < m_events.size(); i++) {
+      size_t currentSize(clusterSize(m_events.at(i)));
+      if (currentSize > maxSize) {
+         ilargest = i;
+         maxSize = currentSize;
+      }
+   }
+   return m_events.at(ilargest);
+}
+
+size_t EventClusters::clusterSize(const Event & event) const {
    size_t num(0);
    for (size_t j(0); j < m_events.size(); j++) {
       if (event.sep(m_events.at(j)) < m_radius) {

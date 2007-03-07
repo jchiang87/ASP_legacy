@@ -30,4 +30,4 @@ print 'TS value: ', like.Ts(grbName)
 
 like.writeXml()
 
-os.system('chmod 666 *')
+os.system('chmod 777 *')
