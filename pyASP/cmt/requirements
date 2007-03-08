@@ -5,6 +5,8 @@ version v1
 
 use SwigPolicy v*
 use astro v*
+use irfInterface v* irfs
+use irfLoader v* irfs
 use pyIrfLoader v* irfs -no_auto_imports
 use BayesianBlocks v* -no_auto_imports
 use sane v* -no_auto_imports

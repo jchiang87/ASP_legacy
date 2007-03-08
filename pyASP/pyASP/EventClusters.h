@@ -30,17 +30,21 @@ public:
    EventClusters(const std::vector<Event> & events,
                  double radius=17);
 
-   double logLikeTime(double bg_rate=0) const;
+   virtual ~EventClusters() {}
 
-   double logLikePosition() const;
+   virtual double logLikeTime(double bg_rate=0) const;
 
-   astro::SkyDir clusterDir(double radius=5) const {
+   virtual double logLikePosition() const;
+
+   virtual astro::SkyDir clusterDir(double radius=5) const {
       return meanDir(findLargestCluster(radius), radius);
    }
 
-private:
+protected:
 
    std::vector<Event> m_events;
+
+private:
 
    double m_radius;
 

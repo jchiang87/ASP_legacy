@@ -20,6 +20,7 @@ astro::JulianDate jd_from_MET(double met) {
 }
 #include "pyASP/Event.h"
 #include "pyASP/EventClusters.h"
+#include "pyASP/PsfClusters.h"
 %}
 %include stl.i
 %exception {
@@ -40,6 +41,7 @@ astro::JulianDate jd_from_MET(double met);
 %include $(PYASPROOT)/pyASP/Event.h
 %template(EventVector) std::vector<pyASP::Event>;
 %include $(PYASPROOT)/pyASP/EventClusters.h
+%include $(PYASPROOT)/pyASP/PsfClusters.h
 %extend astro::SkyDir {
    static astro::SkyDir interpolate(const astro::SkyDir & dir1, 
                                     const astro::SkyDir & dir2,

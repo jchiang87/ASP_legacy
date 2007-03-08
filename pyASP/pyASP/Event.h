@@ -35,8 +35,16 @@ public:
       return m_time;
    }
 
+   double energy() const {
+      return m_energy;
+   }
+
    const astro::SkyDir & dir() const {
       return m_dir;
+   }
+
+   int eventClass() const {
+      return m_eventClass;
    }
 
    bool operator==(const Event & event) const {
