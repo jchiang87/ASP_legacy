@@ -6,6 +6,7 @@
  * $Header$
  */
 
+#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <utility>
@@ -106,9 +107,14 @@ void PsfClusters::loadIrfs(const std::string & irfs) {
 }
 
 const irfInterface::IPsf & PsfClusters::psf(size_t item) const {
-   std::map<size_t, irfInterface::IPsf *>::const_iterator it = 
-      m_psfs.find(item);
+   typedef std::map<size_t, irfInterface::IPsf *> PsfMap_t;
+   PsfMap_t::const_iterator it(m_psfs.find(item));
    if (it == m_psfs.end()) {
+      std::cout << "Available IRF classes: \n";
+      for (PsfMap_t::const_iterator foo(m_psfs.begin()); 
+           foo != m_psfs.end(); ++foo) {
+         std::cout << foo->first << std::endl;
+      }
       std::ostringstream message;
       message << "Error accessing IRF for event class " << item;
       throw std::runtime_error(message.str());

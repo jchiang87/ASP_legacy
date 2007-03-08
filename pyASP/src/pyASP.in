@@ -21,6 +21,7 @@ astro::JulianDate jd_from_MET(double met) {
 #include "pyASP/Event.h"
 #include "pyASP/EventClusters.h"
 #include "pyASP/PsfClusters.h"
+#include "pyASP/ScData.h"
 %}
 %include stl.i
 %exception {
@@ -38,6 +39,7 @@ astro::JulianDate jd_from_MET(double met) {
 %include $(ASTROROOT)/astro/SkyDir.h
 %include $(ASTROROOT)/astro/SolarSystem.h
 astro::JulianDate jd_from_MET(double met);
+%include $(PYASPROOT)/pyASP/ScData.h
 %include $(PYASPROOT)/pyASP/Event.h
 %template(EventVector) std::vector<pyASP::Event>;
 %include $(PYASPROOT)/pyASP/EventClusters.h

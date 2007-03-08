@@ -8,8 +8,19 @@
 #
 
 import numarray as num
-from pyIrfLoader import SkyDir
-from EventClusters import *
+from pyASP import SkyDir, Event, EventClusters
+#from pyIrfLoader import SkyDir
+#from EventClusters import *
+
+def convert(events, imin=0, imax=None):
+    if imax is None:
+        imax = len(events.RA)
+    my_events = []
+    for evt_tuple in zip(events.RA[imin:imax], events.DEC[imin:imax],
+                         events.TIME[imin:imax], events.ENERGY[imin:imax],
+                         events.EVENT_CLASS[imin:imax]):
+        my_events.append(Event(*evt_tuple))
+    return my_events
 
 def triggerTimes(time, logLike, threshold=112, deadtime=0):
     """Find trigger times and peak times based on a time-ordered
@@ -63,7 +74,9 @@ class BlindSearch(object):
         for imin, imax in zip(indices[:-1], indices[1:]):
             clusters = self.clusterAlg(convert(events, imin, imax))
             try:
-                logPdts, logPdists = clusters.logLike(bg_rate=bg_rate)
+#                logPdts, logPdists = clusters.logLike(bg_rate=bg_rate)
+                logPdts = clusters.logLikeTime()
+                logPdists = clusters.logLikePosition()
                 logdts.append(logPdts)
                 logdists.append(logPdists)
                 times.append((events.TIME[imin] + events.TIME[imax-1])/2.)
@@ -73,9 +86,10 @@ class BlindSearch(object):
         self.logdts = num.array(logdts)
         self.logdists = num.array(logdists)
         logLike = self.logdts + self.logdists
-        self.triggers, self.tpeaks = triggerTimes(times, -logLike,
-                                                  deadtime=deadtime,
-                                                  threshold=threshold)
+        self.triggers, self.tpeaks, self.ll = triggerTimes(times, -logLike,
+                                                           deadtime=deadtime,
+                                                           threshold=threshold)
+
     def grbDirs(self, radius=5):
         """Go through the list of candidate bursts, and return a list
         of SkyDirs, event (ras, decs), and peak times.
@@ -86,9 +100,13 @@ class BlindSearch(object):
             imin = min(num.where(events.TIME > tpeak-50)[0])
             imax = max(num.where(events.TIME < tpeak+50)[0])
             clusters = self.clusterAlg(convert(events, imin, imax))
-            grb_dir = list(clusters.localize())
-            grb_dir.append(tpeak)
-            grb_dirs.append(grb_dir)
+            #grb_dir = list(clusters.localize())
+            try:
+                grb_dir = [clusters.clusterDir()]
+                grb_dir.append(tpeak)
+                grb_dirs.append(grb_dir)
+            except:
+                pass
         return grb_dirs
 
 if __name__ == '__main__':
@@ -130,7 +148,7 @@ if __name__ == '__main__':
 
     grbDirs = blindSearch.grbDirs()
     for item in grbDirs:
-        grb_dir, ras, decs, tpeak = item
+        grb_dir, tpeak = item
         notice = LatGcnNotice(tpeak, grb_dir.ra(), grb_dir.dec())
         grb_output = os.path.join(grbroot_dir, notice.name)
         try:
@@ -147,8 +165,7 @@ if __name__ == '__main__':
         print grb_dir.ra(), grb_dir.dec(), tpeak
         
         if makePlots:
-            plot.xyhist(ras, decs)
             plot.vline(grb_dir.ra())
             plot.hline(grb_dir.dec())
         else:
-            createGrbStreams.refinementStreams(output_dir=grb_output)
+#            createGrbStreams.refinementStreams(output_dir=grb_output)
