@@ -9,6 +9,8 @@
 #ifndef pyASP_PsfClusters_h
 #define pyASP_PsfClusters_h
 
+#include <map>
+
 #include "pyASP/EventClusters.h"
 
 namespace irfInterface {
@@ -31,7 +33,7 @@ public:
                const ScData & scData,
                const std::string & irfs="DC2");
 
-   virtual ~PsfClusters() {}
+   virtual ~PsfClusters();
 
    virtual double logLikePosition() const {
       return m_logLikePosition;
@@ -44,10 +46,14 @@ public:
 private:
 
    const ScData & m_scData;
+
    double m_logLikePosition;
+
    astro::SkyDir m_clusterDir;
 
-   std::vector<irfInterface::IPsf *> m_psfs;
+   std::map<size_t, irfInterface::IPsf *> m_psfs;
+
+   const irfInterface::IPsf & psf(size_t item) const;
 
    const Event & findLargestCluster(double & logLike) const;
    void computePsfWts(const Event & evt, std::vector<double> & wts) const;

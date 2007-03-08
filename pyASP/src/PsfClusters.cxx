@@ -6,6 +6,10 @@
  * $Header$
  */
 
+#include <sstream>
+#include <stdexcept>
+#include <utility>
+
 #include "irfInterface/IrfsFactory.h"
 #include "irfInterface/IPsf.h"
 
@@ -27,16 +31,27 @@ PsfClusters::PsfClusters(const std::vector<Event> & events,
    double xhat(0);
    double yhat(0);
    double zhat(0);
+   double norm(0);
+   size_t i(0);
    for (std::vector<Event>::const_iterator evt(m_events.begin());
-        evt != m_events.end(); ++evt) {
-      xhat += evt->dir().dir().x();
-      yhat += evt->dir().dir().y();
-      zhat += evt->dir().dir().z();
+        evt != m_events.end(); ++evt, i++) {
+      xhat += evt->dir().dir().x()*wts.at(i);
+      yhat += evt->dir().dir().y()*wts.at(i);
+      zhat += evt->dir().dir().z()*wts.at(i);
+      norm += wts.at(i);
    }
-   xhat /= m_events.size();
-   yhat /= m_events.size();
-   zhat /= m_events.size();
+   xhat /= norm;
+   yhat /= norm;
+   zhat /= norm;
    m_clusterDir = astro::SkyDir(CLHEP::Hep3Vector(xhat, yhat, zhat));
+}
+
+PsfClusters::~PsfClusters() {
+   for (std::map<size_t, irfInterface::IPsf *>::iterator item(m_psfs.begin());
+        item != m_psfs.end(); ++item) {
+      delete item->second;
+      item->second = 0;
+   }
 }
 
 double PsfClusters::eventLogLike(const Event & evt) const {
@@ -73,8 +88,8 @@ void PsfClusters::computePsfWts(const Event & evt,
    std::vector<Event>::const_iterator event(m_events.begin());
    for ( ; event != m_events.end(); ++event) {
       double sep(event->sep(evt));
-      wts.push_back(m_psfs[evt.eventClass()]->value(sep, event->energy(),
-                                                    theta, 0));
+      wts.push_back(psf(evt.eventClass()).value(sep, event->energy(),
+                                                theta, 0));
    }
 }
 
@@ -82,12 +97,23 @@ void PsfClusters::loadIrfs(const std::string & irfs) {
    irfLoader::Loader::go(irfs);
    const std::vector<std::string> & irfNames =
       irfLoader::Loader::respIds().find(irfs)->second;
-   m_psfs.resize(irfNames.size());
    for (size_t i(0); i < irfNames.size(); i++) {
       irfInterface::Irfs * irf = 
          irfInterface::IrfsFactory::instance()->create(irfNames.at(i));
-      m_psfs.at(irf->irfID()) = irf->psf()->clone();
+      m_psfs[irf->irfID()] = irf->psf()->clone();
+      delete irf;
    }
+}
+
+const irfInterface::IPsf & PsfClusters::psf(size_t item) const {
+   std::map<size_t, irfInterface::IPsf *>::const_iterator it = 
+      m_psfs.find(item);
+   if (it == m_psfs.end()) {
+      std::ostringstream message;
+      message << "Error accessing IRF for event class " << item;
+      throw std::runtime_error(message.str());
+   }
+   return *(it->second);
 }
 
 } // namespace pyASP
