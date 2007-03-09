@@ -26,20 +26,19 @@ PsfClusters::PsfClusters(const std::vector<Event> & events,
                          const std::string & irfs) 
    : EventClusters(events), m_scData(scData) {
    loadIrfs(irfs);
-   std::vector<double> wts;
+   std::map<Event, double> wts;
    const Event & largest(findLargestCluster(m_logLikePosition));
    computePsfWts(largest, wts);
    double xhat(0);
    double yhat(0);
    double zhat(0);
    double norm(0);
-   size_t i(0);
-   for (std::vector<Event>::const_iterator evt(m_events.begin());
-        evt != m_events.end(); ++evt, i++) {
-      xhat += evt->dir().dir().x()*wts.at(i);
-      yhat += evt->dir().dir().y()*wts.at(i);
-      zhat += evt->dir().dir().z()*wts.at(i);
-      norm += wts.at(i);
+   for (std::map<Event, double>::const_iterator wt(wts.begin());
+        wt != wts.end(); ++wt) {
+      xhat += wt->first.dir().dir().x()*wt->second;
+      yhat += wt->first.dir().dir().y()*wt->second;
+      zhat += wt->first.dir().dir().z()*wt->second;
+      norm += wt->second;
    }
    xhat /= norm;
    yhat /= norm;
@@ -56,15 +55,16 @@ PsfClusters::~PsfClusters() {
 }
 
 double PsfClusters::eventLogLike(const Event & evt) const {
-   std::vector<double> wts;
+   std::map<Event, double> wts;
    computePsfWts(evt, wts);
    return eventLogLike(wts);
 }
 
-double PsfClusters::eventLogLike(const std::vector<double> & wts) const {
+double PsfClusters::eventLogLike(const std::map<Event, double> & wts) const {
    double logLike(0);
-   for (size_t i(0); i < wts.size(); i++) {
-      logLike += std::log(wts.at(i));
+   for (std::map<Event, double>::const_iterator wt(wts.begin());
+        wt != wts.end(); ++wt) {
+      logLike += std::log(wt->second);
    }
    return logLike;
 }
@@ -83,14 +83,17 @@ const Event & PsfClusters::findLargestCluster(double & maxLogLike) const {
 }
 
 void PsfClusters::computePsfWts(const Event & evt, 
-                                std::vector<double> & wts) const {
+                                std::map<Event, double> & wts) const {
    wts.clear();
    double theta(m_scData.inclination(evt.time(), evt.dir()));
    std::vector<Event>::const_iterator event(m_events.begin());
    for ( ; event != m_events.end(); ++event) {
-      double sep(event->sep(evt));
-      wts.push_back(psf(evt.eventClass()).value(sep, event->energy(),
-                                                theta, 0));
+//      if (evt != *event) {
+         double sep(event->sep(evt));
+         double value(psf(event->eventClass()).value(sep, event->energy(),
+                                                     theta, 0));
+         wts.insert(std::make_pair(*event, value));
+//      }
    }
 }
 

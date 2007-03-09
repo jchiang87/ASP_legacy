@@ -11,11 +11,11 @@
 
 #include <vector>
 
+#include "pyASP/Event.h"
+
 namespace astro {
    class SkyDir;
 }
-
-#include "pyASP/Event.h"
 
 namespace pyASP {
 

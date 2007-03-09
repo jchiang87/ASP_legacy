@@ -8,9 +8,19 @@
 #
 
 import numarray as num
-from pyASP import SkyDir, Event, EventClusters
-#from pyIrfLoader import SkyDir
-#from EventClusters import *
+
+use_old_imp = False
+
+threshold = 112
+if use_old_imp:
+    from pyIrfLoader import SkyDir
+    from EventClusters import *
+else:
+    from pyASP import SkyDir, Event, EventClusters
+#    from pyASP import SkyDir, Event, PsfClusters, ScData
+#    scData = ScData("/nfs/farm/g/glast/u33/jchiang/DC2/DC2_FT2_v2.fits")
+#    EventClusters = lambda x : PsfClusters(x, scData, "DC2")
+#    threshold = 19
 
 def convert(events, imin=0, imax=None):
     if imax is None:
@@ -74,9 +84,11 @@ class BlindSearch(object):
         for imin, imax in zip(indices[:-1], indices[1:]):
             clusters = self.clusterAlg(convert(events, imin, imax))
             try:
-#                logPdts, logPdists = clusters.logLike(bg_rate=bg_rate)
-                logPdts = clusters.logLikeTime()
-                logPdists = clusters.logLikePosition()
+                if use_old_imp:
+                    logPdts, logPdists = clusters.logLike(bg_rate=bg_rate)
+                else:
+                    logPdts = clusters.logLikeTime()
+                    logPdists = clusters.logLikePosition()
                 logdts.append(logPdts)
                 logdists.append(logPdists)
                 times.append((events.TIME[imin] + events.TIME[imax-1])/2.)
@@ -100,13 +112,18 @@ class BlindSearch(object):
             imin = min(num.where(events.TIME > tpeak-50)[0])
             imax = max(num.where(events.TIME < tpeak+50)[0])
             clusters = self.clusterAlg(convert(events, imin, imax))
-            #grb_dir = list(clusters.localize())
-            try:
-                grb_dir = [clusters.clusterDir()]
+            if use_old_imp:
+                grb_dir = list(clusters.localize())
                 grb_dir.append(tpeak)
                 grb_dirs.append(grb_dir)
-            except:
-                pass
+            else:
+                try:
+                    grb_dir = [clusters.clusterDir()]
+                    grb_dir.append(tpeak)
+                    grb_dirs.append(grb_dir)
+                except:
+                    pass
+ 
         return grb_dirs
 
 if __name__ == '__main__':
@@ -131,7 +148,7 @@ if __name__ == '__main__':
 
     events = FitsNTuple(downlink_file)
 
-    blindSearch = BlindSearch(events)
+    blindSearch = BlindSearch(events, threshold=threshold)
 
     if makePlots:
         import hippoplotter as plot
@@ -148,7 +165,10 @@ if __name__ == '__main__':
 
     grbDirs = blindSearch.grbDirs()
     for item in grbDirs:
-        grb_dir, tpeak = item
+        if use_old_imp:
+            grb_dir, ras, decs, tpeak = item
+        else:
+            grb_dir, tpeak = item
         notice = LatGcnNotice(tpeak, grb_dir.ra(), grb_dir.dec())
         grb_output = os.path.join(grbroot_dir, notice.name)
         try:
@@ -168,4 +188,4 @@ if __name__ == '__main__':
             plot.vline(grb_dir.ra())
             plot.hline(grb_dir.dec())
         else:
-#            createGrbStreams.refinementStreams(output_dir=grb_output)
+            createGrbStreams.refinementStreams(output_dir=grb_output)

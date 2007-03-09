@@ -47,11 +47,15 @@ double EventClusters::logLikePosition() const {
 
    astro::SkyDir clusterDir(meanDir(largest));
 
+   double radius(m_radius*M_PI/180);
+
    double logLike(0);
    for (std::vector<Event>::const_iterator event(m_events.begin()); 
         event != m_events.end(); ++event) {
       double sep(event->dir().difference(clusterDir));
-      logLike += std::log(1 - std::cos(sep));
+      if (sep < radius) {
+          logLike += std::log(1 - std::cos(sep));
+      }
    }
    return logLike;
 }

@@ -33,7 +33,8 @@ class PipelineCommand(object):
         "Abstraction for a Pipeline-II command."
         if stream is None:
             stream = self.streamNumber()
-        executable = '/afs/slac/g/glast/ground/bin/pipeline'
+        #executable = '/afs/slac/g/glast/ground/bin/pipeline'
+        executable = '~glast/pipeline-II/prod/pipeline'
         self.command = ('%s createStream %s %s "%s"'
                         % (executable, taskname, stream,
                            self._argString(args)))

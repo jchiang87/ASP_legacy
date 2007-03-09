@@ -55,6 +55,10 @@ public:
       return m_id != event.m_id;
    }
 
+   bool operator<(const Event & other) const {
+      return m_id < other.m_id;
+   }
+
 private:
 
    astro::SkyDir m_dir;

@@ -36,7 +36,7 @@ public:
    virtual ~PsfClusters();
 
    virtual double logLikePosition() const {
-      return m_logLikePosition;
+      return -m_logLikePosition;
    }
 
    virtual astro::SkyDir clusterDir() const {
@@ -56,9 +56,9 @@ private:
    const irfInterface::IPsf & psf(size_t item) const;
 
    const Event & findLargestCluster(double & logLike) const;
-   void computePsfWts(const Event & evt, std::vector<double> & wts) const;
+   void computePsfWts(const Event & evt, std::map<Event, double> & wts) const;
    double eventLogLike(const Event & evt) const;
-   double eventLogLike(const std::vector<double> & wts) const;
+   double eventLogLike(const std::map<Event, double> & wts) const;
 
    void loadIrfs(const std::string & irfs);
 
