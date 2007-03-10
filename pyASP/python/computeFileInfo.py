@@ -10,19 +10,22 @@
 import os
 import pyfits
 
-def getObsTimes(ft1File):
+def getObsTimes(vars):
+    ft1File = os.path.join(vars["downlinkDir"], vars["downlinkFile"])
     events = pyfits.open(ft1File)["EVENTS"]
-    return events["TSTART"], events["TSTOP"]
+    return events.header["TSTART"], events.header["TSTOP"]
 
 variables = {}
-variables["downlinkDir"] = "/nfs/farm/g/glast/u33/DC2/Downlinks"
+variables["downlinkDir"] = "/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks"
 variables["downlinkFile"] = "downlink_0000.fits"
 
-tstart, tstop = getObsTimes(variables["downlinkFile"])
+tstart, tstop = getObsTimes(variables)
 variables["tstart"] = "%i" % tstart
 variables["tstop"] = "%i" % tstop
 
+print variables
+
 summary = open(os.environ["PIPELINE_SUMMARY"], 'a')
 for item in variables:
-    summary.write("%s : %s" % (item, variables[item]))
+    summary.write("pipeline.%s : %s\n" % (item, variables[item]))
 summary.close()

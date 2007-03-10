@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline xmlns="http://glast-ground.slac.stanford.edu/pipeline" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
-  <task name="RegisterData" type="Data" version="0.4">
+  <task name="RegisterData" type="Data" version="0.7">
     <notation>Registering DC2 data</notation>
     <prerequisites>
       <prerequisite name="numFiles" type="integer"/>
@@ -18,14 +18,19 @@
         downlinkFile = fileInfo.getVariable("downlinkFile")
         tstart = fileInfo.getVariable("tstart")
         tstop = fileInfo.getVariable("tstop")
-        dataType = "MC"
-        logicalPath = "/DC2/FT1:" + downlinkFile
-        filePath = downlinkDir + "/" + downlinkFile
-        attributes = "tstart=%s:tstop=%s" % (tstart, tstop)
-        datacatalog.registerDataset(dataType, logicalPath, filePath,
-                                    attributes)
+        print downlinkDir, downlinkFile, tstart, tstop
+        #dataType = "MC"
+        #logicalPath = "/DC2/FT1:" + downlinkFile
+        #filePath = downlinkDir + "/" + downlinkFile
+        #attributes = "tstart=%s:tstop=%s" % (tstart, tstop)
+        #print dataType, logicalPath, filePath, attributes
+        #datacatalog.registerDataset(dataType, logicalPath, filePath,
+        #                            attributes)
         ]]>
       </script>
+      <depends>
+        <after process="computeFileInfo" status="SUCCESS"/>
+      </depends>
     </process>
   </task>
 </pipeline>

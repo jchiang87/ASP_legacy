@@ -12,13 +12,51 @@
       <prerequisite name="PYASPROOT" type="string"/>
       <prerequisite name="BINDIR" type="string"/>
    </prerequisites>
-   <process name="afterglowData">
-      <variables>
-         <var name="OUTPUTDIR">${output_dir}</var>
-         <var name="GRBPARS">${GRB_parfile}</var>
-      </variables>
-      <job executable="${PYASPROOT}/${BINDIR}/afterglowData.sh" maxCPU="600"/>
+
+   <process name="setupCatalogQuery">
+     <job executable="${PYASPROOT}/${BINDIR}/setupCatalogQuery.sh"
+          maxCPU="30"/>
    </process>
+
+   <process name="catalogQuery">
+     <script language="python">
+       <![CDATA[
+         from java.util import HashMap
+         setup = pipeline.getProcessInstance("setupCatalogQuery")
+         tstart = setup.getVariable("tstart")
+         tstop = setup.getVariable("tstop")
+         dataType = "MC"
+         logicalFolder = "/DC2/FT1:"
+         queryString = "%s < TIME && TIME < %s" % (tstart, tstop)
+         dataSetList = datacatalog.findDatasets(dataType, logicalFolder,
+                                                queryString)
+         # repackage the list of files to pass as the content of ft1Files
+         filePaths = [dataSetList.get(i).getLocation() for i in 
+                      range(dataSetList.size())]
+         fileContent = "\n".join(filePaths) + "\n"
+         fileList = HashMap()
+         fileList.put("fT1Files", fileContent)
+         args = HashMap()
+         args.put("queryPath", ${PIPELINE_SUMMARY})
+         pipeline.createSubstream("afterglowDataTask", 0, args, fileList)
+       ]]>
+     </script>
+     <depends>
+       <after process="setupCatalogQuery" status="SUCCESS"/>
+     </depends>
+     <createsSubtasks>
+       <subtask>afterglowDataTask</subtask>
+     </createsSubtasks>
+   </process>
+
+   <task name="afterglowDataTask" version="0.1" type="Data">
+     <prerequisites>
+       <prerequisite name="queryPath" type="string"/>
+     </prerequisites>
+     <process name="afterglowData">
+      <job executable="${PYASPROOT}/${BINDIR}/afterglowData.sh" maxCPU="600"/>
+     </process>
+   </task>
 
    <process name="afterglowDiffResps">
       <variables>
