@@ -5,16 +5,18 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="DRP_monitoring" version="2.0" type="Data">
+<task name="DRP_monitoring" version="2.2" type="Data">
+  <variables>
+    <var name="sourceModelFile">${PYASPROOT}/data/DRP_SourceModel.xml</var>
+    <var name="PYASPROOT">/nfs/farm/g/glast/u33/jchiang/ASP/pyASP/v1</var>
+    <var name="BINDIR">rh9_gcc32</var>
+  </variables>
    <prerequisites>
       <prerequisite name="output_dir" type="string"/>
       <prerequisite name="start_time" type="string"/>
       <prerequisite name="stop_time" type="string"/>
       <prerequisite name="RoI_file" type="string"/>
       <prerequisite name="num_RoIs" type="integer"/>
-      <prerequisite name="sourceModelFile" type="string"/>
-      <prerequisite name="PYASPROOT" type="string"/>
-      <prerequisite name="BINDIR" type="string"/>
    </prerequisites>
 
    <process name="getIntervalData">
@@ -97,7 +99,7 @@
          <var name="ROI_ID">${pipeline.stream}</var>
        </variables>
        <job executable="${PYASPROOT}/${BINDIR}/sourceAnalysis.sh"
-            maxCPU="20000"/>
+            maxCPU="100000"/>
        <depends>
          <after process="combineExpMaps" status="SUCCESS"/>
        </depends>

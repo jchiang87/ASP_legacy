@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline xmlns="http://glast-ground.slac.stanford.edu/pipeline" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
-  <task name="RegisterData" type="Data" version="0.7">
+  <task name="RegisterData" type="Data" version="0.8">
     <notation>Registering DC2 data</notation>
+    <variables>
+      <var name="PYASPROOT">/nfs/farm/g/glast/u33/jchiang/ASP/pyASP/v1</var>
+      <var name="BINDIR">rh9_gcc32</var>
+    </variables>
     <prerequisites>
       <prerequisite name="numFiles" type="integer"/>
-      <prerequisite name="PYASPROOT" type="string"/>
-      <prerequisite name="BINDIR" type="string"/>
     </prerequisites>
     <process name="computeFileInfo">
       <job executable="${PYASPROOT}/${BINDIR}/computeFileInfo.sh" maxCPU="60"/>

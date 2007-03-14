@@ -15,9 +15,12 @@ from getL1Data import getL1Data
 from ft1merge import ft1merge
 from parfile_parser import Parfile
 
-_L1DataPath = '/nfs/farm/g/glast/u33/jchiang/ASP/testdata/downlinks'
-_ft2File = '/nfs/farm/g/glast/u33/jchiang/ASP/testdata/eg_diffuse_scData_0000.fits'
-_startTime = 0
+#_L1DataPath = '/nfs/farm/g/glast/u33/jchiang/ASP/testdata/downlinks'
+#_ft2File = '/nfs/farm/g/glast/u33/jchiang/ASP/testdata/eg_diffuse_scData_0000.fits'
+#_startTime = 0
+_L1DataPath = '/nfs/farm/g/glast/u33/jchiang/DC2/Downlinks'
+_ft2File = '/nfs/farm/g/glast/u33/jchiang/DC2/DC2_FT2_v2.fits'
+_startTime = 220838400
 
 debug = False
 
@@ -32,9 +35,6 @@ gtselect = GtApp('gtselect')
 ft1, ft2 = getL1Data(start_time, stop_time, l1DataPath=_L1DataPath,
                      ft2File=_ft2File, startTime=_startTime)
 print "Using downlink files: ", ft1
-
-## use DC2 data
-#ft1, ft2 = getL1Data(start_time, stop_time)
 
 ft1Merged = 'FT1_merged.fits'
 ft1merge(ft1, ft1Merged)

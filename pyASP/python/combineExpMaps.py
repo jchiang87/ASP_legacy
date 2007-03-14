@@ -12,10 +12,6 @@ import os
 from GtApp import GtApp
 import pyfits
 
-#os.chdir(os.environ['OUTPUTDIR'])
-#
-#gtexpmap = GtApp("gtexpmap")
-
 _defaultTextFile = "gtexpmap_submaps.txt"
 
 def pixbounds(npts, nx):

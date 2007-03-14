@@ -19,6 +19,7 @@ from parfile_parser import Parfile
 from drpRoiSetup import rootpath, pars, rois
 
 debug = False
+#debug = True
 
 id = int(os.environ['ROI_ID']) - 1  # This env var is set in DRP_monitoring.xml
 name = rois[id].name
