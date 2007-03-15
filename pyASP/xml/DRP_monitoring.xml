@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="DRP_monitoring" version="3.0" type="Data">
+<task name="DRP_monitoring" version="3.1" type="Data">
   <variables>
     <var name="sourceModelFile">${PYASPROOT}/data/DRP_SourceModel.xml</var>
     <var name="PYASPROOT">/nfs/farm/g/glast/u33/jchiang/ASP/pyASP/v1</var>
@@ -121,6 +121,9 @@
        <depends>
          <after process="sourceAnalysis" status="SUCCESS"/>
        </depends>
+       <createsSubtasks>
+         <subtask>energyBandAnalysis</subtask>
+       </createsSubtasks>
      </process>
 
      <task name="exposureSubMap" version="1.0" type="Data">
@@ -136,7 +139,7 @@
        </process>
      </task> <!--exposureSubMap-->
 
-     <task name="energyBandAnalysis">
+     <task name="energyBandAnalysis" version="1.0" type="Data">
        <prerequisites>
          <prerequisite name="emin" type="integer"/>
          <prerequisite name="emax" type="integer"/>
