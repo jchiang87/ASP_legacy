@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="DRP_monitoring" version="2.2" type="Data">
+<task name="DRP_monitoring" version="3.0" type="Data">
   <variables>
     <var name="sourceModelFile">${PYASPROOT}/data/DRP_SourceModel.xml</var>
     <var name="PYASPROOT">/nfs/farm/g/glast/u33/jchiang/ASP/pyASP/v1</var>
@@ -105,6 +105,24 @@
        </depends>
      </process>
 
+     <process name="launchEnergyBandAnalyses">
+       <script language="python">
+         <![CDATA[
+            #emins = [100, 300, 1e3, 3e3, 1e4, 100]
+            #emaxs = [300, 1e3, 3e3, 1e4, 100, 3e5]
+            emins = [100]
+            emaxs = [3e5]
+            for i, emin, emax in zip(range(len(emins)), emins, emaxs):
+                args = "emin=%i,emax=%i,ROI_ID=%i" % (emin, emax,
+                                                      pipeline.stream)
+                pipeline.createSubstream("energyBandAnalysis", i, args)
+         ]]>
+       </script>
+       <depends>
+         <after process="sourceAnalysis" status="SUCCESS"/>
+       </depends>
+     </process>
+
      <task name="exposureSubMap" version="1.0" type="Data">
        <prerequisites>
          <prerequisite name="ROI_ID" type="string"/>
@@ -117,6 +135,18 @@
               maxCPU="20000"/>
        </process>
      </task> <!--exposureSubMap-->
+
+     <task name="energyBandAnalysis">
+       <prerequisites>
+         <prerequisite name="emin" type="integer"/>
+         <prerequisite name="emax" type="integer"/>
+         <prerequisite name="ROI_ID" type="string"/>
+       </prerequisites>
+       <process name="fitEnergyBand">
+         <job executable="${PYASPROOT}/${BINDIR}/fitEnergyBand.sh"
+              maxCPU="20000"/>
+       </process>
+     </task>
 
    </task><!--roiAnalysis-->
 

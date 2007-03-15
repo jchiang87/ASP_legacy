@@ -68,6 +68,7 @@ if __name__ == '__main__':
                                 'getRoiData.py',
                                 'drpExpMap.py', 
                                 'combineDrpExpMaps.py',
-                                'sourceAnalysis.py')
+                                'sourceAnalysis.py',
+                                'fitEnergyBand.py')
             for script in standard_scripts:
                 wrapperGenerator(script)
