@@ -1,0 +1,12 @@
+package ASP
+version v0
+
+author James Chiang <jchiang@slac.stanford.edu>
+
+#
+# Container package for Automated Science Processing code
+# $Header$
+#
+
+use pyASP v* ASP
+use BaysianBlocks v* ASP
