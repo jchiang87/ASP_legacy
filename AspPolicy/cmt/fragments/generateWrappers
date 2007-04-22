@@ -1,0 +1,8 @@
+# -*- makefile -*-
+# $Header$
+
+${CONSTITUENT} :: 
+	(source setup.sh; cd ../python; \
+	python ${ASPPOLICYROOT}/python/wrapperGenerator.py)
+${CONSTITUENT}clean ::
+	/bin/rm -f ../${BINDIR}/*.sh
