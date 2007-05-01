@@ -1,4 +1,35 @@
 ------------------------------------------------------------
+User: jchiang  Mon Apr 30 19:57:44 PDT 2007
+ASP/HealPix
+
+Log Message:
+initial import
+
+Status:
+
+Vendor Tag:	JC
+Release Tags:	v0
+		
+N ASP/HealPix/.cvsignore
+N ASP/HealPix/ChangeLog
+N ASP/HealPix/cmt/requirements
+N ASP/HealPix/src/HealpixArray.cxx
+N ASP/HealPix/src/HealPix.in
+N ASP/HealPix/src/CountsArray.cxx
+N ASP/HealPix/src/PoissonProb.cxx
+N ASP/HealPix/src/ExposureArray.cxx
+N ASP/HealPix/python/test.py
+N ASP/HealPix/python/HpArrayWrapper.py
+N ASP/HealPix/HealPix/CountsArray.h
+N ASP/HealPix/HealPix/ExposureArray.h
+N ASP/HealPix/HealPix/HealpixArray.h
+N ASP/HealPix/HealPix/Pixel.h
+N ASP/HealPix/HealPix/PoissonProb.h
+
+No conflicts created by this import
+
+    *
+------------------------------------------------------------
 User: jchiang  Mon Apr 30 10:45:08 PDT 2007
 users/jchiang/HealPix/python
 
