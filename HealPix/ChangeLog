@@ -1,0 +1,371 @@
+------------------------------------------------------------
+User: jchiang  Mon Apr 30 10:45:08 PDT 2007
+users/jchiang/HealPix/python
+
+Modified Files:
+	HpArrayWrapper.py 
+Log Message:
+clean up and comment
+    *
+------------------------------------------------------------
+User: jchiang  Mon Apr 30 08:37:20 PDT 2007
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealpixArray.cxx 
+Log Message:
+speed up coordinate access
+    *
+------------------------------------------------------------
+User: jchiang  Mon Apr 30 08:37:20 PDT 2007
+users/jchiang/HealPix/python
+
+Modified Files:
+	HpArrayWrapper.py 
+Log Message:
+speed up coordinate access
+    *
+------------------------------------------------------------
+User: jchiang  Mon Apr 30 08:37:19 PDT 2007
+users/jchiang/HealPix/HealPix
+
+Modified Files:
+	HealpixArray.h 
+Log Message:
+speed up coordinate access
+    *
+------------------------------------------------------------
+User: jchiang  Mon Apr 30 00:42:53 PDT 2007
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in HealpixArray.cxx 
+Added Files:
+	PoissonProb.cxx 
+Log Message:
+add PoissonProb
+    *
+------------------------------------------------------------
+User: jchiang  Mon Apr 30 00:42:53 PDT 2007
+users/jchiang/HealPix/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+add PoissonProb
+    *
+------------------------------------------------------------
+User: jchiang  Mon Apr 30 00:42:53 PDT 2007
+users/jchiang/HealPix/HealPix
+
+Modified Files:
+	ExposureArray.h HealpixArray.h 
+Added Files:
+	PoissonProb.h 
+Log Message:
+add PoissonProb
+    *
+------------------------------------------------------------
+User: jchiang  Sun Apr 29 21:04:59 PDT 2007
+users/jchiang/HealPix/python
+
+Added Files:
+	HpArrayWrapper.py 
+Log Message:
+add plotting wrapper for HealpixArrays
+    *
+------------------------------------------------------------
+User: jchiang  Sat Apr 28 09:33:34 PDT 2007
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in HealpixArray.cxx 
+Log Message:
+add writeImage method
+    *
+------------------------------------------------------------
+User: jchiang  Sat Apr 28 09:33:34 PDT 2007
+users/jchiang/HealPix/HealPix
+
+Modified Files:
+	HealpixArray.h 
+Log Message:
+add writeImage method
+    *
+------------------------------------------------------------
+User: jchiang  Sat Apr 28 07:45:29 PDT 2007
+users/jchiang/HealPix/src
+
+Modified Files:
+	CountsArray.cxx ExposureArray.cxx HealpixArray.cxx 
+Log Message:
+implement arithmetic operators
+    *
+------------------------------------------------------------
+User: jchiang  Sat Apr 28 07:45:28 PDT 2007
+users/jchiang/HealPix/HealPix
+
+Modified Files:
+	CountsArray.h ExposureArray.h HealpixArray.h 
+Log Message:
+implement arithmetic operators
+    *
+------------------------------------------------------------
+User: jchiang  Fri Apr 27 17:28:21 PDT 2007
+users/jchiang/HealPix/src
+
+Modified Files:
+	CountsArray.cxx ExposureArray.cxx HealPix.in HealpixArray.cxx 
+Removed Files:
+	CountsArray.h ExposureArray.h HealpixArray.h Pixel.h 
+Log Message:
+refactor a bit: move .h files to interface directory; replace HP_binner with more general HpArrayWrapper
+    *
+------------------------------------------------------------
+User: jchiang  Fri Apr 27 17:28:20 PDT 2007
+users/jchiang/HealPix/python
+
+Modified Files:
+	test.py 
+Log Message:
+refactor a bit: move .h files to interface directory; replace HP_binner with more general HpArrayWrapper
+    *
+------------------------------------------------------------
+User: jchiang  Fri Apr 27 17:28:19 PDT 2007
+users/jchiang/HealPix/HealPix
+
+Added Files:
+	CountsArray.h ExposureArray.h HealpixArray.h Pixel.h 
+Log Message:
+refactor a bit: move .h files to interface directory; replace HP_binner with more general HpArrayWrapper
+    *
+------------------------------------------------------------
+User: jchiang  Fri Apr 27 17:26:37 PDT 2007
+users/jchiang/HealPix/HealPix
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/users/jchiang/HealPix/HealPix added to the repository
+
+    *
+------------------------------------------------------------
+User: jchiang  Thu Apr 26 23:38:29 PDT 2007
+users/jchiang/HealPix/src
+
+Modified Files:
+	CountsArray.h ExposureArray.h HealPix.in HealpixArray.h 
+Added Files:
+	CountsArray.cxx ExposureArray.cxx HealpixArray.cxx 
+Log Message:
+add ExposureArray implementation; add .cxx files
+    *
+------------------------------------------------------------
+User: jchiang  Thu Apr 26 23:38:29 PDT 2007
+users/jchiang/HealPix/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+add ExposureArray implementation; add .cxx files
+    *
+------------------------------------------------------------
+User: jchiang  Thu Apr 26 18:17:06 PDT 2007
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in HealpixArray.h 
+Added Files:
+	CountsArray.h ExposureArray.h 
+Log Message:
+add CountsArray, ExposureArray
+    *
+------------------------------------------------------------
+User: jchiang  Thu Apr 26 18:17:05 PDT 2007
+users/jchiang/HealPix/python
+
+Modified Files:
+	test.py 
+Log Message:
+add CountsArray, ExposureArray
+    *
+------------------------------------------------------------
+User: jchiang  Thu Apr 26 09:34:28 PDT 2007
+users/jchiang/HealPix/python
+
+Modified Files:
+	test.py 
+Removed Files:
+	test2.py 
+Log Message:
+mv test2.py test.py
+    *
+------------------------------------------------------------
+User: jchiang  Thu Apr 26 09:32:37 PDT 2007
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealpixArray.h 
+Log Message:
+add COORDSYS keyword; implement binCounts member function for speed
+    *
+------------------------------------------------------------
+User: jchiang  Thu Apr 26 09:32:36 PDT 2007
+users/jchiang/HealPix/python
+
+Modified Files:
+	test2.py 
+Log Message:
+add COORDSYS keyword; implement binCounts member function for speed
+    *
+------------------------------------------------------------
+User: jchiang  Wed Apr 25 23:40:35 PDT 2007
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in Pixel.h 
+Added Files:
+	HealpixArray.h 
+Log Message:
+add file IO; use HealpixArray
+    *
+------------------------------------------------------------
+User: jchiang  Wed Apr 25 23:40:35 PDT 2007
+users/jchiang/HealPix/python
+
+Modified Files:
+	test.py 
+Added Files:
+	test2.py 
+Log Message:
+add file IO; use HealpixArray
+    *
+------------------------------------------------------------
+User: jchiang  Wed Apr 25 23:40:35 PDT 2007
+users/jchiang/HealPix/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+add file IO; use HealpixArray
+    *
+------------------------------------------------------------
+User: jchiang  Sun Apr 10 12:44:59 PDT 2005
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in Pixel.h 
+Removed Files:
+	Iterator.h 
+Log Message:
+delete Iterator wrapper; update scripts
+    *
+------------------------------------------------------------
+User: jchiang  Sun Apr 10 12:44:59 PDT 2005
+users/jchiang/HealPix/python
+
+Modified Files:
+	test.py 
+Log Message:
+delete Iterator wrapper; update scripts
+    *
+------------------------------------------------------------
+User: jchiang  Thu Apr  7 14:23:38 PDT 2005
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in Iterator.h 
+Log Message:
+throw StopIteration from __getitem__
+    *
+------------------------------------------------------------
+User: jchiang  Tue Apr  5 17:58:45 PDT 2005
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in 
+Log Message:
+delegate SkyDir methods from Pixel
+    *
+------------------------------------------------------------
+User: jchiang  Tue Apr  5 06:47:35 PDT 2005
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in 
+Log Message:
+expose Rotation methods
+    *
+------------------------------------------------------------
+User: jchiang  Tue Apr  5 06:47:35 PDT 2005
+users/jchiang/HealPix/python
+
+Modified Files:
+	test.py 
+Log Message:
+expose Rotation methods
+    *
+------------------------------------------------------------
+User: jchiang  Fri Apr  1 09:49:50 PST 2005
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in Pixel.h 
+Log Message:
+add methods to get coords from pixel index and vice versa
+    *
+------------------------------------------------------------
+User: jchiang  Fri Apr  1 09:49:50 PST 2005
+users/jchiang/HealPix/python
+
+Modified Files:
+	test.py 
+Log Message:
+add methods to get coords from pixel index and vice versa
+    *
+------------------------------------------------------------
+User: jchiang  Thu Mar 31 23:27:58 PST 2005
+users/jchiang/HealPix/src
+
+Modified Files:
+	HealPix.in 
+Added Files:
+	Iterator.h 
+Log Message:
+expose Iterator class to python
+    *
+------------------------------------------------------------
+User: jchiang  Thu Mar 31 23:27:57 PST 2005
+users/jchiang/HealPix/python
+
+Added Files:
+	test.py 
+Log Message:
+expose Iterator class to python
+    *
+------------------------------------------------------------
+User: jchiang  Thu Mar 31 23:27:22 PST 2005
+users/jchiang/HealPix/python
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/users/jchiang/HealPix/python added to the repository
+
+    *
+------------------------------------------------------------
+User: jchiang  Thu Mar 31 16:09:58 PST 2005
+users/jchiang/HealPix
+
+Log Message:
+initial import of HealPix python module
+
+Status:
+
+Vendor Tag:	JC
+Release Tags:	v0
+		
+N users/jchiang/HealPix/.cvsignore
+N users/jchiang/HealPix/cmt/requirements
+N users/jchiang/HealPix/src/HealPix.in
+N users/jchiang/HealPix/src/Pixel.h
+
+No conflicts created by this import
+
+    *
