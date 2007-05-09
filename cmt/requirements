@@ -8,5 +8,10 @@ author James Chiang <jchiang@slac.stanford.edu>
 # $Header$
 #
 
+use AspPolicy v* ASP
 use pyASP v* ASP
 use BaysianBlocks v* ASP
+use grbASP v* ASP
+use drpMonitoring v* ASP
+use HealPix v* ASP
+use flareMonitoring v* ASP
