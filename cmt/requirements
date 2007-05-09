@@ -10,7 +10,7 @@ author James Chiang <jchiang@slac.stanford.edu>
 
 use AspPolicy v0 ASP
 use pyASP v1 ASP
-use BaysianBlocks v0r1 ASP
+use BayesianBlocks v0r1 ASP
 use grbASP v0 ASP
 use drpMonitoring v0 ASP
 use HealPix v0 ASP
