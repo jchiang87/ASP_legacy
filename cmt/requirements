@@ -1,5 +1,5 @@
 package ASP
-version v0r1p1
+version v0r1p2
 
 author James Chiang <jchiang@slac.stanford.edu>
 
@@ -9,7 +9,7 @@ author James Chiang <jchiang@slac.stanford.edu>
 #
 
 use AspPolicy v0 ASP
-use pyASP v2 ASP
+use pyASP v2r0p1 ASP
 use BayesianBlocks v0r1 ASP
 use grbASP v0r1 ASP
 use drpMonitoring v0r1 ASP

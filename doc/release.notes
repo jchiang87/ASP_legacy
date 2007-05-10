@@ -5,6 +5,7 @@
   @verbatim
   $Id$
 
+  10-May-07 v0r1p2   JC    update pyASP version
   10-May-07 v0r1p1   JC    update pyASP version
   10-May-07 v0r1     JC    add grbASP, drpMonitoring, flareMonitoring,
                            HealPix, AspPolicy, HealPix as contained and 
