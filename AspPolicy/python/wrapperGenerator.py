@@ -23,11 +23,8 @@ _packageName = packageName()
 _packageRoot = string.upper(_packageName) + 'ROOT'
 
 _ftools_setup= "/afs/slac/g/glast/ground/PipelineConfig/ASP/headas-config-noric024835.sh"
-#_ST_path = "/nfs/farm/g/glast/u09/builds/rh9_gcc32/ScienceTools/ScienceTools-LATEST1.1537"
-_ST_path = "/nfs/farm/g/glast/u06/jchiang/ST"
-_ASP_path = "/nfs/farm/g/glast/u33/jchiang/ASP"
-#_ASP_path = os.path.join(os.path.split(os.environ['PYASPROOT'])[:-3])
-#_ASP_path = "/nfs/slac/g/svac/focke/ASP/code"
+_ST_path = "${ST_INST}"
+_ASP_path = "${ASP_PATH}"
 _package_version = os.environ[_packageRoot].split(os.path.sep)[-1]
 _package_root = os.path.join(_ASP_path, "ASP", _packageName, _package_version)
 _asp_python = "/usr/bin/env python"
