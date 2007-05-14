@@ -5,6 +5,7 @@
     $Id$
 
     @verbatim
-    v0     21-Apr-06   JC   Initial import.
+    v0r1   13-May-07   JC   use ASP_PATH and ST_INST in wrapperGenerator.py
+    v0     21-Apr-07   JC   Initial import.
     @endverbatim
 */
