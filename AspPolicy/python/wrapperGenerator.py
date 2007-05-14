@@ -47,8 +47,7 @@ def wrapperGenerator(scriptName):
     output.write("source %s\n" % _ftools_setup)
     output.write("GLAST_EXT=/afs/slac/g/glast/ground/GLAST_EXT/rh9_gcc32; export GLAST_EXT\n")
     output.write("PATH=%s:${PATH}; export PATH\n" % os.path.join(_ST_path, 'bin'))
-    output.write("source %s\n" % os.path.join(_package_root, 'cmt',
-                                              'setup.sh'))
+    output.write("source %s\n" % os.path.join(_package_root, 'cmt','setup.sh'))
     output.write('exec %s %s\n' % (_asp_python, pyScript))
     output.close()
     os.system('chmod +x %s' % outfile)
