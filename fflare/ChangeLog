@@ -1,4 +1,29 @@
 ------------------------------------------------------------
+User: jchiang  Thu Jul 19 09:07:47 PDT 2007
+ASP/fflare
+
+Log Message:
+initial import into ASP container package
+
+Status:
+
+Vendor Tag:	JC
+Release Tags:	v0
+		
+N ASP/fflare/.cvsignore
+I ASP/fflare/CVS
+N ASP/fflare/ChangeLog
+N ASP/fflare/cmt/requirements
+I ASP/fflare/cmt/CVS
+N ASP/fflare/python/fflare.py
+N ASP/fflare/python/eqtogal.py
+I ASP/fflare/python/CVS
+N ASP/fflare/python/readFT.py
+
+No conflicts created by this import
+
+    *
+------------------------------------------------------------
 User: tosti  Wed Jul 18 09:03:42 PDT 2007
 fflare
 
