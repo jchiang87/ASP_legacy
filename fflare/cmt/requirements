@@ -1,0 +1,10 @@
+package fflare
+
+version v0
+
+# $Id$
+
+use AspPolicy v* ASP
+
+apply_pattern wrapper_scripts
+
