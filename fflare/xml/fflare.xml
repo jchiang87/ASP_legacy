@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline
+   xmlns="http://glast-ground.slac.stanford.edu/pipeline"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
+
+<task name="FindFlare" version="vo" type="Data">
+  <variables>
+    <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v8r0p4"</var>
+    <var name="BINDIR">rh9_gcc32</var>
+  </variables>
+   <prerequisites>
+      <prerequisite name="output_dir" type="string"/>
+      <prerequisite name="FFLAREROOT" type="string"/>
+   </prerequisites>
+
+   <process name="getIntervalData">
+     <job executable="${FFLAREROOT}/${BINDIR}/fflare.sh" 
+          batchOptions=" -q short" />
+   </process>
+
+</task><!--FindFlare-->
+
+</pipeline>
