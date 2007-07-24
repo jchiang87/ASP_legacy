@@ -23,6 +23,7 @@ _packageName = packageName()
 _packageRoot = string.upper(_packageName) + 'ROOT'
 
 _ftools_setup= "/afs/slac/g/glast/ground/PipelineConfig/ASP/headas-config-noric024835.sh"
+_pyfits_path = "/afs/slac/g/glast/ground/PipelineConfig/ASP/pyfits/lib"
 _ST_path = "${ST_INST}"
 _ASP_path = "${ASP_PATH}"
 _package_version = os.environ[_packageRoot].split(os.path.sep)[-1]
@@ -48,6 +49,8 @@ def wrapperGenerator(scriptName):
     output.write("GLAST_EXT=/afs/slac/g/glast/ground/GLAST_EXT/rh9_gcc32; export GLAST_EXT\n")
     output.write("PATH=%s:${PATH}; export PATH\n" % os.path.join(_ST_path, 'bin'))
     output.write("source %s\n" % os.path.join(_package_root, 'cmt','setup.sh'))
+    output.write("PYTHONPATH=%s:${PYTHONPATH}; export PYTHONPATH\n" 
+                 % _pyfits_path)
     output.write('exec %s %s\n' % (_asp_python, pyScript))
     output.close()
     os.system('chmod +x %s' % outfile)
