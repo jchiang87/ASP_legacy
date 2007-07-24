@@ -1,8 +1,6 @@
-#!/usr/bin/env python
-
 import readFT,eqtogal
 import sys,numpy #pylab
-import math
+import math,os
 
 d2r=.01745
 sec2day=1./(24.*3600.)
@@ -73,8 +71,9 @@ def aitoff(l,b,l0,b0,scale):
 		y=(-2.*scale/d2r)*math.sin(rho/2.)*math.cos(theta)
 	return x,y
 
-if len(sys.argv)>4:
-	evt=readFT.ReadFT1(sys.argv[1])
+
+def fflare(infile,outdir,step,tb,chimin=2.5):
+	evt=readFT.ReadFT1(infile)
 	ene=evt.GetEnergy()
 	time=evt.GetTime()
 	ra=evt.GetRa()
@@ -86,13 +85,8 @@ if len(sys.argv)>4:
 	ramax=max(ra)
 	decmin=min(dec)
 	decmax=max(dec)
-	#l0=float(sys.argv[4])
-	#b0=float(sys.argv[5])
 	dx=(ramax-ramin)
-	dy=(decmax-decmin)
-	chimin=float(sys.argv[4])
-	step=float(sys.argv[2])
-	tb=int(sys.argv[3])
+	dy=(decmax-decmin)	
 	nx=int(dx/step+0.5)
 	ny=int(dy/step+0.5)
 	mappa=numpy.zeros([ny,nx])
@@ -101,8 +95,8 @@ if len(sys.argv)>4:
 	nt=tb
 	lc=numpy.zeros([ny,nx,tb])
 	map1=numpy.zeros([ny,nx])
-	print nx,ny
-	print tstart,tstop,tot*sec2hour,(tot/tb)*sec2day
+	#print nx,ny
+	#print tstart,tstop,tot*sec2hour,(tot/tb)*sec2day
 	i=nx-1
 	j=ny-1
 	np=len(dat[0])
@@ -120,7 +114,7 @@ if len(sys.argv)>4:
 			mappa[j][i]+=1.
 			lc[j][i][k]+=1.
 	medmap=numpy.mean(numpy.mean(mappa))
-	print medmap
+	#print medmap
 	#pylab.subplot(211)
 	"""pylab.grid('on')
 	pylab.imshow(mappa,interpolation='nearest',extent=[ramax,ramin,decmin,decmax])
@@ -172,9 +166,10 @@ if len(sys.argv)>4:
 					nv+=1
 		
 				
-	
-	f1=open('vsourceh.reg',"w")
-	f=open('vsource.reg',"w")
+	ouf=outdir+"/vsourceh.reg"
+	ouf1=outdir+"/vsource.reg"
+	f1=open(ouf,"w")
+	f=open(ouf1,"w")
 	for i in range(0,len(fx)):
 		l,b=eqtogal.eq_to_gal(fx[i],fy[i])
 		f1.write("%f %f\n" % (fx[i],fy[i]))
@@ -183,26 +178,13 @@ if len(sys.argv)>4:
 	f.close()
 	f1.close()
 	
-	"""pylab.plot(fx,fy,'r+',ms=15)
-	pylab.xlim(ramax,ramin)
-	pylab.ylim(decmin,decmax)
-	for i in range(0,len(fx)):
-		s=("%d" % i)
-		pylab.text(fx[i],fy[i]+step/2,s)
-	pylab.figure()
-	#pylab.subplot(212)
-	pylab.grid('on')
-	pylab.imshow(chi,interpolation='nearest',extent=[ramax,ramin,decmin,decmax])
-	pylab.plot(fx,fy,'w+',ms=15)
-	pylab.xlim(ramax,ramin)
-	pylab.ylim(decmin,decmax)
-	pylab.xlabel('RA (deg)')
-	pylab.ylabel('DEC (deg)')
-	pylab.title('reduced-chi^2 map')
-	#pylab.colorbar()
-	#pylab.contour(lc)
-	#pylab.figure()
-	#pylab.plot(idi,sim,'o',ms=3)
-	#pylab.xlim(0,nx*ny)
-	#pylab.hist(mappa)
-	pylab.show()"""
+if __name__=="__main__":
+
+	if len(sys.argv)>4:
+		outdir=sys.argv[2]
+		infile=sys.argv[1]
+		chimin=float(sys.argv[5])
+		step=float(sys.argv[3])
+		tb=int(sys.argv[4])
+		fflare(infile,outdir,step,tb,chimin)
+
