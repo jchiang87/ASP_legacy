@@ -1,6 +1,6 @@
 import sys,pyfits #pylab
 import math
-import numpy as num
+import numarray as num
 
 def rad(a):
 	return num.pi/180.*a

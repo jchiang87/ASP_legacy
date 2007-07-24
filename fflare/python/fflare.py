@@ -1,5 +1,6 @@
 import readFT,eqtogal
-import sys,numpy #pylab
+import sys
+import numarray as numpy
 import math,os
 
 d2r=.01745
