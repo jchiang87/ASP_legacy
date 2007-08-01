@@ -1,5 +1,17 @@
 ------------------------------------------------------------
 User: cohen  Wed Aug  1 11:32:19 PDT 2007
+ASP/fflare/python
+
+Modified Files:
+	fflare.py 
+Added Files:
+	.cvsignore 
+Log Message:
+clean the package and fix nump/numarray treatement of mean function
+
+    *
+------------------------------------------------------------
+User: cohen  Wed Aug  1 11:32:19 PDT 2007
 ASP/fflare/cmt
 
 Added Files:
