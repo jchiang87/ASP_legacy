@@ -1,13 +1,10 @@
 import readFT,eqtogal
 import sys,os, math
 
-#mymean=None
 try :
         import numpy as num
-#        mymean =    lambda x : num.mean(x)
 except:
         import numarray as num
-#        mymean =    lambda x : x.mean()
 
 DOPYLAB=False
 try :
