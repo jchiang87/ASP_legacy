@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: cohen  Wed Aug  1 14:09:34 PDT 2007
+ASP/fflare/python
+
+Modified Files:
+	fflare.py 
+Log Message:
+make pylab potentially available
+
+    *
+------------------------------------------------------------
 User: cohen  Wed Aug  1 11:32:19 PDT 2007
 ASP/fflare/python
 
