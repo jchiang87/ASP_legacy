@@ -1,14 +1,20 @@
 import readFT,eqtogal
-import sys
+import sys,os, math
+
 mymean=None
 try :
-    import numpy as num
-    mymean =  lambda x : num.mean(x)
+        import numpy as num
+        mymean =    lambda x : num.mean(x)
 except:
-    import numarray as num
-    mymean =  lambda x : x.mean()
-    
-import math,os
+        import numarray as num
+        mymean =    lambda x : x.mean()
+
+DOPYLAB=False
+try :
+        import pylab
+        DOPYLAB=True
+except:
+        pass
 
 d2r=.01745
 sec2day=1./(24.*3600.)
@@ -123,13 +129,15 @@ def fflare(infile,outdir,step,tb,chimin=2.5):
 			lc[j][i][k]+=1.
 	medmap=mymean(mymean(mappa))
 	#print medmap
-	#pylab.subplot(211)
-	"""pylab.grid('on')
-	pylab.imshow(mappa,interpolation='nearest',extent=[ramax,ramin,decmin,decmax])
-	pylab.xlabel('RA (deg)')
-	pylab.ylabel('DEC (deg)')
-	pylab.title(sys.argv[1])"""
-	#pylab.colorbar()
+	if DOPYLAB is True : 
+		pylab.subplot(211)
+		pylab.grid('on')
+		pylab.imshow(mappa,interpolation='nearest',extent=[ramax,ramin,decmin,decmax])
+		pylab.xlabel('RA (deg)')
+		pylab.ylabel('DEC (deg)')
+		pylab.rc('text', usetex=False)
+		pylab.title(sys.argv[1])
+		pylab.colorbar()
 	#print sum(sum(mappa))
 	sim=[]
 	idi=[]
@@ -185,14 +193,22 @@ def fflare(infile,outdir,step,tb,chimin=2.5):
 			f.write("%f %f\n" % (fx[i],fy[i]))
 	f.close()
 	#f1.close()
+	if DOPYLAB is True :
+		pylab.savefig(os.path.join(outdir,'region.eps'))
+		pylab.rc('text', usetex=False)
 	
 if __name__=="__main__":
 
-	if len(sys.argv)>4:
-		outdir=sys.argv[2]
-		infile=sys.argv[1]
-		chimin=float(sys.argv[5])
-		step=float(sys.argv[3])
-		tb=int(sys.argv[4])
-		fflare(infile,outdir,step,tb,chimin)
-
+        if len(sys.argv)>4:
+                outdir=sys.argv[2]
+                infile=sys.argv[1]
+                chimin=float(sys.argv[5])
+                step=float(sys.argv[3])
+                tb=int(sys.argv[4])
+        else :
+                outdir=os.environ['OUTDIR']
+                infile=os.environ['INFILE']
+                chimin=os.environ['CHIMIN']
+                step=os.environ['STEP']
+                tb=os.environ['TB']
+        fflare(infile,outdir,step,tb,chimin)
