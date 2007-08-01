@@ -1,13 +1,13 @@
 import readFT,eqtogal
 import sys,os, math
 
-mymean=None
+#mymean=None
 try :
         import numpy as num
-        mymean =    lambda x : num.mean(x)
+#        mymean =    lambda x : num.mean(x)
 except:
         import numarray as num
-        mymean =    lambda x : x.mean()
+#        mymean =    lambda x : x.mean()
 
 DOPYLAB=False
 try :
@@ -127,7 +127,7 @@ def fflare(infile,outdir,step,tb,chimin=2.5):
 			k= int((nt-1)*((time[n]-tstart)/(tot))+0.5)
 			mappa[j][i]+=1.
 			lc[j][i][k]+=1.
-	medmap=mymean(mymean(mappa))
+	medmap = mappa.mean()
 	#print medmap
 	if DOPYLAB is True : 
 		pylab.subplot(211)
@@ -146,8 +146,9 @@ def fflare(infile,outdir,step,tb,chimin=2.5):
 			if mappa[j][i]>0:
 				sim.append(sum(lc[j][i]))
 				idi.append(j+i*ny)
-	mmed=mymean(sim)
-	mst=num.std(sim)
+	mmed=num.array(sim).mean()
+	mst= math.sqrt((num.array(sim)*num.array(sim)).mean() -mmed**2)
+	#mst=num.array(sim).std()
 	for j in range(ny-1,0,-1):
 		for i in range(nx-1,0,-1):
 			if mappa[j][i]>0:
