@@ -1,6 +1,13 @@
 import readFT,eqtogal
 import sys
-import numarray as numpy
+mymean=None
+try :
+    import numpy as num
+    mymean =  lambda x : num.mean(x)
+except:
+    import numarray as num
+    mymean =  lambda x : x.mean()
+    
 import math,os
 
 d2r=.01745
@@ -90,12 +97,12 @@ def fflare(infile,outdir,step,tb,chimin=2.5):
 	dy=(decmax-decmin)	
 	nx=int(dx/step+0.5)
 	ny=int(dy/step+0.5)
-	mappa=numpy.zeros([ny,nx])
-	chi=numpy.zeros([ny,nx])
+	mappa=num.zeros([ny,nx])
+	chi=num.zeros([ny,nx])
 	nlc=nx*ny
 	nt=tb
-	lc=numpy.zeros([ny,nx,tb])
-	map1=numpy.zeros([ny,nx])
+	lc=num.zeros([ny,nx,tb])
+	map1=num.zeros([ny,nx])
 	#print nx,ny
 	#print tstart,tstop,tot*sec2hour,(tot/tb)*sec2day
 	i=nx-1
@@ -114,7 +121,7 @@ def fflare(infile,outdir,step,tb,chimin=2.5):
 			k= int((nt-1)*((time[n]-tstart)/(tot))+0.5)
 			mappa[j][i]+=1.
 			lc[j][i][k]+=1.
-	medmap=numpy.mean(numpy.mean(mappa))
+	medmap=mymean(mymean(mappa))
 	#print medmap
 	#pylab.subplot(211)
 	"""pylab.grid('on')
@@ -131,8 +138,8 @@ def fflare(infile,outdir,step,tb,chimin=2.5):
 			if mappa[j][i]>0:
 				sim.append(sum(lc[j][i]))
 				idi.append(j+i*ny)
-	mmed=numpy.mean(sim)
-	mst=numpy.std(sim)
+	mmed=mymean(sim)
+	mst=num.std(sim)
 	for j in range(ny-1,0,-1):
 		for i in range(nx-1,0,-1):
 			if mappa[j][i]>0:
@@ -167,17 +174,17 @@ def fflare(infile,outdir,step,tb,chimin=2.5):
 					nv+=1
 		
 				
-	ouf=outdir+"/vsourceh.reg"
+	#ouf=outdir+"/vsourceh.reg"
 	ouf1=outdir+"/vsource.reg"
-	f1=open(ouf,"w")
+	#f1=open(ouf,"w")
 	f=open(ouf1,"w")
 	for i in range(0,len(fx)):
 		l,b=eqtogal.eq_to_gal(fx[i],fy[i])
-		f1.write("%f %f\n" % (fx[i],fy[i]))
+		#f1.write("%f %f\n" % (fx[i],fy[i]))
 		if abs(b)>5.:
 			f.write("%f %f\n" % (fx[i],fy[i]))
 	f.close()
-	f1.close()
+	#f1.close()
 	
 if __name__=="__main__":
 
