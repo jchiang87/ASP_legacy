@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: cohen  Wed Aug  1 11:32:19 PDT 2007
+ASP/fflare/v0/python
+
+Removed Files:
+	eqtogal.pyc readFT.pyc 
+Log Message:
+clean the package and fix nump/numarray treatement of mean function
+
+    *
+------------------------------------------------------------
 User: tosti  Wed Jul 18 09:03:42 PDT 2007
 fflare
 
