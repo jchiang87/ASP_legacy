@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: cohen  Wed Sep 12 13:28:42 PDT 2007
+ASP/HealPix/src
+
+Modified Files:
+	HealpixArray.cxx 
+Log Message:
+fix the file creation in case there is no subselection
+
+    *
+------------------------------------------------------------
 User: cohen  Tue Sep 11 17:20:30 PDT 2007
 ASP/HealPix/src
 
