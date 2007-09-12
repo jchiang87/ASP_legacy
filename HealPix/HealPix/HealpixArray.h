@@ -18,6 +18,7 @@
 #include "astro/SkyDir.h"
 #include "astro/SkyFunction.h"
 
+#include "Pixel.h"
 /**
  * @class HealpixArray
  *
@@ -69,6 +70,13 @@ public:
    static void writeLayeredImage(const std::vector<HealpixArray> & arrays,
                                  const std::string & outfile, 
                                  double pixel_size=0.5, bool galactic=true);
+
+   HealpixArray HealpixArray::inverse();
+   void HealpixArray::subSelect(
+                                const std::string& infile, 
+                                const std::string& outfile, 
+                                long idx, 
+                                const std::string & extname="EVENTS");
 
 private:
 

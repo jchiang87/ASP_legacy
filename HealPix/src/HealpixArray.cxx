@@ -73,6 +73,62 @@ void HealpixArray::writeImage(const std::string & outfile,
    image.fill(*this);
 }
 
+HealpixArray HealpixArray::inverse(){
+  HealpixArray y(healpix());                                           
+  for (size_t i(0); i < size(); i++) {
+    if(at(i)!=0.){
+      y.at(i) = 1./at(i);
+    } else {
+      std::cout<<"HealpixArray::inverse encountered a divide by 0 at pixel "<<i<<std::endl;
+    }
+  }
+  return y;
+}
+
+void 
+HealpixArray::subSelect(
+                        const std::string& infile, 
+                        const std::string& outfile, long idx, 
+                        const std::string & extname)
+{
+  //first create the new file and
+  //get a pointer to the table for writing
+  tip::IFileSvc::instance().createFile(outfile, infile);
+  tip::Table * outTable 
+    = tip::IFileSvc::instance().editTable(outfile, extname);
+  
+  //read input file and resize output table
+  const tip::Table * inTable 
+    = tip::IFileSvc::instance().readTable(infile, extname);
+  outTable->setNumRecords(inTable->getNumRecords());
+  
+  //loop over input table and make selection
+  tip::Table::Iterator outIt = outTable->begin();
+  tip::Table::Record & out = *outIt;
+  long npts(0);
+  for(tip::Table::ConstIterator it = inTable->begin();
+      it!=inTable->end(); it++)
+    {
+      tip::ConstTableRecord & in = *it;
+      double l = in["L"].get();
+      double b = in["B"].get();
+      astro::SkyDir::CoordSystem 
+        coordsys=astro::SkyDir::EQUATORIAL;
+      astro::SkyDir recordDir(l, b, coordsys);
+      astro::Healpix::Pixel pix(recordDir, healpix());
+      if(pix.index()==idx){
+        out = in;
+        ++outIt;
+        npts++;
+      }
+    }
+  outTable->setNumRecords(npts);
+  outTable->getHeader().addHistory("Subselected by pixel direction");
+
+  delete inTable;
+  delete outTable;
+}
+
 #undef _DEFINE_BINARY_OPERATOR
 #define _DEFINE_BINARY_OPERATOR(_Op, _Name)                             \
 HealpixArray HealpixArray::operator _Op(const HealpixArray & x) const { \
