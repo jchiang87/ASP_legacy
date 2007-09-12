@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: cohen  Tue Sep 11 17:00:15 PDT 2007
+ASP/HealPix/HealPix
+
+Modified Files:
+	HealpixArray.h 
+Log Message:
+add inverse and subselect functions to HealPixArray
+
+    *
+------------------------------------------------------------
 User: jchiang  Mon Apr 30 19:57:44 PDT 2007
 ASP/HealPix
 
