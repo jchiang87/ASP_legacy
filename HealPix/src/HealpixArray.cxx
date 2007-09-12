@@ -113,7 +113,7 @@ HealpixArray::subSelect(
       double l = in["L"].get();
       double b = in["B"].get();
       astro::SkyDir::CoordSystem 
-        coordsys=astro::SkyDir::EQUATORIAL;
+      coordsys=astro::SkyDir::GALACTIC;
       astro::SkyDir recordDir(l, b, coordsys);
       astro::Healpix::Pixel pix(recordDir, healpix());
       if(pix.index()==idx){
