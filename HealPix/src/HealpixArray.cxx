@@ -90,22 +90,16 @@ HealpixArray::subSelect(
                         const std::string& infile, 
                         const std::string& outfile, long idx, 
                         const std::string & extname)
-{
-  //first create the new file and
-  //get a pointer to the table for writing
-  tip::IFileSvc::instance().createFile(outfile, infile);
-  tip::Table * outTable 
-    = tip::IFileSvc::instance().editTable(outfile, extname);
-  
-  //read input file and resize output table
+{  
   const tip::Table * inTable 
     = tip::IFileSvc::instance().readTable(infile, extname);
-  outTable->setNumRecords(inTable->getNumRecords());
   
   //loop over input table and make selection
-  tip::Table::Iterator outIt = outTable->begin();
+  tip::Table * outTable;
+  tip::Table::Iterator outIt;
   tip::Table::Record & out = *outIt;
   long npts(0);
+  bool save=false;
   for(tip::Table::ConstIterator it = inTable->begin();
       it!=inTable->end(); it++)
     {
@@ -117,6 +111,14 @@ HealpixArray::subSelect(
       astro::SkyDir recordDir(l, b, coordsys);
       astro::Healpix::Pixel pix(recordDir, healpix());
       if(pix.index()==idx){
+        //Create the outFile/Table only now, in order to avoid empty files
+        if(!save){
+          save=true;
+          tip::IFileSvc::instance().createFile(outfile, infile);
+          outTable = tip::IFileSvc::instance().editTable(outfile, extname);
+          outTable->setNumRecords(inTable->getNumRecords());
+          outIt= outTable->begin();
+        }
         out = in;
         ++outIt;
         npts++;
