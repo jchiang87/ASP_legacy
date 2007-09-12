@@ -114,10 +114,19 @@ HealpixArray::subSelect(
         //Create the outFile/Table only now, in order to avoid empty files
         if(!save){
           save=true;
-          tip::IFileSvc::instance().createFile(outfile, infile);
-          outTable = tip::IFileSvc::instance().editTable(outfile, extname);
-          outTable->setNumRecords(inTable->getNumRecords());
-          outIt= outTable->begin();
+          if(tip::IFileSvc::instance().fileExists(outfile)){
+            tip::IFileSvc::instance().openFile(outfile);
+            outTable = tip::IFileSvc::instance().editTable(outfile, extname);
+            outTable->setNumRecords(outTable->getNumRecords()+
+                                    inTable->getNumRecords());
+            outIt= outTable->end();
+          }
+          else{
+            tip::IFileSvc::instance().createFile(outfile, infile);
+            outTable = tip::IFileSvc::instance().editTable(outfile, extname);
+            outTable->setNumRecords(inTable->getNumRecords());
+            outIt= outTable->begin();
+          }
         }
         out = in;
         ++outIt;
