@@ -1,4 +1,44 @@
 ------------------------------------------------------------
+User: jchiang  Wed Sep 26 11:13:02 PDT 2007
+ASP/pgwave
+
+Log Message:
+initial import into ASP checkout package
+
+Status:
+
+Vendor Tag:	GLAST
+Release Tags:	v0r0p1
+		
+I ASP/pgwave/CVS
+N ASP/pgwave/ChangeLog
+I ASP/pgwave/rh9_gcc32
+N ASP/pgwave/.cvsignore
+I ASP/pgwave/.cvsignore~
+I ASP/pgwave/cmt/CVS
+N ASP/pgwave/cmt/requirements
+I ASP/pgwave/src/CVS
+N ASP/pgwave/src/MyImage.cpp
+N ASP/pgwave/src/MyImageAnalisys.cpp
+N ASP/pgwave/src/filtri.cpp
+N ASP/pgwave/src/function_util.cpp
+N ASP/pgwave/src/utile.cpp
+I ASP/pgwave/src/app/CVS
+N ASP/pgwave/src/app/main.cpp
+I ASP/pgwave/pgwave/CVS
+N ASP/pgwave/pgwave/MyImage.h
+N ASP/pgwave/pgwave/MyImageAnalisys.h
+N ASP/pgwave/pgwave/MyMatrix.h
+N ASP/pgwave/pgwave/filtri.h
+N ASP/pgwave/pgwave/function_util.h
+N ASP/pgwave/pgwave/utile.h
+I ASP/pgwave/pfiles/CVS
+N ASP/pgwave/pfiles/pgwave.par
+
+No conflicts created by this import
+
+    *
+------------------------------------------------------------
 TAG
 Tag name: v0r0p1, operation: add
 Package: pgwave
