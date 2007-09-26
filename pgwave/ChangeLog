@@ -1,0 +1,119 @@
+------------------------------------------------------------
+TAG
+Tag name: v0r0p1, operation: add
+Package: pgwave
+User: tosti  Fri Sep 14 09:17:52 2007
+Files:
+  pgwave/ChangeLog  1.5
+  pgwave/cmt/setup.csh  1.2
+  pgwave/cmt/cleanup.csh  1.2
+  pgwave/cmt/requirements  1.3
+  pgwave/cmt/cleanup.sh  1.2
+  pgwave/cmt/setup.sh  1.2
+  pgwave/cmt/Makefile  1.1.1.1
+  pgwave/pfiles/pgwave.par  1.1.1.1
+  pgwave/pgwave/utile.h  1.1.1.1
+  pgwave/pgwave/MyImageAnalisys.h  1.1.1.1
+  pgwave/pgwave/MyMatrix.h  1.1.1.1
+  pgwave/pgwave/MyImage.h  1.1.1.1
+  pgwave/pgwave/function_util.h  1.1.1.1
+  pgwave/pgwave/filtri.h  1.2
+  pgwave/src/function_util.cpp  1.2
+  pgwave/src/utile.cpp  1.2
+  pgwave/src/filtri.cpp  1.2
+  pgwave/src/MyImage.cpp  1.2
+  pgwave/src/MyImageAnalisys.cpp  1.2
+  pgwave/src/app/main.cpp  1.1
+
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 09:10:43 PDT 2007
+pgwave/pgwave
+
+Modified Files:
+	filtri.h 
+Log Message:
+commit
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 09:10:43 PDT 2007
+pgwave/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+commit
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 08:54:29 PDT 2007
+pgwave/src
+
+Modified Files:
+	MyImage.cpp MyImageAnalisys.cpp filtri.cpp function_util.cpp 
+	utile.cpp 
+Removed Files:
+	main.cpp 
+Log Message:
+main.cpp removed from src dir
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 08:49:51 PDT 2007
+pgwave/src/app
+
+Added Files:
+	main.cpp 
+Log Message:
+add new file to app dir
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 08:45:27 PDT 2007
+pgwave/src/app
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/pgwave/src/app added to the repository
+
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 00:38:00 PDT 2007
+pgwave/cmt
+
+Modified Files:
+	cleanup.csh cleanup.sh requirements setup.csh setup.sh 
+Log Message:
+
+    *
+------------------------------------------------------------
+User: tosti  Thu Sep 13 04:10:26 PDT 2007
+pgwave
+
+Log Message:
+initial import
+
+Status:
+
+Vendor Tag:	GT
+Release Tags:	v0r0p0
+		
+N pgwave/cmt/Makefile
+N pgwave/cmt/requirements
+N pgwave/cmt/setup.csh
+N pgwave/cmt/setup.sh
+N pgwave/cmt/cleanup.csh
+N pgwave/cmt/cleanup.sh
+N pgwave/src/filtri.cpp
+N pgwave/src/function_util.cpp
+N pgwave/src/main.cpp
+N pgwave/src/MyImage.cpp
+N pgwave/src/MyImageAnalisys.cpp
+N pgwave/src/utile.cpp
+N pgwave/pgwave/filtri.h
+N pgwave/pgwave/function_util.h
+N pgwave/pgwave/MyImage.h
+N pgwave/pgwave/MyImageAnalisys.h
+N pgwave/pgwave/MyMatrix.h
+N pgwave/pgwave/utile.h
+N pgwave/pfiles/pgwave.par
+
+No conflicts created by this import
+
+    *
