@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: tosti  Mon Oct  1 09:53:52 PDT 2007
+ASP/pgwave/python
+
+Added Files:
+	angdist.py lc.py pgw2fits.py pgw2xml.py readFT.py readpgw.py 
+	runPipe.py runpgw.py runsrcid.py start_pipe.py 
+Log Message:
+python script added
+    *
+------------------------------------------------------------
 User: tosti  Mon Oct  1 09:44:30 PDT 2007
 ASP/pgwave/python
 
