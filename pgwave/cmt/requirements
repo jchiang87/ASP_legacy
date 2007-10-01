@@ -1,10 +1,23 @@
 package pgwave
-version v0p0r0
+version v0r1
 
-use STpolicy *
+#use STpolicy *
+use AspPolicy v* ASP
 use cfitsio * IExternal
 use pil * IExternal
 use fftw * IExternal
+
+use pyASP v* ASP
+use pyIrfLoader v* irfs -no_auto_imports
+#use BayesianBlocks v* ASP -no_auto_imports
+use sane v* -no_auto_imports
+use pyLikelihood v* -no_auto_imports
+
+path_remove PYTHONPATH pgwave
+path_append PYTHONPATH $(PGWAVEROOT)/$(BINDIR)
+path_append PYTHONPATH $(PGWAVEROOT)/python
+
+apply_pattern wrapper_scripts
 
 apply_pattern package_include
 apply_pattern package_linkopts
