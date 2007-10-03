@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: tosti  Wed Oct  3 10:39:18 PDT 2007
+ASP/pgwave/python
+
+Modified Files:
+	runpgw.py start_pipe.py 
+Added Files:
+	createPgwStreams.py pgwGetInputData.py startpgw.py 
+Log Message:
+added scripts for pipeline
+    *
+------------------------------------------------------------
 TAG
 Tag name: v0r1, operation: add
 Package: pgwave
