@@ -33,11 +33,7 @@ class SourceData(object):
         dbEntry = DbEntry(self.name, variable, pars['start_time'],
                           pars['stop_time'])
         dbEntry.setValues(self.flux, self.fluxerr)
-        dbEntry.setXmlFile(self.srcModel)
-        dbEntry.write()
-        print "Writing database entry for %s." % self.name
-        print "%s = %e +/- %e" % (variable, self.flux, self.fluxerr)
-        print "time period: %s to %s" % (pars['start_time'], pars['stop_time'])
+        dbEntry.setMetaData("xmlFile", self.srcModel)
 
 def fitEnergyBand(emin, emax, srcModel):
     gtselect['infile'] = currentRoi().name + '_events.fits'
@@ -55,7 +51,7 @@ def fitEnergyBand(emin, emax, srcModel):
                       expMap=pars['expMap'],
                       expCube=rootpath(pars['expCube']),
                       irfs=irfs)
-    like = UnbinnedAnalysis(obs, srcModel, 'Drmnfb')
+    like = UnbinnedAnalysis(obs, srcModel, 'Minuit')
 
     like.state(open("analysis_%i_%i.py" % (emin, emax), "w"))
     
@@ -70,10 +66,8 @@ def fitEnergyBand(emin, emax, srcModel):
 #            integral = src.funcs['Spectrum'].getParam('Integral')
 #            integral.parameter.setTrueValue(flux_est)
         lowerLimit = src.funcs['Spectrum'].getParam('LowerLimit')
-        lowerLimit.parameter.setBounds(10, 5e5)
         lowerLimit.parameter.setValue(emin)
         upperLimit = src.funcs['Spectrum'].getParam('UpperLimit')
-        upperLimit.parameter.setBounds(10, 5e5)
         upperLimit.parameter.setValue(emax)
 
 #    print like.model
@@ -82,10 +76,7 @@ def fitEnergyBand(emin, emax, srcModel):
     try:
         like.fit()
     except RuntimeError:
-        try:
-            like.fit()
-        except RuntimeError:
-            pass
+        like.fit()
 
     outputModel = "%s_%i_%i_model.xml" % (currentRoi().name, emin, emax)
     like.writeXml(outputModel)
@@ -107,7 +98,7 @@ def fitEnergyBand(emin, emax, srcModel):
     return results
 
 if __name__ == '__main__':
-    from DrpSources import drpSources, blazars
+    from DrpSources import drpSources
     
     roi = currentRoi()
     os.chdir(roi.name)
@@ -119,9 +110,6 @@ if __name__ == '__main__':
     results = fitEnergyBand(emin, emax, srcModel)
     
     drp_list = drpSources.select(roi.ra, roi.dec, roi.radius)
-    drp_list.extend(blazars.select(roi.ra, roi.dec, roi.radius))
 
     for src in drp_list:
         results[src].updateDbEntry()
-
-    

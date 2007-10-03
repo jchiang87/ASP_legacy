@@ -29,11 +29,11 @@ else:
 # run gtdiffresp locally for each region until the full sky
 # diffuseResponses process is parallelized
 #
-    gtdiffresp = GtApp('gtdiffrsp')
+    gtdiffresp = GtApp('gtdiffresp')
     gtdiffresp['evfile'] = ft1file
     gtdiffresp['scfile'] = pars['ft2file']
-    gtdiffresp['irfs'] = pars['rspfunc']
-    gtdiffresp['srcmdl'] = rootpath('diffuse_model.xml')
+    gtdiffresp['rspfunc'] = pars['rspfunc']
+    gtdiffresp['source_model_file'] = rootpath('diffuse_model.xml')
     gtdiffresp.run()
 
     irfs = pars['rspfunc']
@@ -41,16 +41,12 @@ else:
         irfs = 'DC2'
     obs = UnbinnedObs(ft1file, pars['ft2file'], expMap=pars['expMap'],
                       expCube=rootpath(pars['expCube']), irfs=irfs)
-#    like = UnbinnedAnalysis(obs, srcModel, 'Minuit')
-    like = UnbinnedAnalysis(obs, srcModel, 'Drmnfb')
+    like = UnbinnedAnalysis(obs, srcModel, 'Minuit')
 
     try:
         like.fit()
     except RuntimeError:
-        try:
-            like.fit()
-        except RuntimeError:
-            pass
+        like.fit()
     outputModel = name + '_model_out.xml'
     like.writeXml(outputModel)
     

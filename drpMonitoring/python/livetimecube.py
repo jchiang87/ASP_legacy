@@ -19,7 +19,7 @@ os.chdir(output_dir)
 
 pars = Parfile('drp_pars.txt')
 
-gtlivetimecube = GtApp('gtltcube')
+gtlivetimecube = GtApp('gtlivetimecube')
 gtlivetimecube['evfile'] = pars['ft1file']
 gtlivetimecube['scfile'] = pars['ft2file']
 gtlivetimecube['outfile'] ='expCube.fits'

@@ -36,7 +36,7 @@ def exposureSubMap(outputDir, debug=False):
 
     gtexpmap = GtApp('gtexpmap')
     gtexpmap['outfile'] = bounds[map_id].filename
-    gtexpmap['submap'] = 'yes'
+    gtexpmap['compute_submap'] = 'yes'
     gtexpmap['nlongmin'] = bounds[map_id].xmin
     gtexpmap['nlongmax'] = bounds[map_id].xmax
     gtexpmap['nlatmin'] = bounds[map_id].ymin

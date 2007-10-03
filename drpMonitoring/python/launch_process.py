@@ -21,7 +21,7 @@ find_par_file('drp_pars.txt')
 
 rootdir = os.getcwd()
 os.environ['OUTPUTDIR'] = rootdir
-os.environ['PIPELINESERVER'] = 'DEV'
+os.environ['PIPELINESERVER'] = 'PROD'
 
 from createDrpStreams import *
 
