@@ -90,18 +90,18 @@ def runpgw(infile):
 	ra=180.
 	dec=0.
 	mapPar=[ra,dec,'CAR',sizex,sizey,scale]
-	inmap1=os.path.join(workdir,((os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'))
+	inmap1=infile.replace('.fits','_map.fits')  #os.path.join(workdir,((os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'))
 	if os.path.exists(inmap1)==False:
 		createMap(infile,mapPar,inmap1)
-	os.environ['OUTPUTF1MAP']=os.path.abspath(inmap1)
-	inmap=(os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'
-	pgwfile=(inmap.split('.'))[0]+'.list'
-        if os.path.exists(pgwfile)==False:
-                pgwave(inmap)
+#	os.environ['OUTPUTF1MAP']=os.path.abspath(#inmap1)
+#	inmap=(os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'
+#	pgwfile=(inmap.split('.'))[0]+'.list'
+#        if os.path.exists(pgwfile)==False:
+        pgwave(inmap)
 	#outf=os.path.abspath(pgwfile)
-	os.environ['PGWOUTPUTLIST']=pgwfile
+#	os.environ['PGWOUTPUTLIST']=pgwfile
 
 if __name__=="__main__":
-
-	runpgw()
+	os.chdir(os.environ['OUTPUTDIR'])
+	runpgw('prime4h.fits')
 		
