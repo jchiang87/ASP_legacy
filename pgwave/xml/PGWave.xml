@@ -5,10 +5,10 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="PGWave" version="1.0" type="Data">
+<task name="PGWave" version="1.1" type="Data">
   <variables>
     <!-- Default values that can be overridden at the command line. -->
-    <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r1p1"</var>
+    <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r2"</var>
     <var name="BINDIR">rh9_gcc32</var>
   </variables>
   <prerequisites>
@@ -17,41 +17,42 @@
     <prerequisite name="TSTOP" type="string"/>
     <prerequisite name="ASP_PATH" type="string"/>
     <prerequisite name="CATDIR" type="string"/>
-    <prerequisite name="PGWAVEGROOT" type="string"/>
+    <prerequisite name="PGWAVEROOT" type="string"/>
   </prerequisites>
 
   <process name="catalogQuery">
     <script>
       <![CDATA[
-        outfile = pipeline.createFile("Ft1FileList")
-        logicalPath = "/DC2/Downlinks"
-        opt1 = '(%(TSTART)i <= nTStart && nTStop <= %(TSTOP)i)' % locals()
-        opt2 = '(nTStart <= %(TSTART)i && %(TSTART)i <= nTStop)' % locals()
-        opt3 = '(nTStart <= %(TSTOP)i && %(TSTOP)i <= nTStop)' % locals()
-        query = ('DataType == \"FITS\" && (%s || %s || %s)' 
-                 % (opt1, opt2, opt3))
-        datasetList = datacatalog.getDatasets(logicalPath, query)
-        datasetList.writeToFile(outfile, 1)
-        pipeline.writeFile(outfile)
-      ]]>
-    </script>
+        def query(outfile, path, TSTART, TSTOP):
+            output = pipeline.createFile(outfile)
+            opt1 = '(%(TSTART)i <= nMetStart && nMetStop <= %(TSTOP)i)' % locals()
+            opt2 = '(nMetStart <= %(TSTART)i && %(TSTART)i <= nMetStop)' % locals()
+            opt3 = '(nMetStart <= %(TSTOP)i && %(TSTOP)i <= nMetStop)' % locals()
+            query = ('DataType == \"FITS\" && (%s || %s || %s)' 
+                     % (opt1, opt2, opt3))
+            datasetList = datacatalog.getDatasets(logicalPath+'/'+path, query)
+            datasetList.writeToFile(output, 1)
+            pipeline.writeFile(output)
+        query("Ft1FileList", "FT1", TSTART, TSTOP)
+        query("Ft2FileList", "FT2", TSTART, TSTOP)
+	]]></script>
   </process>
 
   <process name="getPgwInputData">
     <job executable="${PGWAVEROOT}/${BINDIR}/getPgwInputData.sh" 
-         batchOptions=" -q express " allocationGroup="glastdata" />
+         batchOptions=" -q short"/>
     <depends>
       <after process="catalogQuery" status="SUCCESS"/>
     </depends>
   </process>
 
   <process name="runpgw">
-    <job executable="${PGWAVEGROOT}/${BINDIR}/runpgw.sh"
-         batchOptions=" -q medium " allocationGroup="glastdata" />
+    <job executable="${PGWAVEROOT}/${BINDIR}/runpgw.sh"
+         batchOptions=" -q medium"/>
     <depends>
       <after process="getPgwInputData" status="SUCCESS"/>
     </depends>
-
+  </process>
 
 </task><!--PGWave-->
 
