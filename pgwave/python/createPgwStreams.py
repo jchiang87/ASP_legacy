@@ -14,22 +14,25 @@ from PipelineCommand import PipelineCommand, _outputDir, _asp_path
 # import this to ensure it is available for the various streams
 import pyASP
 
-_version = os.path.split(os.environ['PGWAVEGROOT'])[-1]
+_version = os.path.split(os.environ['PGWAVEROOT'])[-1]
 _pgwRoot = os.path.join(_asp_path, 'ASP', 'pgwave', _version)
 _catdir = '/nfs/farm/g/glast/u33/tosti/october/catdir'
 
 _startTime = 220838400.   # for DC2 data
 
 def pgwStreams(downl=1, output_dir=_outputDir, startTime=_startTime, 
-            debug=False):
+            debug=False, logicalPath=None):
     start_time = (downl-1)*1.04e4 + startTime
     stop_time = start_time +1.04e4 
     os.chdir(output_dir)
     args = {'OUTPUTDIR' : output_dir,
             'TSTART' : start_time,
             'TSTOP' : stop_time,
-            'CATDIR': _catdir 
-            'PGWAVEROOT' : _pgwRoot}
+            'CATDIR': _catdir, 
+            'PGWAVEROOT' : _pgwRoot,
+            'logicalPath' : '/DC2/Downlinks'}
+    if logicalPath is not None:
+            args['logicalPath'] = logicalPath
     command = PipelineCommand('PGWave', args)
     command.run(debug=debug)
 

@@ -13,13 +13,14 @@ def getLC(dat,x1,y1,radius):
 	b=[]
 	#dt=[]
 	for i in range(0,nevt-1):
-		flag=0
+	  flag=0
+	  if dat[1][i]>=100.:
 		if angdist.angDistance(dat[2][i],dat[3][i],x1,y1)<radius:
 			s.append((dat[0][i]-dat[0][0])/(3600.))
 			flag=1
 		if angdist.angDistance(dat[2][i],dat[3][i],x1,y1)>=r1 and angdist.angDistance(dat[2][i],dat[3][i],x1,y1)<=r2:
 			flag=2
-			b.append((dat[0][i]-dat[0][0])/(36000.))
+			b.append((dat[0][i]-dat[0][0])/(3600.))
 	return s,b,res
 
 def ave(a):
@@ -30,7 +31,7 @@ def ave(a):
 
 def stdev(a):
 	mea=ave(a)
-	if mea==0:
+	if mea<=0.:
 		return 0.
 	som=0.
 	for i in range(0,len(a)):
@@ -92,7 +93,7 @@ def createLC(filin,obj,ra0,dec0,radius,nbins):
 	bg=num.array(histo(b,nbins))*res
 	net=co-bg
 	#print co,bg,net
-	return chi2(net)
+	return chi2(net),sum(net),stdev(net)
 
 if __name__=='__main__':
 

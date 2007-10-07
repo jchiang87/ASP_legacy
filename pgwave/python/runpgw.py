@@ -2,8 +2,9 @@ import os,sys
 from GtApp import GtApp
 import pyfits
 import numarray as num
-import lc
-Sc2Ft2File=os.environ['INPUTFT2FILE']
+from pgw2fits import *
+from runsrcid import *
+#Sc2Ft2File=os.environ['INPUTFT2FILE']
 #tSc2Data ='nicola5.fits'
 
 gtselect = GtApp('gtselect')
@@ -61,25 +62,6 @@ def pgwave(filein):
 	print command
 	os.system(command)
 
-def readpgw(filein):
-	f=open(filein,'r')
-	rows=f.readlines()
-	
-	nome=[]
-	ra=[]
-	dec=[]
-	sn=[]
-	signi=[]
-	source='PGW_'
-	for i in range(1,len(rows)):
-	    r=rows[i].split()
-	    nome.append(("%s%04d"%(source,int(r[0]))))
-	    ra.append(float(r[3]))
-	    dec.append(float(r[4]))
-	    #sn.append(float(row[7]))
-	    signi.append(float(r[6]))
-	f.close() 
-	return nome,ra,dec,signi
 
 def runpgw(infile):
 	workdir=os.getcwd()
@@ -97,11 +79,16 @@ def runpgw(infile):
 #	inmap=(os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'
 #	pgwfile=(inmap.split('.'))[0]+'.list'
 #        if os.path.exists(pgwfile)==False:
-        pgwave(inmap)
+        pgwave(inmap1)
+	outf=inmap1.replace('.fits','.list')
+	outfits=pgw2fits(outf,1)
+	runsrcid(outfits,.30)
+	print 'PGWave FITS output file:',outfits 
 	#outf=os.path.abspath(pgwfile)
 #	os.environ['PGWOUTPUTLIST']=pgwfile
 
 if __name__=="__main__":
 	os.chdir(os.environ['OUTPUTDIR'])
-	runpgw('prime4h.fits')
+	runpgw('time_filtered_events.fits')
+	os.system('chmod 777 *')
 		

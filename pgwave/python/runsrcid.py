@@ -1,12 +1,19 @@
 import sys,os
 import pyfits
-
+import glob
+import numarray as num
 noassocfile='NoAssiated.fits'
-
+index=[]
+ddec=[]
+rra=[]
 def loadpgwRow(pgwfits):
 	hdulist  = pyfits.open(pgwfits)
 	nrows=hdulist[1].header['NAXIS2']
 	data1    = hdulist[1].data
+	for i in range(0,nrows):
+		index.append('UNIDENTIFIED')
+		ddec.append(0.)
+		rra.append(0.)
 	return nrows,data1	
 
 
@@ -56,37 +63,45 @@ def printCat(catf):
      	#if data1.field('PROB')[i]>0.40:
 		k=k+1
       		print '%d, %d, %s, %s, %5.2f,RA=%5.2f, DEC=%5.2f, 	Prob.=%5.2f' % \
-      		( k, i, data1.field('@SRC_NAME')[i], data1.field(12)[i], data1.field('R')[i],data1.field('RA_J2000')[i], \
+      		( k, i, data1.field('@SRC_NAME')[i], data1.field('@CAT_NAME')[i], data1.field('R')[i],data1.field('RA_J2000')[i], \
       		data1.field('DEC_J2000')[i] ,(data1.field('PROB')[i])*100.  )
   else :
     print "No counterpart found"
     
-def GetNoAssociated(pgwdata,catf):
+def GetAssociated(pgwdata,catf,prefix):
   hdulist  = pyfits.open(catf)
   data1    = hdulist[1].data
-  index=[]
+ 
   if hdulist[1].header['NAXIS2'] > 0 :
     k=0
     for i in range(pgwdata.shape[0]) :
-    	noass=0
     	for j in range(data1.shape[0]) :
 		if(data1.field('@SRC_NAME')[j]==pgwdata.field('NAME')[i]):
-			noass=1
+			if index[i]=='UNIDENTIFIED':
+				index[i]=prefix+'_'+data1.field('@CAT_NAME')[j]
+			else:
+				index[i]=index[i]+','+prefix+'_'+data1.field('@CAT_NAME')[j]
+			ddec[i]=data1.field('DEC_J2000')[j]
+			rra[i]=data1.field('RA_J2000')[j]
+			print pgwdata.field('NAME')[i],index[i],rra[i],ddec[i],data1.field('R')[j]
 			break
-	if noass==0:
-		print pgwdata[i]
-		index.append(i)
-  return index
+	
+		
+    
 		
 
-def SaveNoAssos(pgwdata,index):
+def SaveAssoc(pgwfile,pgwdata):
 		
-	c1=pyfits.Column(name='NAME',format='10A', unit=' ',array=pgwdata.field('NAME')[index])
-	c2=pyfits.Column(name='RAJ2000',format='5F',unit='deg', array=pgwdata.field('RAJ2000')[index])
-	c3=pyfits.Column(name='DECJ2000',format='5F', unit='deg', array=pgwdata.field('DECJ2000')[index])
-	c4=pyfits.Column(name='PosErr', format='5F', unit='deg ',array=pgwdata.field('PosErr')[index])
-	c5=pyfits.Column(name='CHI_2_VAR', format='5F', unit=' ',array=pgwdata.field('CHI_2_VAR')[index])
-	x = pyfits.ColDefs([c1,c2,c3,c4,c5])
+	c1=pyfits.Column(name='NAME',format='10A', unit=' ',array=pgwdata.field('NAME'))
+	c2=pyfits.Column(name='RAJ2000',format='5F',unit='deg', array=pgwdata.field('RAJ2000'))
+	c3=pyfits.Column(name='DECJ2000',format='5F', unit='deg', array=pgwdata.field('DECJ2000'))
+	c4=pyfits.Column(name='PosErr', format='5F', unit='deg ',array=pgwdata.field('PosErr'))
+	c5=pyfits.Column(name='NET_COUNTS', format='5F', unit=' ',array=pgwdata.field('NET_COUNTS'))
+	c6=pyfits.Column(name='CHI_2_VAR', format='5F', unit=' ',array=pgwdata.field('CHI_2_VAR'))
+	c7=pyfits.Column(name='FLARING_FLAG', format='2F', unit=' ',array=pgwdata.field('FLARING_FLAG'))
+	c8=pyfits.Column(name='COUNTERPART', format='70A', unit=' ',array=index)
+
+	x = pyfits.ColDefs([c1,c2,c3,c4,c5,c6,c7,c8])
 	tbhdu=pyfits.new_table(x)
 	tbhdu.writeto('temp.fits',clobber='yes')
         #UCD 
@@ -95,30 +110,30 @@ def SaveNoAssos(pgwdata,index):
 	head1.update('TBUCD2','POS_EQ_RA_MAIN','')
   	head1.update('TBUCD3','POS_EQ_DEC_MAIN','')
   	head1.update('TBUCD4','ERROR','')
-	hdulist.writeto(noassocfile,clobber='yes')
+	hdulist.writeto(pgwfile,clobber='yes')
+	
 	
 def runsrcid(pgwfile,prob):
-	catdir=os.environ['GTSRCID_CATALOG']
-	egr=os.path.join(catdir,'3EG.fits')
-	nrows,pgwdata=loadpgwRow(pgwfile)
-	rungtsrcid(pgwfile,egr,'assoc3g.fits',prob)
-	index=GetNoAssociated(pgwdata,'assoc3g.fits')
-	if(len(index)>0):
-		SaveNoAssos(pgwdata,index)
-		"""rungtsrcid(noassocfile,'catdir/BZCAT.fits','assocBz.fits',prob)
-		nrows,pgwdata=loadpgwRow(noassocfile)
-		index=GetNoAssociated(pgwdata,'assocBz.fits')"""
 
+	nrows,pgwdata=loadpgwRow(pgwfile)
+	catfiles=loadCatFileName()
+	catfiles.sort()
+	for i in range(0,len(catfiles)):
+		prefix=catfiles[i].split('/')[-1].split('.')[0]
+		print prefix
+		rungtsrcid(pgwfile,catfiles[i],'assoc.fits',prob)
+		GetAssociated(pgwdata,'assoc.fits',prefix)
+	SaveAssoc(pgwfile,pgwdata)
+	os.system('rm temp.fits assoc.fits')
+
+
+def loadCatFileName():
+	catfile=os.environ['CATDIR']+'/*.fits'
+	files=glob.glob(catfile)
+	return files
 
 if __name__=="__main__":
-	catdir=os.environ['GTSRCID_CATALOG']
+	
+	pgwfile=sys.argv[1]
 	prob=sys.argv[2]
-	nrows,pgwdata=loadpgwRow(pgwfile)
-	rungtsrcid(pgwfile,'catdir/3EG.fits','assoc3g.fits',prob)
-	index=GetNoAssociated(pgwdata,'assoc3g.fits')
-	if(len(index)>0):
-		SaveNoAssos(pgwdata,index)
-		rungtsrcid(noassocfile,'catdir/BZCAT.fits','assocBz.fits',prob)
-		nrows,pgwdata=loadpgwRow(noassocfile)
-		index=GetNoAssociated(pgwdata,'assocBz.fits')
-	 
+	runsrcid(pgwfile,prob)
