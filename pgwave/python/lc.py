@@ -52,7 +52,7 @@ def chi2(a):
 def histo(tim,nbins):
 	#fp=open(filen,"w")
 	if(nbins>0):
-		
+				
 		step=(tim[-1]-tim[0])/nbins
 		h=[]
 		tm=[]
@@ -89,11 +89,14 @@ def createLC(filin,obj,ra0,dec0,radius,nbins):
 	#st=step/2.
 	
 	t,b,res=getLC(dat,ra0,dec0,radius)
-	co=num.array(histo(t,nbins))
-	bg=num.array(histo(b,nbins))*res
-	net=co-bg
+	if len(t)>1 and len(b)>1:
+		co=num.array(histo(t,nbins))
+		bg=num.array(histo(b,nbins))*res
+		net=co-bg
 	#print co,bg,net
-	return chi2(net),sum(net),stdev(net)
+		return chi2(net),sum(net),stdev(net)
+	else:
+		return 0.,0.,0.
 
 if __name__=='__main__':
 

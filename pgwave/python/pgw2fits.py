@@ -25,18 +25,18 @@ def pgw2fits(pgwfile,flag):
 			if chi>10. and cou/float(nbins)>=5.:
 				chi2.append(chi)
 				fla.append(1)
-				#print name_pgw[i],'\t',ra_pgw[i],'\t',dec_pgw[i],'\t',signi_pgw[i],'\t',cou,'\t',chi
+				print name_pgw[i],'\t',ra_pgw[i],'\t',dec_pgw[i],'\t',signi_pgw[i],'\t',cou,'\t',chi
 			else:
 				fla.append(0)
 				chi=0.
 				chi2.append(0)
-			#print name_pgw[i],'\t',ra_pgw[i],'\t',dec_pgw[i],'\t',signi_pgw[i],'\t',cou,'\t',chi
+				print name_pgw[i],'\t',ra_pgw[i],'\t',dec_pgw[i],'\t',signi_pgw[i],'\t',cou,'\t',chi
 
 		else:
 			chi2.append(0)
 			count.append(0)
 			fla.append(0)
-			#print name_pgw[i],'\t',ra_pgw[i],'\t',dec_pgw[i],'\t',signi_pgw[i],'\t',chi
+			print name_pgw[i],'\t',ra_pgw[i],'\t',dec_pgw[i],'\t',signi_pgw[i],'\t',chi
 		posErr.append(1.)
 	c1=pyfits.Column(name='NAME',format='10A', unit=' ',array=name_pgw)
 	c2=pyfits.Column(name='RAJ2000',format='5F',unit='deg', array=num.array(ra_pgw))

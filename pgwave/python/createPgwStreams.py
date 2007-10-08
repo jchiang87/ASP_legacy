@@ -22,15 +22,16 @@ _startTime = 220838400.   # for DC2 data
 
 def pgwStreams(downl=1, output_dir=_outputDir, startTime=_startTime, 
             debug=False, logicalPath=None):
-    start_time = (downl-1)*1.04e4 + startTime
-    stop_time = start_time +1.04e4 
+    start_time = 252737700
+    #TSTOP=252743070#(downl-1)*1.04e4 + startTime
+    stop_time =252743070 # start_time +1.04e4 
     os.chdir(output_dir)
     args = {'OUTPUTDIR' : output_dir,
             'TSTART' : start_time,
             'TSTOP' : stop_time,
             'CATDIR': _catdir, 
             'PGWAVEROOT' : _pgwRoot,
-            'logicalPath' : '/DC2/Downlinks'}
+            'logicalPath' : '/DC2/OktoberTest'}
     if logicalPath is not None:
             args['logicalPath'] = logicalPath
     command = PipelineCommand('PGWave', args)
