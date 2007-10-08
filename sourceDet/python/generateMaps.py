@@ -13,7 +13,7 @@ import glob
 from GtApp import GtApp
 from HealPix import *
 
-gtltcube = GtApp('gtlivetimecube')
+gtltcube = GtApp('gtltcube')
 
 class CountsArrayFactory(object):
     def __init__(self, ft1Files, nside=16):
@@ -32,13 +32,13 @@ class ExposureArrayFactory(object):
         self.ft2File = ft2File
         self.hp = Healpix(nside, Healpix.NESTED, SkyDir.EQUATORIAL)
         self.irfs = irfs
-    def create(self, tmin, tmax, emin=100, emax=3e5):
+    def create(self, tmin, tmax, evfile, emin=100, emax=3e5):
         emap = ExposureArray(self.hp)
-        gtltcube['evfile'] = ''
+        gtltcube['evfile'] = evfile
         gtltcube['scfile'] = self.ft2File
         gtltcube['tmin'] = tmin
         gtltcube['tmax'] = tmax
-        gtltcube['outfile'] = 'expCube_%i_%i.fits' % (tmin/8.64e4, tmax/8.64e4)
+        gtltcube['outfile'] = 'expCube_%i_%i.fits' % (tmin, tmax)
         gtltcube.run()
         emap.computeExposure(self.irfs, gtltcube['outfile'])
         return emap
