@@ -11,8 +11,8 @@ ft1, ft2 = getFitsData()
 output_dir = os.environ['OUTPUTDIR']
 os.chdir(output_dir)
 
-start_time = float(os.environ['TSTART'])
-stop_time = float(os.environ['TSTOP'])
+#start_time = float(os.environ['TSTART'])
+#stop_time = float(os.environ['TSTOP'])
 
 gtselect = GtApp('gtselect')
 
@@ -32,8 +32,8 @@ fmerge.run()
 
 gtselect['infile'] = ft1Merged
 gtselect['outfile'] ='time_filtered_events.fits'
-gtselect['tmin'] = start_time
-gtselect['tmax'] = stop_time
+gtselect['tmin'] = 0
+gtselect['tmax'] = 0
 gtselect['ra'] =180.
 gtselect['dec'] = 0.
 gtselect['rad'] = 180
