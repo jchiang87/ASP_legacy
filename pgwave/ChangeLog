@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Oct  9 15:51:27 PDT 2007
+ASP/pgwave/python
+
+Modified Files:
+	getPgwInputData.py 
+Log Message:
+update python script to match catalogQuery based on downlink id
+    *
+------------------------------------------------------------
 User: jchiang  Mon Oct  8 22:42:22 PDT 2007
 ASP/pgwave/xml
 
