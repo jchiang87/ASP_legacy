@@ -66,11 +66,15 @@ def pgwave(filein):
 def runpgw(infile):
 	workdir=os.getcwd()
 	print 'Running PGWave in dir: ',workdir
+	tmp=infile
+	cmd='fcopy \"'+infile+'[EVENTS][CTBCLASSLEVEL>1]\"'+' filtered.fits'
+	os.system(cmd) 
 	sizex=720
-	sizey=320
+	sizey=360
 	scale=0.5
 	ra=180.
 	dec=0.
+	infile='filtered.fits'
 	mapPar=[ra,dec,'CAR',sizex,sizey,scale]
 	inmap1=infile.replace('.fits','_map.fits')  #os.path.join(workdir,((os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'))
 	if os.path.exists(inmap1)==False:
