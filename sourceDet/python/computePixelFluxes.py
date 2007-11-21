@@ -13,11 +13,15 @@ import glob
 import numarray as num
 from HealPix import *
 from DbEntry import DbEntry
+from FitsNTuple import FitsNTuple
 
 os.chdir(os.environ['OUTPUTDIR'])
 
-tstart = float(os.environ['TSTART'])
-tstop = float(os.environ['TSTOP'])
+#tstart = float(os.environ['TSTART'])
+#tstop = float(os.environ['TSTOP'])
+
+scData = FitsNTuple('FT2_merged.fits')
+tstart, tstop = min(scData.START), max(scData.STOP)
 
 cmap = CountsArray(glob.glob('cmap*.fits')[0])
 emap = ExposureArray(glob.glob('emap*.fits')[0])
