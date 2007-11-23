@@ -14,6 +14,22 @@ gtexposure = GtApp('gtexposure')
 pgwaveprog=os.path.join(os.environ['PGWAVEROOT'], os.environ['BINDIR'])+'/pgwave2D.exe'
 #pgwaveprog='pgwave'
 
+def select(infileft1,mapPar,outfil):
+        gtselect['infile'] = infileft1
+        gtselect['outfile'] = outfil
+        gtselect['tmin'] = 0
+        gtselect['tmax'] = 0
+        gtselect['ra'] =mapPar[0]
+        gtselect['dec'] =mapPar[1]
+        gtselect['rad'] = mapPar[6]
+        gtselect['emin'] = 100
+        gtselect['emax'] = 2e5
+        gtselect['eventClass'] = -1
+        gtselect['zmax']=105
+        gtselect.run()
+
+
+
 def makeMap(infile,mapPar,outfil):
 	gtbin.debug=False
 	gtbin['algorithm']='CMAP'
@@ -49,7 +65,7 @@ def makeLC(infile,lcPar,outfil):
 def calcExposure(infile):	
 	gtexposure['lcfile']=infile
 	gtexposure['scfile']=Sc2Ft2File
-	gtexposure['rspfunc']='Pass4_v2'
+	gtexposure['rspfunc']='Pass5_v0_source'
 	gtexposure['spectral_index']=-2.1
 	gtexposure.run()
 
@@ -57,7 +73,7 @@ def createMap(infil,mapPar,outf):
 	makeMap(infil,mapPar,outf)
 
 def pgwave(filein):
-	param='bgk_choise=n circ_square=s N_scale=1 scala=\"3.0\" otpix=\"10\" n_sigma=3 median_box=5 kappa=3 min_pix=2 border_size=4 fitsio_choice=n recursive_choice=n verbose_level=0'
+	param='bgk_choise=n circ_square=s N_scale=1 scala=\"3.0\" otpix=\"10\" n_sigma=3 median_box=5 kappa=3 min_pix=3 border_size=4 fitsio_choice=n recursive_choice=n verbose_level=0'
 	command=pgwaveprog +' '+filein+' '+param
 	print command
 	os.system(command)
@@ -67,18 +83,24 @@ def runpgw(infile):
 	workdir=os.getcwd()
 	print 'Running PGWave in dir: ',workdir
 	tmp=infile
-	cmd='fcopy \"'+infile+'[EVENTS][CTBCLASSLEVEL>1]\"'+' filtered.fits'
+	cmd='fcopy \"'+infile+'[EVENTS][CTBCLASSLEVEL>1]\"'+' Filtered.fits'
 	os.system(cmd) 
 	sizex=720
 	sizey=360
 	scale=0.5
 	ra=180.
 	dec=0.
-	infile='filtered.fits'
-	mapPar=[ra,dec,'CAR',sizex,sizey,scale]
-	inmap1=infile.replace('.fits','_map.fits')  #os.path.join(workdir,((os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'))
+	rad=180.
+	infile='Filtered.fits'
+	mapPar=[ra,dec,'CAR',sizex,sizey,scale,rad]
+	outfil='Filtered_evt.fits'        
+	select(infile,mapPar,outfil)
+	inmap1=outfil.replace('.fits','_map.fits')  #os.path.join(workdir,((os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'))
 	if os.path.exists(inmap1)==False:
-		createMap(infile,mapPar,inmap1)
+		createMap(outfil,mapPar,inmap1)
+	aitmap=outfil.replace('.fits','_map_ait.fits')
+	mapParAit=[ra,dec,'AIT',sizex,sizey,scale,rad]
+	createMap(outfil,mapParAit,aitmap)
 #	os.environ['OUTPUTF1MAP']=os.path.abspath(#inmap1)
 #	inmap=(os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'
 #	pgwfile=(inmap.split('.'))[0]+'.list'
@@ -86,7 +108,7 @@ def runpgw(infile):
         pgwave(inmap1)
 	outf=inmap1.replace('.fits','.list')
 	outfits=pgw2fits(outf,1)
-	runsrcid(outfits,.30)
+	#runsrcid(outfits,.30)
 	print 'PGWave FITS output file:',outfits 
 	#outf=os.path.abspath(pgwfile)
 #	os.environ['PGWOUTPUTLIST']=pgwfile

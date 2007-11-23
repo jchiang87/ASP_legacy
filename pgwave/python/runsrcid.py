@@ -38,7 +38,7 @@ def rungtsrcid(srcCat,testCat,outCat,prob):
          + ' outCatQty09=\"\"' \
          + ' probMethod=POSITION' \
          + ' probThres='+str(prob) \
-         + ' maxNumCtp=1' \
+         + ' maxNumCpt=1' \
          + ' select01=\"\"' \
          + ' select02=\"\"' \
          + ' select03=\"\"' \

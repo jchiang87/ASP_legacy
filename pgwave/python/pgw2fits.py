@@ -7,8 +7,8 @@ import lc
 def pgw2fits(pgwfile,flag):
 	pgwfits=pgwfile.replace('.list','_pgw_out.fits')
 	filevt=pgwfile.replace('_map.list','.fits')
-	name_pgw,ra_pgw,dec_pgw,signi_pgw=readpgw(pgwfile)
-	posErr=[]
+	name_pgw,ra_pgw,dec_pgw,posErr,signi_pgw=readpgw(pgwfile)
+	#posErr=[]
 	count=[]
 	chi2=[]
 	fla=[]
@@ -37,7 +37,7 @@ def pgw2fits(pgwfile,flag):
 			count.append(0)
 			fla.append(0)
 			print name_pgw[i],'\t',ra_pgw[i],'\t',dec_pgw[i],'\t',signi_pgw[i],'\t',chi
-		posErr.append(1.)
+		#posErr.append(1.)
 	c1=pyfits.Column(name='NAME',format='10A', unit=' ',array=name_pgw)
 	c2=pyfits.Column(name='RAJ2000',format='5F',unit='deg', array=num.array(ra_pgw))
 	c3=pyfits.Column(name='DECJ2000',format='5F', unit='deg', array=num.array(dec_pgw))
