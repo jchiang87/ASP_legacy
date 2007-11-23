@@ -195,7 +195,7 @@ void detect_sources::print_to_file(fitsfile *fptr, char *filename)
 		fits_pix_to_world(double(x[k]+1), double(y[k]+1), xrefval, yrefval, xrefpix, yrefpix, xinc, yinc, rot, coordtype, &RA, &DEC, &status);
 		if(status == 0){
 		//pair<double, double> rr=mwcs->pix2sph(double(x[k]+1),double(y[k]+1));
-			double err=(A[k]>=B[k])?B[k]*xinc:A[k]*xinc;
+			double err=(A[k]>=B[k])?A[k]*xinc/2.:B[k]*xinc/2.;
 			sprintf(list_file, "%4d  %6.1f   %6.1f   %10.4f   %10.4f   %6.3f  %10.3f   %10.3f   %6d  %6d  %6d  %6d\n",k+1, x[k], y[k],RA, DEC, err,SNR[k],signif[k],int(mag[k]+0.5), int(magerr[k]+0.5),int(bkg[k]+0.5),int(bkgerr[k]+0.5));
 			outlist << list_file;
 			outfile << "point (" << RA << ", " <<DEC << ")  # color=red point=cross text={"<< (k+1) <<"}"<<char(10);
