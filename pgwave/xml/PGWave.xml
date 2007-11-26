@@ -23,14 +23,14 @@
   <process name="catalogQuery">
     <script>
       <![CDATA[
-        def query(outfile, path, DownlinkId):
+        def query(outfile, type, DownlinkId):
             output = pipeline.createFile(outfile)
-            query = 'nDownlink == %i' % DownlinkId
-            datasetList = datacatalog.getDatasets(logicalPath+'/'+path, query)
+            query = 'nDownlink == %i && DataType=="%s"' % (DownlinkId, type)
+            datasetList = datacatalog.getDatasets(logicalPath+'/*', query)
             datasetList.writeToFile(output)
             pipeline.writeFile(output)
-        query("Ft1FileList", "ft1", DownlinkId)
-        query("Ft2FileList", "ft2", DownlinkId)
+        query("Ft1FileList", "FT1", DownlinkId)
+        query("Ft2FileList", "FT2", DownlinkId)
         ]]></script>
   </process>
 
