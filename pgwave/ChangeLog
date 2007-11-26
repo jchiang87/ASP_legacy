@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Sun Nov 25 22:18:33 PST 2007
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+register pgwave output; modify datacatalog query (still not working)
+    *
+------------------------------------------------------------
+User: jchiang  Sun Nov 25 22:18:33 PST 2007
 ASP/pgwave/python
 
 Modified Files:
