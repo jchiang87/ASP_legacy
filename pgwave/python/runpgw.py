@@ -4,6 +4,7 @@ import pyfits
 import numarray as num
 from pgw2fits import *
 from runsrcid import *
+from creaXimageGif import *
 #Sc2Ft2File=os.environ['INPUTFT2FILE']
 #tSc2Data ='nicola5.fits'
 
@@ -101,6 +102,7 @@ def runpgw(infile):
 	aitmap=outfil.replace('.fits','_map_ait.fits')
 	mapParAit=[ra,dec,'AIT',sizex,sizey,scale,rad]
 	createMap(outfil,mapParAit,aitmap)
+	creaXimageGif(aitmap)
 #	os.environ['OUTPUTF1MAP']=os.path.abspath(#inmap1)
 #	inmap=(os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'
 #	pgwfile=(inmap.split('.'))[0]+'.list'
