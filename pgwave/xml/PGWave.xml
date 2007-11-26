@@ -52,10 +52,10 @@
 
   <process name="registerData">
     <script><![CDATA[
-    rootname = 'time_filtered_events'
-    exts = ('.fits', '_map.fits', '_map.list', '_map.reg', '_map_pgw_out.fits')
+    rootname = 'Filtered_evt'
+    exts = ('.fits', '_map.fits', '_map.list', '_map.reg', '_map_pgw_out.fits', '_map_ait.gif')
     files = [rootname + '/' + ext for ext in exts]
-    types = ('EVENTS', 'SKYMAP', 'PGWAVESOURCESLIST', 'DS9REGIONS', 'FSUMMARY')
+    types = ('EVENTS', 'SKYMAP', 'PGWAVESOURCESLIST', 'DS9REGIONS', 'FSUMMARY', 'GIFSKYMAP')
     for outfile, type in zip(files, types):
         logicalPath = '/ServiceChallenge/55Day/ASP/FlareMonitoring/%i:' % DownlinkId
         filePath = '%s/%s' % (OUTPUTDIR, outfile)
