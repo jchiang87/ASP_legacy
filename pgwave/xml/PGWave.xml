@@ -5,10 +5,10 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="PGWave" version="1.6" type="Data">
+<task name="PGWave" version="2.0" type="Data">
   <variables>
     <!-- Default values that can be overridden at the command line. -->
-    <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r2p1"</var>
+    <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r3p1"</var>
     <var name="BINDIR">rh9_gcc32</var>
   </variables>
   <prerequisites>
@@ -25,14 +25,13 @@
       <![CDATA[
         def query(outfile, path, DownlinkId):
             output = pipeline.createFile(outfile)
-            query = ('DataType == \"%s\" && nDownlink == %i'
-                     % (path, DownlinkId))
+            query = 'nDownlink == %i' % DownlinkId
             datasetList = datacatalog.getDatasets(logicalPath+'/'+path, query)
             datasetList.writeToFile(output)
             pipeline.writeFile(output)
-        query("Ft1FileList", "FT1", DownlinkId)
-        query("Ft2FileList", "FT2", DownlinkId)
-	]]></script>
+        query("Ft1FileList", "ft1", DownlinkId)
+        query("Ft2FileList", "ft2", DownlinkId)
+        ]]></script>
   </process>
 
   <process name="getPgwInputData">
@@ -48,6 +47,22 @@
          batchOptions=" -q medium"/>
     <depends>
       <after process="getPgwInputData" status="SUCCESS"/>
+    </depends>
+  </process>
+
+  <process name="registerData">
+    <script><![CDATA[
+    rootname = 'time_filtered_events'
+    exts = ('.fits', '_map.fits', '_map.list', '_map.reg', '_map_pgw_out.fits')
+    files = [rootname + '/' + ext for ext in exts]
+    types = ('EVENTS', 'SKYMAP', 'PGWAVESOURCESLIST', 'DS9REGIONS', 'FSUMMARY')
+    for outfile, type in zip(files, types):
+        logicalPath = '/ServiceChallenge/55Day/ASP/FlareMonitoring/%i:' % DownlinkId
+        filePath = '%s/%s' % (OUTPUTDIR, outfile)
+        datacatalog.registerDataset(dataType, logicalPath, filePath)
+    ]]></script>
+    <depends>
+      <after process="runpgw" status="SUCCESS"/>
     </depends>
   </process>
 

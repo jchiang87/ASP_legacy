@@ -8,6 +8,12 @@ debug = False
 
 ft1, ft2 = getFitsData()
 
+#
+# kluge for Interleave55d FT2 file since it violates convention established
+# by L1Proce for OktoberTest
+#
+ft2 = ('/nfs/farm/g/glast/u44/MC-tasks/Interleave55d-GR-v11r17/prune/FT2_55day_patch.fits',)
+
 output_dir = os.environ['OUTPUTDIR']
 os.chdir(output_dir)
 
