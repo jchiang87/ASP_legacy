@@ -27,14 +27,14 @@ print "Using downlink files: ", ft1
 ft1Merged ='FT1_merged.fits'
 ft1merge(ft1, ft1Merged)
 
-fmerge = GtApp('fmerge')
+"""fmerge = GtApp('fmerge')
 fmerge['infiles'] = '@Ft2FileList'
 fmerge['outfile'] = 'FT2_merged.fits'
 fmerge['clobber'] = 'yes'
 fmerge['columns'] = '" "'
 fmerge['mextname'] = '" "'
 fmerge['lastkey'] = '" "'
-fmerge.run()
+fmerge.run()"""
 
 gtselect['infile'] = ft1Merged
 gtselect['outfile'] ='time_filtered_events.fits'
