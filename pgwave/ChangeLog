@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: tosti  Tue Nov 27 16:03:07 PST 2007
+ASP/pgwave/python
+
+Modified Files:
+	creaXimageGif.py 
+Log Message:
+using pylab to create gif image
+    *
+------------------------------------------------------------
 User: tosti  Tue Nov 27 07:59:01 PST 2007
 ASP/pgwave/python
 
