@@ -41,9 +41,8 @@ def makeMap(infile,mapPar,outfil):
 	gtbin['numypix']=mapPar[4]
 	gtbin['proj']=mapPar[2]
 	gtbin['xref']=mapPar[0]
-	gtbin['yref']=mapPar[1]
-	gtbin['pixscale']=mapPar[5]
-	"""
+	gtbin['yref']=mapPar[1]"""
+	gtbin['coordsys']=mapPar[7]
 	gtbin['nxpix']=mapPar[3]
 	gtbin['nypix']=mapPar[4]
 	gtbin['proj']=mapPar[2]
@@ -98,14 +97,14 @@ def runpgw(infile):
 	dec=0.
 	rad=180.
 	infile='Filtered.fits'
-	mapPar=[ra,dec,'CAR',sizex,sizey,scale,rad]
+	mapPar=[ra,dec,'CAR',sizex,sizey,scale,rad,'CEL']
 	outfil='Filtered_evt.fits'        
 	select(infile,mapPar,outfil)
 	inmap1=outfil.replace('.fits','_map.fits')  #os.path.join(workdir,((os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'))
 	if os.path.exists(inmap1)==False:
 		createMap(outfil,mapPar,inmap1)
 	aitmap=outfil.replace('.fits','_map_ait.fits')
-	mapParAit=[ra,dec,'AIT',sizex,sizey,scale,rad]
+	mapParAit=[0.,0.,'AIT',sizex,sizey,scale,rad,'GAL']
 	createMap(outfil,mapParAit,aitmap)
 	creaXimageGif(aitmap)
 #	os.environ['OUTPUTF1MAP']=os.path.abspath(#inmap1)
