@@ -1,6 +1,8 @@
 package pgwave
 version v0r1
 
+# $Id$
+
 #use STpolicy *
 use AspPolicy v* ASP
 use cfitsio * IExternal
@@ -12,6 +14,7 @@ use pyIrfLoader v* irfs -no_auto_imports
 #use BayesianBlocks v* ASP -no_auto_imports
 use sane v* -no_auto_imports
 use pyLikelihood v* -no_auto_imports
+use sourceDet v* ASP -no_auto_imports
 
 path_remove PYTHONPATH pgwave
 path_append PYTHONPATH $(PGWAVEROOT)/$(BINDIR)

@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="PGWave" version="2.9" type="Data">
+<task name="PGWave" version="3.0" type="Data">
   <variables>
     <!-- Default values that can be overridden at the command line. -->
     <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r3p1"</var>
@@ -50,15 +50,25 @@
     </depends>
   </process>
 
+  <process name="makeHealPixMaps">
+    <job executable="${PGWAVEROOT}/${BINDIR}/makeHealPixMaps.sh"
+         batchOptions="-q medium"/>
+    <depends>
+      <after process="runpgw" status="SUCCESS"/>
+    </depends>
+  </process>
+
   <process name="registerData">
     <script><![CDATA[
     rootname = 'Filtered_evt'
     exts = ('.fits', '_map.fits', '_map.list', '_map.reg', 
             '_map_pgw_out.fits', '_map_ait.gif')
     files = [rootname + ext for ext in exts]
-    dataTypes = ('FT1', 'DATA', 'DATA', 'DATA', 'FITS', 'DATA')
+    files.append('counts_%i.fits' % DownlinkId)
+    files.append('exposure_%i.fits' % DownlinkId)
+    dataTypes = ('FT1', 'DATA', 'DATA', 'DATA', 'FITS', 'DATA', 'FITS', 'FITS')
     types = ('EVENTS', 'SKYMAP', 'PGWAVESOURCESLIST', 'DS9REGIONS', 
-             'FSUMMARY', 'GIFSKYMAP')
+             'FSUMMARY', 'GIFSKYMAP', 'CMAP', 'EMAP')
     for outfile, type, dataType in zip(files, types, dataTypes):
         logicalPath = ('/ServiceChallenge/55Day/ASP/FlareMonitoring/%i/%s' 
                        % (DownlinkId, outfile))
@@ -68,7 +78,7 @@
                                     filePath, attributes)
     ]]></script>
     <depends>
-      <after process="runpgw" status="SUCCESS"/>
+      <after process="makeHealPixMaps" status="SUCCESS"/>
     </depends>
   </process>
 

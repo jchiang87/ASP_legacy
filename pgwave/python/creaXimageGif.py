@@ -1,4 +1,7 @@
 import os,sys
+
+os.environ['HOME'] = os.environ['output_dir']
+
 from pylab import *
 import pyfits
 
