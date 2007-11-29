@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Thu Nov 29 13:49:05 PST 2007
+ASP/pgwave/python
+
+Modified Files:
+	creaXimageGif.py getPgwInputData.py 
+Log Message:
+add heal pix maps step
+    *
+------------------------------------------------------------
+User: jchiang  Thu Nov 29 13:49:05 PST 2007
 ASP/pgwave/cmt
 
 Modified Files:
