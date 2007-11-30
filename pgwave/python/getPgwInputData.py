@@ -4,8 +4,6 @@ from GtApp import GtApp
 from getFitsData import getFitsData
 from ft1merge import ft1merge
 
-debug = False
-
 ft1, ft2 = getFitsData()
 
 #
@@ -46,9 +44,15 @@ gtselect['rad'] = 180
 gtselect['emin'] = 30
 gtselect['emax'] = 2e5
 gtselect['eventClass'] = -1
+gtselect.run()
 
-if debug:
-    print gtselect.command()
-else:
-    gtselect.run()
+try:
+    os.remove('Filtered.fits')
+except OSError:
+    pass
+
+fcopy = GtApp('fcopy')
+fcopy.run(infile='time_filtered_events.fits[EVENTS][CTBCLASSLEVEL>1]',
+          outfile='Filtered.fits')
+
 os.system('chmod 777 *')

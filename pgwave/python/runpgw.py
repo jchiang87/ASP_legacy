@@ -82,14 +82,14 @@ def pgwave(filein):
 def runpgw(infile):
 	workdir=os.getcwd()
 	print 'Running PGWave in dir: ',workdir
-	tmp=infile
-	cmd='fcopy \"'+infile+'[EVENTS][CTBCLASSLEVEL>1]\"'+' Filtered.fits'
-        # fcopy has no clobber option, so we remove by hand.
-        try:
-                os.remove('Filtered.fits')
-        except OSError:
-                pass
-	os.system(cmd) 
+#	tmp=infile
+#	cmd='fcopy \"'+infile+'[EVENTS][CTBCLASSLEVEL>1]\"'+' Filtered.fits'
+#        # fcopy has no clobber option, so we remove by hand.
+#        try:
+#                os.remove('Filtered.fits')
+#        except OSError:
+#                pass
+#	os.system(cmd) 
 	sizex=720
 	sizey=360
 	scale=0.5
