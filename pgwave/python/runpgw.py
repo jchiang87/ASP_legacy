@@ -5,6 +5,7 @@ import numarray as num
 from pgw2fits import *
 from runsrcid import *
 from creaXimageGif import *
+from FitsNTuple import FitsNTuple
 #Sc2Ft2File=os.environ['INPUTFT2FILE']
 #tSc2Data ='nicola5.fits'
 
@@ -18,8 +19,16 @@ pgwaveprog=os.path.join(os.environ['PGWAVEROOT'], os.environ['BINDIR'])+'/pgwave
 def select(infileft1,mapPar,outfil):
         gtselect['infile'] = infileft1
         gtselect['outfile'] = outfil
-        gtselect['tmin'] = 0
-        gtselect['tmax'] = 0
+        #gtselect['tmin'] = 0
+        #gtselect['tmax'] = 0
+        #
+        # no time selection is desired, so need to pass tstart and tstop from
+        # input file here in order to get correct TSTART and TSTOP header
+        # keywords
+        #
+        gti = FitsNTuple(infileft1, 'GTI')
+        gtselect['tmin'] = min(gti.START)
+        gtselect['tmax'] = max(gti.STOP)
         gtselect['ra'] =mapPar[0]
         gtselect['dec'] =mapPar[1]
         gtselect['rad'] = mapPar[6]

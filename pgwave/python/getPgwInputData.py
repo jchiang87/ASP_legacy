@@ -3,6 +3,7 @@ from GtApp import GtApp
 #from getL1Data import getL1Data
 from getFitsData import getFitsData
 from ft1merge import ft1merge
+from FitsNTuple import FitsNTuple
 
 ft1, ft2 = getFitsData()
 
@@ -36,8 +37,11 @@ fmerge.run()"""
 
 gtselect['infile'] = ft1Merged
 gtselect['outfile'] ='time_filtered_events.fits'
-gtselect['tmin'] = 0
-gtselect['tmax'] = 0
+#gtselect['tmin'] = 0
+#gtselect['tmax'] = 0
+gti = FitsNTuple(ft1Merged, 'GTI')
+gtselect['tmin'] = min(gti.START)
+gtselect['tmax'] = max(gti.STOP)
 gtselect['ra'] =180.
 gtselect['dec'] = 0.
 gtselect['rad'] = 180
@@ -52,7 +56,7 @@ except OSError:
     pass
 
 fcopy = GtApp('fcopy')
-fcopy.run(infile='time_filtered_events.fits[EVENTS][CTBCLASSLEVEL>1]',
+fcopy.run(infile='"time_filtered_events.fits[EVENTS][CTBCLASSLEVEL>1]"',
           outfile='Filtered.fits')
 
 os.system('chmod 777 *')
