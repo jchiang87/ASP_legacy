@@ -55,7 +55,7 @@ if __name__ == '__main__':
     hot_pixels = {}
     for key in lightCurves:
         hot_pixels[key] = Pixel(SkyDir(*hp.pix2coord(key)), hp)
-
+        
     #
     # Add interesting pixels from current downlink.
     #
@@ -68,6 +68,7 @@ if __name__ == '__main__':
     #
     # Rebuild light curves for all pixels:
     #
+    lightCurves = {}
     for downlink in downlinks:
         datapath = lambda x : os.path.join(downlink, x)
         tmin, tmax = get_tlims(datapath('FT1_merged.fits'))
