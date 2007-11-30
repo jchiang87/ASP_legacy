@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: jchiang  Thu Nov 29 22:32:24 PST 2007
+ASP/pgwave/python
+
+Modified Files:
+	getPgwInputData.py runpgw.py 
+Added Files:
+	build_lc_db.py makeHealPixMaps.py 
+Log Message:
+add code to build healpix counts and exposure maps; add code to build light curves from those data
+    *
+------------------------------------------------------------
 User: jchiang  Thu Nov 29 13:49:05 PST 2007
 ASP/pgwave/xml
 
