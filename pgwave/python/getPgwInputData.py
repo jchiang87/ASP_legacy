@@ -59,4 +59,10 @@ fcopy = GtApp('fcopy')
 fcopy.run(infile='"time_filtered_events.fits[EVENTS][CTBCLASSLEVEL>1]"',
           outfile='Filtered.fits')
 
+#
+# apply zenith angle cut and energy cut
+#
+gtselect.run(emin=100, zmax=105, infile='Filtered.fits',
+             outfile='Filtered_evt.fits')
+
 os.system('chmod 777 *')

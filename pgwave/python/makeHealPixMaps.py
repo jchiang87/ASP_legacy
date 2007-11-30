@@ -25,7 +25,10 @@ if __name__ == '__main__':
 
     tmin, tmax = get_tlims('FT1_merged.fits')
     
-    cmapFactory = CountsArrayFactory(('Filtered.fits',))
+    ft1file = 'Filtered_evt.fits'
+    if not os.path.isfile(ft1file):
+        raise RuntimeError, "file not found: " + ft1file
+    cmapFactory = CountsArrayFactory((ft1file,))
     cmap = cmapFactory.create(tmin, tmax)
     cmapfile = 'counts_%s.fits' % downlinkId
     cmap.write(cmapfile)

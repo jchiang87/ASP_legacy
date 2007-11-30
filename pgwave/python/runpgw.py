@@ -16,27 +16,27 @@ gtexposure = GtApp('gtexposure')
 pgwaveprog=os.path.join(os.environ['PGWAVEROOT'], os.environ['BINDIR'])+'/pgwave2D.exe'
 #pgwaveprog='pgwave'
 
-def select(infileft1,mapPar,outfil):
-        gtselect['infile'] = infileft1
-        gtselect['outfile'] = outfil
-        #gtselect['tmin'] = 0
-        #gtselect['tmax'] = 0
-        #
-        # no time selection is desired, so need to pass tstart and tstop from
-        # input file here in order to get correct TSTART and TSTOP header
-        # keywords
-        #
-        gti = FitsNTuple(infileft1, 'GTI')
-        gtselect['tmin'] = min(gti.START)
-        gtselect['tmax'] = max(gti.STOP)
-        gtselect['ra'] =mapPar[0]
-        gtselect['dec'] =mapPar[1]
-        gtselect['rad'] = mapPar[6]
-        gtselect['emin'] = 100
-        gtselect['emax'] = 2e5
-        gtselect['eventClass'] = -1
-        gtselect['zmax']=105
-        gtselect.run()
+#def select(infileft1,mapPar,outfil):
+#        gtselect['infile'] = infileft1
+#        gtselect['outfile'] = outfil
+#        #gtselect['tmin'] = 0
+#        #gtselect['tmax'] = 0
+#        #
+#        # no time selection is desired, so need to pass tstart and tstop from
+#        # input file here in order to get correct TSTART and TSTOP header
+#        # keywords
+#        #
+#        gti = FitsNTuple(infileft1, 'GTI')
+#        gtselect['tmin'] = min(gti.START)
+#        gtselect['tmax'] = max(gti.STOP)
+#        gtselect['ra'] =mapPar[0]
+#        gtselect['dec'] =mapPar[1]
+#        gtselect['rad'] = mapPar[6]
+#        gtselect['emin'] = 100
+#        gtselect['emax'] = 2e5
+#        gtselect['eventClass'] = -1
+#        gtselect['zmax']=105
+#        gtselect.run()
 
 
 
@@ -107,8 +107,9 @@ def runpgw(infile):
 	rad=180.
 	infile='Filtered.fits'
 	mapPar=[ra,dec,'CAR',sizex,sizey,scale,rad,'CEL']
-	outfil='Filtered_evt.fits'        
-	select(infile,mapPar,outfil)
+	outfil='Filtered_evt.fits'
+        # move this selection to getPgwInputData
+#	select(infile,mapPar,outfil)
 	inmap1=outfil.replace('.fits','_map.fits')  #os.path.join(workdir,((os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'))
 	if os.path.exists(inmap1)==False:
 		createMap(outfil,mapPar,inmap1)
