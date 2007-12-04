@@ -105,32 +105,28 @@ def runpgw(infile):
 	ra=180.
 	dec=0.
 	rad=180.
-	infile='Filtered.fits'
+	#infile='Filtered.fits'
 	mapPar=[ra,dec,'CAR',sizex,sizey,scale,rad,'CEL']
-	outfil='Filtered_evt.fits'
+	#outfil='Filtered_evt.fits'
         # move this selection to getPgwInputData
 #	select(infile,mapPar,outfil)
-	inmap1=outfil.replace('.fits','_map.fits')  #os.path.join(workdir,((os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'))
+	inmap1=infile.replace('.fits','_map.fits')  #os.path.join(workdir,((os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'))
 	if os.path.exists(inmap1)==False:
-		createMap(outfil,mapPar,inmap1)
-	aitmap=outfil.replace('.fits','_map_ait.fits')
+		createMap(infile,mapPar,inmap1)
+	aitmap=infile.replace('.fits','_map_ait.fits')
 	mapParAit=[0.,0.,'AIT',sizex,sizey,scale,rad,'GAL']
-	createMap(outfil,mapParAit,aitmap)
+	createMap(infile,mapParAit,aitmap)
 	creaXimageGif(aitmap)
-#	os.environ['OUTPUTF1MAP']=os.path.abspath(#inmap1)
-#	inmap=(os.environ['INPUTFT1FILE']).split('.')[0]+'_map.fits'
-#	pgwfile=(inmap.split('.'))[0]+'.list'
-#        if os.path.exists(pgwfile)==False:
         pgwave(inmap1)
 	outf=inmap1.replace('.fits','.list')
 	outfits=pgw2fits(outf,1)
-	#runsrcid(outfits,.30)
+	runsrcid(outfits,.01)
 	print 'PGWave FITS output file:',outfits 
 	#outf=os.path.abspath(pgwfile)
 #	os.environ['PGWOUTPUTLIST']=pgwfile
 
 if __name__=="__main__":
 	os.chdir(os.environ['OUTPUTDIR'])
-	runpgw('time_filtered_events.fits')
+	runpgw('Filtered_evt.fits')
 	os.system('chmod 777 *')
 		

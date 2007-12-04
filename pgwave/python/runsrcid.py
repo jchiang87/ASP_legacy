@@ -19,14 +19,26 @@ def loadpgwRow(pgwfits):
 
 def rungtsrcid(srcCat,testCat,outCat,prob):
 
-	cmd = 'gtsrcid ' \
+	cmd = 'gtsrcid' \
+         + ' srcCatName='+srcCat \
+         + ' srcCatPrefix=\"SRC\"' \
+         + ' srcPosError=\"1\"' \
+         + ' cptCatName='+testCat \
+         + ' cptCatPrefix=\"CAT\"' \
+         + ' outCatName='+outCat \
+         + ' probMethod=\"POSITION\"' \
+         + ' probThres=\"0.0001\"' \
+         + ' maxNumCpt=\"1\" '
+
+
+	"""cmd = 'gtsrcid ' \
          + ' srcCatName=' + srcCat \
          + ' srcCatPrefix=SRC' \
          + ' srcCatQty=*' \
          + ' cptCatName='+testCat \
          + ' cptCatPrefix=CAT' \
          + ' cptCatQty=*' \
-         + ' cptPosError=0.01' \
+         + ' cptPosError=1' \
          + ' outCatName='+outCat \
          + ' outCatQty01=\'R=arccos(sin($@SRC_DECJ2000$*2*#pi/360)*sin($@CAT_DEJ2000$*2*#pi/360)+cos($@SRC_DECJ2000$*2*#pi/360)*cos($@CAT_DEJ2000$*2*#pi/360)*cos($@SRC_RAJ2000$*2*#pi/360-$@CAT_RAJ2000$*2*#pi/360))*360/(2*#pi)\''\
          + ' outCatQty03=\"\"' \
@@ -51,7 +63,7 @@ def rungtsrcid(srcCat,testCat,outCat,prob):
          + ' chatter=4' \
          + ' clobber=yes' \
          + ' debug=no' \
-         + ' mode=ql'
+         + ' mode=ql'"""
 	os.system(cmd)
 	
 def printCat(catf):
@@ -63,7 +75,7 @@ def printCat(catf):
      	#if data1.field('PROB')[i]>0.40:
 		k=k+1
       		print '%d, %d, %s, %s, %5.2f,RA=%5.2f, DEC=%5.2f, 	Prob.=%5.2f' % \
-      		( k, i, data1.field('@SRC_NAME')[i], data1.field('@CAT_NAME')[i], data1.field('R')[i],data1.field('RA_J2000')[i], \
+      		( k, i, data1.field('@SRC_NAME')[i], data1.field('@CAT_3EG')[i], data1.field('R')[i],data1.field('RA_J2000')[i], \
       		data1.field('DEC_J2000')[i] ,(data1.field('PROB')[i])*100.  )
   else :
     print "No counterpart found"
@@ -83,7 +95,7 @@ def GetAssociated(pgwdata,catf,prefix):
 				index[i]=index[i]+','+prefix+'_'+data1.field('@CAT_NAME')[j]
 			ddec[i]=data1.field('DEC_J2000')[j]
 			rra[i]=data1.field('RA_J2000')[j]
-			print pgwdata.field('NAME')[i],index[i],rra[i],ddec[i],data1.field('R')[j]
+			print pgwdata.field('NAME')[i],index[i],rra[i],ddec[i] #data1.field('R')[j]
 			break
 	
 		
@@ -91,17 +103,22 @@ def GetAssociated(pgwdata,catf,prefix):
 		
 
 def SaveAssoc(pgwfile,pgwdata):
-		
+	id=num.zeros(len(rra))
+	c0=pyfits.Column(name='HEALPIX_ID',format='F', unit=' ',array=id)		
 	c1=pyfits.Column(name='NAME',format='10A', unit=' ',array=pgwdata.field('NAME'))
 	c2=pyfits.Column(name='RAJ2000',format='5F',unit='deg', array=pgwdata.field('RAJ2000'))
 	c3=pyfits.Column(name='DECJ2000',format='5F', unit='deg', array=pgwdata.field('DECJ2000'))
-	c4=pyfits.Column(name='PosErr', format='5F', unit='deg ',array=pgwdata.field('PosErr'))
-	c5=pyfits.Column(name='NET_COUNTS', format='5F', unit=' ',array=pgwdata.field('NET_COUNTS'))
-	c6=pyfits.Column(name='CHI_2_VAR', format='5F', unit=' ',array=pgwdata.field('CHI_2_VAR'))
-	c7=pyfits.Column(name='FLARING_FLAG', format='2F', unit=' ',array=pgwdata.field('FLARING_FLAG'))
-	c8=pyfits.Column(name='COUNTERPART', format='70A', unit=' ',array=index)
+        c4=pyfits.Column(name='Theta95', format='5F', unit='deg ',array=pgwdata.field('Theta95'))        
+	c5=pyfits.Column(name='L', format='5F', unit='deg',array=pgwdata.field('L'))        
+	c6=pyfits.Column(name='B', format='5F', unit='deg',array=pgwdata.field('B'))        
+	c7=pyfits.Column(name='Flux(E>100)', format='6F', unit='ph/cm^2s^-1',array=pgwdata.field('Flux(E>100)'))
+        c8=pyfits.Column(name='errFlux', format='6F', unit=' ',array=pgwdata.field('errFlux'))
 
-	x = pyfits.ColDefs([c1,c2,c3,c4,c5,c6,c7,c8])
+        c9=pyfits.Column(name='CHI_2_VAR', format='5F', unit=' ',array=pgwdata.field('CHI_2_VAR'))
+        c10=pyfits.Column(name='FLARING_FLAG', format='1F', unit=' ',array=pgwdata.field('FLARING_FLAG'))
+	c11=pyfits.Column(name='COUNTERPART', format='70A', unit=' ',array=index)
+
+	x = pyfits.ColDefs([c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11])
 	tbhdu=pyfits.new_table(x)
 	tbhdu.writeto('temp.fits',clobber='yes')
         #UCD 
