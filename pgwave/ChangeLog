@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: tosti  Tue Dec  4 06:44:28 PST 2007
+ASP/pgwave/python
+
+Modified Files:
+	creaXimageGif.py pgw2fits.py runpgw.py runsrcid.py 
+Log Message:
+include l,b, flux errflux in the output file, new image created added gtsrcid task
+    *
+------------------------------------------------------------
 User: jchiang  Fri Nov 30 14:45:24 PST 2007
 ASP/pgwave/python
 
