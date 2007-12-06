@@ -2,6 +2,7 @@ import sys,os
 import pyfits
 import glob
 import numarray as num
+from HealPix import Healpix,Pixel, SkyDir
 noassocfile='NoAssiated.fits'
 index=[]
 ddec=[]
@@ -103,8 +104,12 @@ def GetAssociated(pgwdata,catf,prefix):
 		
 
 def SaveAssoc(pgwfile,pgwdata):
-	id=num.zeros(len(rra))
-	c0=pyfits.Column(name='HEALPIX_ID',format='F', unit=' ',array=id)		
+	id=[]
+	hp = Healpix(16, Healpix.NESTED, SkyDir.GALACTIC)
+	for ra, dec in zip(rra, ddec): 
+		pix = Pixel(SkyDir(ra, dec), hp)        
+		id.append(pix.index())
+	c0=pyfits.Column(name='HEALPIX_ID',format='D', unit=' ',array=num.array(id,dtype=num.Int))		
 	c1=pyfits.Column(name='NAME',format='10A', unit=' ',array=pgwdata.field('NAME'))
 	c2=pyfits.Column(name='RAJ2000',format='5F',unit='deg', array=pgwdata.field('RAJ2000'))
 	c3=pyfits.Column(name='DECJ2000',format='5F', unit='deg', array=pgwdata.field('DECJ2000'))

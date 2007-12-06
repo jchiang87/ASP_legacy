@@ -1,9 +1,11 @@
 import pyfits,commands,sys
 import numarray as num
 import os
+from math import *
 from readpgw import *
 import lc
 from HealPix import CountsArray, ExposureArray, SkyDir
+from creaXimageGif import *
 
 def getFlux(ra,dec,counts):
 	emapfile='exposure_'+os.environ['DownlinkId']+'.fits'
@@ -18,31 +20,49 @@ def getFlux(ra,dec,counts):
 			errflux[i]=num.sqrt(counts[i])/exposure_value
 	return flux,errflux
 
-PI=3.14159265358979
-conv=PI/180.000000000
+def eqgal(ra,dec):
 
-def eq2gal(ra,dec):
-        a1=62.872*conv
-        a3=32.933*conv
-        a2=(num.array(ra)*conv - 282.86*conv)
-        d=num.array(dec)*conv
-        b=num.arcsin(num.sin(d)*num.cos(a1)-num.cos(d)*num.sin(a2)*num.sin(a1))
-        s1=(num.sin(d)*num.sin(a1)+num.cos(d)*num.sin(a2)*num.cos(a1))/num.cos(b)
-        l=(num.arcsin(s1)+a3)
-        for i in range(0,len(l)):
-                if l[i]<0.:
-                  l[i]+=2*PI
-
-        b=b/conv
-        l=l/conv
+        conv=num.pi/180.000000000
+        r=ra*conv
+        d=dec*conv
+        gal=num.array([[-0.054875539726, -0.873437108010, -0.483834985808],[ 0.494109453312e0, -0.444829589425e0,  0.746982251810e0],
+        [ -0.867666135858, -0.198076386122,  0.455983795705]])
+        v=num.array([ cos(d) * cos(r),cos(d) * sin(r),sin(d)])
+        u=num.dot(gal,v)
+        r2 = u[0]*u[0] + u[1]*u[1]
+        l= 0.0
+        b=-999
+        if (r2  == 0.0):
+              if (u[2] == 0.0):      
+                return l,b      
+              if u[2]>0.0:
+                b=90.0 
+              else: 
+                b=-90.0
+                return l,b
+        b= atan( u[2] / sqrt(r2) )/conv
+        l= atan2(u[1] , u[0])/conv
+        if (l< 0.0): 
+                l+= 360.0
         return l,b
 
+def eq2gal(r,d):
+
+	l=[]
+	b=[]
+	for i in range(0,len(r)):
+		l0,b0=eqgal(r[i],d[i])
+		l.append(l0)
+		b.append(b0)
+		#print l0,b0
+	return num.array(l),num.array(b)
 
 def pgw2fits(pgwfile,flag):
 	pgwfits=pgwfile.replace('.list','_pgw_out.fits')
 	filevt=pgwfile.replace('_map.list','.fits')
 	name_pgw,ra_pgw,dec_pgw,posErr,signi_pgw=readpgw(pgwfile)
 	l_pgw,b_pgw=eq2gal(ra_pgw,dec_pgw)
+	creaXimageGif('Filtered_evt_map_ait.fits',l_pgw,b_pgw)
 	#posErr=[]
 	count=[]
 	chi2=[]
@@ -103,5 +123,6 @@ def pgw2fits(pgwfile,flag):
 	#os.environ['PGWOUTPUTFITSLIST']=pgwfits
 	return pgwfits	
 if __name__=="__main__":
+	#os.environ['HOME'] = os.environ['output_dir']
 	pgwfile=sys.argv[1]
 	pgw2fits(pgwfile,1)

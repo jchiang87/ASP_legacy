@@ -116,7 +116,7 @@ def runpgw(infile):
 	aitmap=infile.replace('.fits','_map_ait.fits')
 	mapParAit=[0.,0.,'AIT',sizex,sizey,scale,rad,'GAL']
 	createMap(infile,mapParAit,aitmap)
-	creaXimageGif(aitmap)
+	#creaXimageGif(aitmap)
         pgwave(inmap1)
 	outf=inmap1.replace('.fits','.list')
 	outfits=pgw2fits(outf,1)
