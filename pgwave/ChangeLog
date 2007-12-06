@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: tosti  Thu Dec  6 07:41:52 PST 2007
+ASP/pgwave/python
+
+Modified Files:
+	creaXimageGif.py pgw2fits.py runpgw.py runsrcid.py 
+Log Message:
+added new features to the image, corrected a bug in EQ2GAL transf, added healpix index to the output fits file
+    *
+------------------------------------------------------------
 User: jchiang  Tue Dec  4 08:20:54 PST 2007
 ASP/pgwave/xml
 
