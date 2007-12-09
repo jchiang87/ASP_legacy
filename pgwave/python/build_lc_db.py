@@ -71,24 +71,28 @@ if __name__ == '__main__':
     lightCurves = {}
     for downlink in downlinks:
         datapath = lambda x : os.path.join(downlink, x)
-        tmin, tmax = get_tlims(datapath('FT1_merged.fits'))
+        try:  # we can be fairly fault-tolerant here if there is a missing file
+            tmin, tmax = get_tlims(datapath('FT1_merged.fits'))
         
-        cmapfile = datapath('counts_%s.fits' % os.path.basename(downlink))
-        if not os.path.isfile(cmapfile):
-            break
-        cmap = CountsArray(cmapfile)
+            cmapfile = datapath('counts_%s.fits' % os.path.basename(downlink))
+            if not os.path.isfile(cmapfile):
+                break
+            cmap = CountsArray(cmapfile)
 
-        emapfile = datapath('exposure_%s.fits' % os.path.basename(downlink))
-        if not os.path.isfile(emapfile):
-            break
-        emap = ExposureArray(emapfile)
+            emapfile = datapath('exposure_%s.fits' %
+                                os.path.basename(downlink))
+            if not os.path.isfile(emapfile):
+                break
+            emap = ExposureArray(emapfile)
 
-        time = int(os.path.basename(downlink))
-        for pix in hot_pixels:
-            my_dir = SkyDir(hot_pixels[pix].ra(), hot_pixels[pix].dec())
-            if not lightCurves.has_key(pix):
-                lightCurves[pix] = LightCurve(my_dir.ra(), my_dir.dec())
-            lightCurves[pix].append(time, cmap[my_dir], emap[my_dir])
+            time = int(os.path.basename(downlink))
+            for pix in hot_pixels:
+                my_dir = SkyDir(hot_pixels[pix].ra(), hot_pixels[pix].dec())
+                if not lightCurves.has_key(pix):
+                    lightCurves[pix] = LightCurve(my_dir.ra(), my_dir.dec())
+                lightCurves[pix].append(time, cmap[my_dir], emap[my_dir])
+        except IOError:
+            pass
 
     try:
         os.rename('lc_data', 'lc_data_save')
