@@ -25,9 +25,11 @@ _packageRoot = string.upper(_packageName) + 'ROOT'
 _ftools_setup= "/afs/slac/g/glast/ground/PipelineConfig/ASP/headas-config-noric024835.sh"
 _ST_path = "${ST_INST}"
 _ASP_path = "${ASP_PATH}"
+_asp_python_path = "/afs/slac/g/glast/ground/PipelineConfig/ASP/python/lib/python2.5/site-packages"
+_GPLtools_path = "/afs/slac/g/glast/ground/PipelineConfig/GPLtools/prod/python"
+_asp_python = "/usr/bin/env python"
 _package_version = os.environ[_packageRoot].split(os.path.sep)[-1]
 _package_root = os.path.join(_ASP_path, "ASP", _packageName, _package_version)
-_asp_python = "/usr/bin/env python"
 
 def wrapperGenerator(scriptName):
     prefix = scriptName.split(".py")[0]
@@ -48,6 +50,10 @@ def wrapperGenerator(scriptName):
     output.write("GLAST_EXT=/afs/slac/g/glast/ground/GLAST_EXT/rh9_gcc32; export GLAST_EXT\n")
     output.write("PATH=%s:${PATH}; export PATH\n" % os.path.join(_ST_path, 'bin'))
     output.write("source %s\n" % os.path.join(_package_root, 'cmt','setup.sh'))
+    output.write("export ORACLE_HOME=/usr/oracle\n")
+    output.write("export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:${LD_LIBRARY_PATH}\n")
+    output.write("PYTHONPATH=%s:%s:${PYTHONPATH}; export PYTHONPATH\n" 
+                 % (_asp_python_path, _GPLtools_path))
     output.write('exec %s %s\n' % (_asp_python, pyScript))
     output.close()
     os.system('chmod +x %s' % outfile)

@@ -1,7 +1,9 @@
 package AspPolicy
-version v0r1
+version v0r3
 
 # $Id$
+
+use GlastPolicy v*
 
 path_remove PYTHONPATH AspPolicy
 path_append PYTHONPATH $(ASPPOLICYROOT)/python
