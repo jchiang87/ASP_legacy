@@ -8,7 +8,7 @@
 #
 
 import numarray as num
-from HealPix import Healpix, SkyDir, CountsArray, ExposureArray
+from AspHealPix import Healpix, SkyDir, CountsArray, ExposureArray
 import hippoplotter as plot
 
 def spin(ra):

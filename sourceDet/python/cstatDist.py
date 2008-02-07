@@ -8,7 +8,7 @@
 #
 
 import numarray as num
-from HealPix import *
+from AspHealPix import *
 import pyASP
 
 def spin(ra):

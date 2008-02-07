@@ -9,7 +9,7 @@ variability from one day to the next
 #
 
 import numarray as num
-from HealPix import *
+from AspHealPix import *
 import hippoplotter as plot
 import celgal
 from sexigesimal import sexigesimal

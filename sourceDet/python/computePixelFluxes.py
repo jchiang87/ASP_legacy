@@ -11,7 +11,7 @@ trending database.
 import os
 import glob
 import numarray as num
-from HealPix import *
+from AspHealPix import *
 from DbEntry import DbEntry
 from FitsNTuple import FitsNTuple
 

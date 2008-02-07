@@ -12,7 +12,7 @@ variability and also for forming the null distribution.
 #
 
 import numarray as num
-from HealPix import *
+from AspHealPix import *
 import pyASP
 
 _log10 = num.log(10)

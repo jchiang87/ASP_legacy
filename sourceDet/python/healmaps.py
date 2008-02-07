@@ -1,8 +1,8 @@
 import sys
-import HealPix
+import AspHealPix
 from GtApp import GtApp
 
-hp = HealPix.Healpix(16, HealPix.Healpix.NESTED, HealPix.SkyDir.GALACTIC)
+hp = AspHealPix.Healpix(16, HealPix.Healpix.NESTED, HealPix.SkyDir.GALACTIC)
 
 def makeLivetimeCube(ft1File,ft2File) :
     gtltcube = GtApp('gtltcube')
@@ -13,13 +13,13 @@ def makeLivetimeCube(ft1File,ft2File) :
     return gtltcube['outfile']
 
 def makeHealCountMap(ft1File,cut):
-    cmap = HealPix.CountsArray(hp)
+    cmap = AspHealPix.CountsArray(hp)
     cmap.binCounts(ft1File, cut)
     cmap.write('toto_count.fits')
     return cmap
 
 def makeHealExpMap(ltcube):
-    emap = HealPix.ExposureArray(hp)
+    emap = AspHealPix.ExposureArray(hp)
     emap.computeExposure('DC2', ltcube)
     emap.write('toto_exp.fits')
 

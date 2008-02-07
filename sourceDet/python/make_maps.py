@@ -10,7 +10,7 @@ the getL1Data interface to find the input files
 
 from GtApp import GtApp
 
-from HealPix import SkyDir, Healpix, CountsArray, ExposureArray
+from AspHealPix import SkyDir, Healpix, CountsArray, ExposureArray
 from getL1Data import getL1Data
 
 gtlivetimecube = GtApp('gtlivetimecube')

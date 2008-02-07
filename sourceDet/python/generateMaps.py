@@ -11,7 +11,7 @@ intervals.
 import os
 import glob
 from GtApp import GtApp
-from HealPix import *
+from AspHealPix import *
 
 gtltcube = GtApp('gtltcube')
 

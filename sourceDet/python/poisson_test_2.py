@@ -9,7 +9,7 @@ variability compared to a mean intensity map
 #
 import numarray as num
 import hippoplotter as plot
-from HealPix import *
+from AspHealPix import *
 
 #nt = plot.newNTuple(([],), ('Poisson prob.',))
 #plot.Histogram(nt, 'Poisson prob.', ylog=1)
