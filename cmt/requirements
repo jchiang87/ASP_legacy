@@ -16,4 +16,5 @@ use drpMonitoring v0r4 ASP
 use AspHealPix v0 ASP
 use pgwave v0r3 ASP
 use sourceDet v0r0p1 ASP
+use AspLauncher v0 ASP
 
