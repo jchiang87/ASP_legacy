@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Tue Feb 19 14:26:13 PST 2008
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+use time intervals for datacatalog query instead of downlink ids
+    *
+------------------------------------------------------------
 User: tosti  Mon Feb 18 04:15:21 PST 2008
 ASP/pgwave/python
 
