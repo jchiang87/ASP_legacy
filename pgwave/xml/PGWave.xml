@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="PGWave" version="3.3" type="Data">
+<task name="PGWave" version="3.4" type="Data">
   <variables>
     <!-- Default values that can be overridden at the command line. -->
     <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r4p1"</var>
@@ -14,7 +14,8 @@
   <prerequisites>
     <prerequisite name="logicalPath" type="string"/>
     <prerequisite name="OUTPUTDIR" type="string"/>
-    <prerequisite name="DownlinkId" type="integer"/>
+    <prerequisite name="TSTART" type="integer"/>
+    <prerequisite name="TSTOP" type="integer"/>
     <prerequisite name="ASP_PATH" type="string"/>
     <prerequisite name="CATDIR" type="string"/>
     <prerequisite name="PGWAVEROOT" type="string"/>
@@ -23,14 +24,18 @@
   <process name="catalogQuery">
     <script>
       <![CDATA[
-        def query(outfile, type, DownlinkId):
+        def query(outfile, path, TSTART, TSTOP):
             output = pipeline.createFile(outfile)
-            query = 'nDownlink == %i && DataType=="%s"' % (DownlinkId, type)
-            datasetList = datacatalog.getDatasets(logicalPath+'/*', query)
+            opt1 = '(%(TSTART)i <= nMetStart && nMetStop <= %(TSTOP)i)' % locals()
+            opt2 = '(nMetStart <= %(TSTART)i && %(TSTART)i <= nMetStop)' % locals()
+            opt3 = '(nMetStart <= %(TSTOP)i && %(TSTOP)i <= nMetStop)' % locals()
+            query = ('DataType == \"%s\" && (%s || %s || %s)' 
+                     % (path, opt1, opt2, opt3))
+            datasetList = datacatalog.getDatasets(folder+'/*', query)
             datasetList.writeToFile(output, 1)
             pipeline.writeFile(output)
-        query("Ft1FileList", "FT1", DownlinkId)
-        query("Ft2FileList", "FT2", DownlinkId)
+        query("Ft1FileList", "FT1", TSTART, TSTOP)
+        query("Ft2FileList", "FT2", TSTART, TSTOP)
         ]]></script>
   </process>
 
