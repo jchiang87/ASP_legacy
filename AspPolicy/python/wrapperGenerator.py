@@ -33,7 +33,8 @@ _package_root = os.path.join(_ASP_path, "ASP", _packageName, _package_version)
 
 def wrapperGenerator(scriptName):
     prefix = scriptName.split(".py")[0]
-    pyScript = os.path.abspath(scriptName)
+#    pyScript = os.path.abspath(scriptName)
+    pyScript = os.path.join(_package_root, 'python', scriptName)
     outfile = os.path.join(os.environ[_packageRoot], os.environ['BINDIR'],
                            prefix + ".sh")
     output = open(outfile, "w")
