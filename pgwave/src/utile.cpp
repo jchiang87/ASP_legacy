@@ -10,8 +10,8 @@
 #include "pgwave/utile.h"
 #include "pgwave/filtri.h"
 //#include <fftw/fftw3.h>
-//#include "astro/SkyFunction.h"
-//#include "astro/SkyProj.h"
+#include "astro/SkyFunction.h"
+#include "astro/SkyProj.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -140,7 +140,7 @@ void detect_sources::print_scale(int step)
 
 void detect_sources::print_to_file(fitsfile *fptr, char *filename)
 {
-//	astro::SkyProj* mwcs; 
+	astro::SkyProj* mwcs; 
 	std::string fil(filename);
 	std::string temp=fil.substr(0,fil.find("."));
 	std::string detsource=temp+".reg";
@@ -172,7 +172,7 @@ void detect_sources::print_to_file(fitsfile *fptr, char *filename)
 	char coordtype[10],comment[80],coordsys[10];
 	char list_file[258];
 	
-//	mwcs = new astro::SkyProj(fil);
+	mwcs = new astro::SkyProj(fil);
 	if (fits_open_file(&fptr, filename, READONLY, &status))
 		printerror(status);
 	
@@ -182,8 +182,8 @@ void detect_sources::print_to_file(fitsfile *fptr, char *filename)
 		printerror(status);
 	//cout<<coordsys<<endl;
 	//outlist <<"#"<<filename<<endl;
-	//if(!mwcs->isGalactic()){
-	if(coordsys[0]=='L'){
+	if(mwcs->isGalactic()){
+	//if(coordsys[0]=='L'){
 		outlist << "#[ID]   [X]	   [Y]     [B]         [L]     [POS_ERR]    [SNR]       [K-signf]  [Counts]  [SigC]  [BKG]  [SigBkg]" << endl;
 		outfile<<"galactic"<<endl;
 	}else{
@@ -192,10 +192,12 @@ void detect_sources::print_to_file(fitsfile *fptr, char *filename)
 	}
 	for(int k=0; k<int(x.size()); k++){
 		//cout<<x[k]<<" "<<y[k]<<endl;
-		fits_pix_to_world(double(x[k]+1), double(y[k]+1), xrefval, yrefval, xrefpix, yrefpix, xinc, yinc, rot, coordtype, &RA, &DEC, &status);
+		//fits_pix_to_world(double(x[k]+1), double(y[k]+1), xrefval, yrefval, xrefpix, yrefpix, xinc, yinc, rot, coordtype, &RA, &DEC, &status);
 		if(status == 0){
-		//pair<double, double> rr=mwcs->pix2sph(double(x[k]+1),double(y[k]+1));
-			double err=(A[k]>=B[k])?A[k]*fabs(xinc/2.):B[k]*xinc/2.;
+		pair<double, double> rr=mwcs->pix2sph(double(x[k]+1),double(y[k]+1));
+		RA=rr.first;
+		DEC=rr.second;	
+		double err=(A[k]>=B[k])?A[k]*fabs(xinc/2.):B[k]*xinc/2.;
 			sprintf(list_file, "%4d  %6.1f   %6.1f   %10.4f   %10.4f   %6.3f  %10.3f   %10.3f   %6d  %6d  %6d  %6d\n",k+1, x[k], y[k],RA, DEC, err,SNR[k],signif[k],int(mag[k]+0.5), int(magerr[k]+0.5),int(bkg[k]+0.5),int(bkgerr[k]+0.5));
 			outlist << list_file;
 			outfile << "point (" << RA << ", " <<DEC << ")  # color=red point=cross text={"<< (k+1) <<"}"<<char(10);
