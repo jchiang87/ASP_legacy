@@ -1,4 +1,14 @@
 ------------------------------------------------------------
+User: jchiang  Fri Feb 22 20:40:12 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	build_lc_db.py getPgwInputData.py makeHealPixMaps.py 
+	pgw2fits.py runsrcid.py 
+Log Message:
+use ft2merge; convert to AspHealPix; use time interval selection
+    *
+------------------------------------------------------------
 User: tosti  Wed Feb 20 13:29:43 PST 2008
 ASP/pgwave/cmt
 
