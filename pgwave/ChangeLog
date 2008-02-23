@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Fri Feb 22 20:40:12 PST 2008
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+use ft2merge; convert to AspHealPix; use time interval selection
+    *
+------------------------------------------------------------
+User: jchiang  Fri Feb 22 20:40:12 PST 2008
 ASP/pgwave/python
 
 Modified Files:
