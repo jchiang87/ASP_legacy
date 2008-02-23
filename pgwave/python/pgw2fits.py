@@ -4,7 +4,7 @@ import os
 from math import *
 from readpgw import *
 import lc
-from HealPix import CountsArray, ExposureArray, SkyDir
+from AspHealPix import CountsArray, ExposureArray, SkyDir
 from creaXimageGif import *
 
 def getFlux(ra,dec,counts):

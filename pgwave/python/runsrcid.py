@@ -2,7 +2,7 @@ import sys,os
 import pyfits
 import glob
 import numarray as num
-from HealPix import Healpix,Pixel, SkyDir
+from AspHealPix import Healpix,Pixel, SkyDir
 noassocfile='NoAssiated.fits'
 index=[]
 ddec=[]

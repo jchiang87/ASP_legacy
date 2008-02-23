@@ -13,7 +13,7 @@ import glob
 import cPickle
 import numarray as num
 from FitsNTuple import FitsNTuple
-from HealPix import Pixel, SkyDir, CountsArray, ExposureArray, Healpix
+from AspHealPix import Pixel, SkyDir, CountsArray, ExposureArray, Healpix
 from generateMaps import CountsArrayFactory, ExposureArrayFactory
 from read_data import read_data
 from databaseAccess import *
