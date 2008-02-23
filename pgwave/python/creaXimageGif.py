@@ -1,6 +1,7 @@
 import os,sys
 
-os.environ['HOME'] = os.environ['output_dir']
+#os.environ['HOME'] = os.environ['output_dir']
+os.environ['HOME'] = os.environ['OUTPUTDIR']
 
 import pylab as pl
 import numarray.fft as nff

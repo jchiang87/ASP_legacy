@@ -11,7 +11,7 @@ for all of the HealPixels that have a source detected in them by pgwave.
 import os
 import glob
 import cPickle
-import numarray as num
+import numpy as num
 from FitsNTuple import FitsNTuple
 from AspHealPix import Pixel, SkyDir, CountsArray, ExposureArray, Healpix
 from generateMaps import CountsArrayFactory, ExposureArrayFactory
@@ -147,7 +147,7 @@ def addLightCurve(pixel, downlinks, dbState, datatype='flux_100_300000'):
     insertLightCurve(sourcename, datatype, lc)
 
 if __name__ == '__main__':
-    pgwave_dir = os.environ['output_dir']
+    pgwave_dir = os.environ['OUTPUTDIR']
     os.chdir(pgwave_dir)
     
     downlinks = glob.glob(os.path.join(pgwave_dir, '2*'))
