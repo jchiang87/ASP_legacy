@@ -4,8 +4,8 @@ import os,sys
 os.environ['HOME'] = os.environ['OUTPUTDIR']
 
 import pylab as pl
-import numarray.fft as nff
-import numarray as num
+import numpy.numarray.fft as nff
+import numpy as num
 import pyfits
 
 def ConvFilter(image1, image2, pad=True, MinPad=True, Smooth=False):

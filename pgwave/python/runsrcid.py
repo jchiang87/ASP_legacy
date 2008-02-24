@@ -1,7 +1,7 @@
 import sys,os
 import pyfits
 import glob
-import numarray as num
+import numpy as num
 from AspHealPix import Healpix,Pixel, SkyDir
 noassocfile='NoAssiated.fits'
 index=[]
@@ -84,7 +84,8 @@ def printCat(catf):
 def GetAssociated(pgwdata,catf,prefix):
   hdulist  = pyfits.open(catf)
   data1    = hdulist[1].data
- 
+  decData = num.array(data1.field('DEC_J2000'), dtype=num.float)
+  raData=num.array(data1.field('RA_J2000'), dtype=num.float) 
   if hdulist[1].header['NAXIS2'] > 0 :
     k=0
     for i in range(pgwdata.shape[0]) :
@@ -94,8 +95,8 @@ def GetAssociated(pgwdata,catf,prefix):
 				index[i]=prefix+'_'+data1.field('@CAT_NAME')[j]
 			else:
 				index[i]=index[i]+','+prefix+'_'+data1.field('@CAT_NAME')[j]
-			ddec[i]=data1.field('DEC_J2000')[j]
-			rra[i]=data1.field('RA_J2000')[j]
+			ddec[i]=decData[j]
+			rra[i]=raData[j]
 			print pgwdata.field('NAME')[i],index[i],rra[i],ddec[i] #data1.field('R')[j]
 			break
 	
@@ -105,11 +106,11 @@ def GetAssociated(pgwdata,catf,prefix):
 
 def SaveAssoc(pgwfile,pgwdata):
 	id=[]
-	hp = Healpix(16, Healpix.NESTED, SkyDir.GALACTIC)
+	hp = Healpix(32, Healpix.NESTED, SkyDir.GALACTIC)
 	for ra, dec in zip(rra, ddec): 
 		pix = Pixel(SkyDir(ra, dec), hp)        
 		id.append(pix.index())
-	c0=pyfits.Column(name='HEALPIX_ID',format='D', unit=' ',array=num.array(id,dtype=num.Int))		
+	c0=pyfits.Column(name='HEALPIX_ID',format='D', unit=' ',array=num.array(id,dtype=num.int))		
 	c1=pyfits.Column(name='NAME',format='10A', unit=' ',array=pgwdata.field('NAME'))
 	c2=pyfits.Column(name='RAJ2000',format='5F',unit='deg', array=pgwdata.field('RAJ2000'))
 	c3=pyfits.Column(name='DECJ2000',format='5F', unit='deg', array=pgwdata.field('DECJ2000'))

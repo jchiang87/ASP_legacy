@@ -1,6 +1,6 @@
 import readFT,angdist 
 import os, glob,sys,math
-import numarray as num
+import numpy as num
 
 def getLC(dat,x1,y1,radius):
 	nevt=len(dat[0])

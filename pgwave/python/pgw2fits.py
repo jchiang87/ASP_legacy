@@ -1,5 +1,5 @@
 import pyfits,commands,sys
-import numarray as num
+import numpy as num
 import os
 from math import *
 from readpgw import *
@@ -8,11 +8,13 @@ from AspHealPix import CountsArray, ExposureArray, SkyDir
 from creaXimageGif import *
 
 def getFlux(ra,dec,counts):
-	emapfile='exposure_'+os.environ['DownlinkId']+'.fits'
+	outdir=output_dir = os.environ['OUTPUTDIR']
+	suff=os.path.basename(outdir)
+	emapfile='exposure_'+suff+'.fits'
 	#emapfile='exposure_255514800.fits'
 	emap = ExposureArray(emapfile)
-	flux=num.zeros(len(ra),dtype=num.Float)
-	errflux=num.zeros(len(ra),dtype=num.Float)
+	flux=num.zeros(len(ra),dtype=num.float)
+	errflux=num.zeros(len(ra),dtype=num.float)
 	for i in range(0,len(ra)):
 		exposure_value=(emap[SkyDir(ra[i], dec[i])])
 		if exposure_value>0:
