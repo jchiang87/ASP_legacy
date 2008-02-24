@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: tosti  Sat Feb 23 17:47:21 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	creaXimageGif.py lc.py pgw2fits.py readFT.py runsrcid.py 
+Log Message:
+use numpy instead of numarray
+    *
+------------------------------------------------------------
 User: jchiang  Fri Feb 22 21:19:11 PST 2008
 ASP/pgwave/python
 
