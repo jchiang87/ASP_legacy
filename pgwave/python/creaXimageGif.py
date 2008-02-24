@@ -99,7 +99,7 @@ def aitoff1(l,b):
         l1=l*conv
         b1=b*conv
 
-        for i in range(0,l1.size()):
+        for i in range(0,l1.size):
                 if l1[i]< num.pi:
                         l1[i]=-l1[i]
                 else:
