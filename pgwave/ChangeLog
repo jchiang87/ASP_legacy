@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat Feb 23 21:37:37 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	creaXimageGif.py 
+Log Message:
+numpy.array.size is just an int not a function as in numarray
+    *
+------------------------------------------------------------
 User: tosti  Sat Feb 23 17:47:21 PST 2008
 ASP/pgwave/python
 
