@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Mon Feb 25 09:59:20 PST 2008
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+directory path bug-fix in build_lc_db; use opaque connection names; filename bug-fix in PGWave.xml
+    *
+------------------------------------------------------------
+User: jchiang  Mon Feb 25 09:59:20 PST 2008
 ASP/pgwave/python
 
 Modified Files:
