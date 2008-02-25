@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: tosti  Mon Feb 25 04:08:52 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	astroUtil.py runsrcid.py sendFAmail.py 
+Added Files:
+	dbmanager.py 
+Log Message:
+add db functions
+    *
+------------------------------------------------------------
 User: jchiang  Sun Feb 24 22:57:42 PST 2008
 ASP/pgwave/xml
 
