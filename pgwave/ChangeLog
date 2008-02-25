@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Feb 24 22:57:42 PST 2008
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+register with tstart tstop metadat and not by downlink
+    *
+------------------------------------------------------------
 User: jchiang  Sat Feb 23 21:37:37 PST 2008
 ASP/pgwave/python
 
