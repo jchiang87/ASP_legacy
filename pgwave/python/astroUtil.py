@@ -33,10 +33,14 @@ def getEventTimeInterval(infile):
 	mstart=pyASP.JulianDate(int(year[0]),int(year[1]),int(year[2]),utt)
 	mjdstart=tjd2jd(mstart.tjd())
 	mjdstop=mjdstart+(stop-start)/86400.
-	d={"tstart":start,"tstop":stop,"date":dateobs,"jdstart":mjdstart,"jdstop":mjdstop}
+	midjd=(mjdstart+mjdstop)/2.
+	d={"tstart":start,"tstop":stop,"date":dateobs,"jdstart":mjdstart,"jdstop":mjdstop, "tdiff":dt,"midjd":midjd}
 	return d
 
 if __name__=='__main__':
 	d=getEventTimeInterval(sys.argv[1])
-	sunpos=getSunPos(d["jdstart"])
-	print sunpos.ra()
+	print d
+	sunpos=getSunPos(d["midjd"])
+	print sunpos.ra(), sunpos.dec()
+	sunpos=getSunPos(d["jdstop"])
+        print sunpos.ra(), sunpos.dec()

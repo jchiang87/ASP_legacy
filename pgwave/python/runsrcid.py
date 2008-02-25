@@ -2,19 +2,27 @@ import sys,os
 import pyfits
 import glob
 import numpy as num
+import astroUtil as ast
 from AspHealPix import Healpix,Pixel, SkyDir
+import dbmanager as db
+import sendFAmail as smail
 noassocfile='NoAssiated.fits'
 index=[]
 ddec=[]
 rra=[]
+d={}
+sunFlag=0
+sunSunId=-1
 def loadpgwRow(pgwfits):
 	hdulist  = pyfits.open(pgwfits)
 	nrows=hdulist[1].header['NAXIS2']
 	data1    = hdulist[1].data
+	decData = num.array(data1.field('DECJ2000'), dtype=num.float)  
+	raData=num.array(data1.field('RAJ2000'), dtype=num.float)
 	for i in range(0,nrows):
 		index.append('UNIDENTIFIED')
-		ddec.append(0.)
-		rra.append(0.)
+		ddec.append(decData[i])
+		rra.append(raData[i])
 	return nrows,data1	
 
 
@@ -95,21 +103,47 @@ def GetAssociated(pgwdata,catf,prefix):
 				index[i]=prefix+'_'+data1.field('@CAT_NAME')[j]
 			else:
 				index[i]=index[i]+','+prefix+'_'+data1.field('@CAT_NAME')[j]
-			ddec[i]=decData[j]
-			rra[i]=raData[j]
+				if (prefix=='PSR' or prefix=='SNR') and pgwdata.field('FLARING_FLAG')[i]==1.:
+					#print index[i], pgwdata.field('NAME')[i]
+					pgwdata.field('FLARING_FLAG')[i]=0
+			#ddec[i]=decData[j]
+			#rra[i]=raData[j]
 			print pgwdata.field('NAME')[i],index[i],rra[i],ddec[i] #data1.field('R')[j]
 			break
 	
-		
-    
-		
+def checkSun(pgwadata):
+	d=ast.getEventTimeInterval('Filtered_evt.fits')
+	#print d        
+	sunpos=ast.getSunPos(d["midjd"])        
+	print ("SUN Pos at %f is RA=%f DEC=%f \n" % (d["midjd"],sunpos.ra(), sunpos.dec()))        
+	k=0        
+	for ra, dec in zip(rra, ddec):                
+		dis=sunpos.difference(SkyDir(ra,dec))*180./3.1415   
+                if  dis<=1.:   
+	            sunFlag=1                        
+		    sourceSunId=k   
+		    index[k]=("SUN_%i " % d['tstart'])+index[k]                    
+		    print "Sun Pos close to Source:",pgwdata.field('NAME')[k]                
+	k=k+1		
 
 def SaveAssoc(pgwfile,pgwdata):
 	id=[]
+        #checkSun(pgwadata)	
 	hp = Healpix(32, Healpix.NESTED, SkyDir.GALACTIC)
+	
 	for ra, dec in zip(rra, ddec): 
 		pix = Pixel(SkyDir(ra, dec), hp)        
 		id.append(pix.index())
+	source={'NAME':pgwdata.field('NAME'),
+		'HEALPIX_ID':id,
+		'RAJ2000':pgwdata.field('RAJ2000'),
+		'DECJ2000':pgwdata.field('DECJ2000'),
+		'Theta95':pgwdata.field('Theta95'),
+		'flux':pgwdata.field('Flux(E>100)'),
+		'errFlux':pgwdata.field('errFlux'),
+		'chi2':pgwdata.field('CHI_2_VAR'),
+		'FLARING_FLAG':pgwdata.field('FLARING_FLAG')
+		}
 	c0=pyfits.Column(name='HEALPIX_ID',format='D', unit=' ',array=num.array(id,dtype=num.int))		
 	c1=pyfits.Column(name='NAME',format='10A', unit=' ',array=pgwdata.field('NAME'))
 	c2=pyfits.Column(name='RAJ2000',format='5F',unit='deg', array=pgwdata.field('RAJ2000'))
@@ -134,8 +168,33 @@ def SaveAssoc(pgwfile,pgwdata):
   	head1.update('TBUCD3','POS_EQ_DEC_MAIN','')
   	head1.update('TBUCD4','ERROR','')
 	hdulist.writeto(pgwfile,clobber='yes')
-	
-	
+	return source
+
+def checkPointSource():
+	mydb=db.dbmanager()
+        mydb.getPointSources()
+        mydb.close()
+	ra=db._PointSourcesFields['RA'][1]
+	dec=db._PointSourcesFields['DEC'][1]
+	i=0
+	for r, de in zip(rra, ddec):                
+		a=SkyDir(r,de)
+		k=0
+	        for rr,dd in zip(ra,dec):
+		  dis=a.difference(SkyDir(rr,dd))*180./3.1415 
+		  #print dis  
+	          if  dis<=1.:
+			index[i]=(db._PointSourcesFields['SOURCE_TYPE'][1])[k]+'_'+(db._PointSourcesFields['PTSRC_NAME'][1])[k]+','+index[i]
+			print "trovata:",(db._PointSourcesFields['PTSRC_NAME'][1])[k],index[i]
+		  k=k+1
+		i=i+1
+def inviaMail(testo):
+	_fromaddress="tosti@slac.stanford.edu"
+        _toaddress=['tosti@pg.infn.it']
+        subject='test FA mail'
+        smail.sendFAmail(_fromaddress,_toaddress,subject,testo)
+
+
 def runsrcid(pgwfile,prob):
 
 	nrows,pgwdata=loadpgwRow(pgwfile)
@@ -146,7 +205,15 @@ def runsrcid(pgwfile,prob):
 		print prefix
 		rungtsrcid(pgwfile,catfiles[i],'assoc.fits',prob)
 		GetAssociated(pgwdata,'assoc.fits',prefix)
-	SaveAssoc(pgwfile,pgwdata)
+	checkSun(pgwdata)
+	checkPointSource()
+	source = SaveAssoc(pgwfile,pgwdata)
+	flag=num.array(source['FLARING_FLAG'])
+	testo=""
+	for i in range(0,len(flag)):
+		if flag[i]>0:
+		  testo=testo+"\nFlaring source found:"+source['NAME'][i]+(" at RA=%f, DEC=%f\n"% (source['RAJ2000'][i],source['DECJ2000'][i]))
+	inviaMail(testo)
 	os.system('rm temp.fits assoc.fits')
 
 
