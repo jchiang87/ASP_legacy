@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="PGWave" version="3.5" type="Data">
+<task name="PGWave" version="3.6" type="Data">
   <variables>
     <!-- Default values that can be overridden at the command line. -->
     <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r4p1"</var>
@@ -68,16 +68,17 @@
     rootname = 'Filtered_evt'
     exts = ('.fits', '_map.fits', '_map.list', '_map.reg', 
             '_map_pgw_out.fits', '_map_ait.gif')
+    suffix = OUTPUTDIR.split('/')[-1]
     files = [rootname + ext for ext in exts]
-    files.append('counts_%i.fits' % DownlinkId)
-    files.append('exposure_%i.fits' % DownlinkId)
+    files.append('counts_%i.fits' % suffix)
+    files.append('exposure_%i.fits' % suffix)
     dataTypes = ('FT1', 'DATA', 'DATA', 'DATA', 'FITS', 'DATA', 'FITS', 'FITS')
     types = ('EVENTS', 'SKYMAP', 'PGWAVESOURCESLIST', 'DS9REGIONS', 
              'FSUMMARY', 'GIFSKYMAP', 'CMAP', 'EMAP')
     for outfile, type, dataType in zip(files, types, dataTypes):
-        logicalPath = ('/ServiceChallenge/55Day/ASP/FlareMonitoring/%i/%s' 
-                       % (DownlinkId, outfile))
-        attributes = 'type="%s":nDownlink=%i' % (type, DownlinkId)
+        logicalPath = ('/ASP/OpsSim2/FlareMonitoring/%i/%s' 
+                       % (suffix, outfile))
+        attributes = 'type="%s":nMetStart=%i:nMetStop=%i' % (type,TSTART,TSTOP)
         filePath = '%s/%s' % (OUTPUTDIR, outfile)
         datacatalog.registerDataset(dataType, logicalPath, 
                                     filePath, attributes)
