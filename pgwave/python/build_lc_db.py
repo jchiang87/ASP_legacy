@@ -147,16 +147,16 @@ def addLightCurve(pixel, downlinks, dbState, datatype='flux_100_300000'):
     insertLightCurve(sourcename, datatype, lc)
 
 if __name__ == '__main__':
-    pgwave_dir = os.environ['OUTPUTDIR']
+    pgwave_dir = os.path.dirname(os.environ['OUTPUTDIR'])
     os.chdir(pgwave_dir)
     
-    downlinks = glob.glob(os.path.join(pgwave_dir, '2*'))
+    downlinks = glob.glob(os.path.join(pgwave_dir, '0*'))
     downlinks.sort()
 
-    #
-    # kluge: hardwire FT2 file for Interleave55d
-    #
-    ft2file = '/nfs/farm/g/glast/u44/MC-tasks/Interleave55d-GR-v11r17/prune/FT2_55day_patch.fits'
+#    #
+#    # kluge: hardwire FT2 file for Interleave55d
+#    #
+#    ft2file = '/nfs/farm/g/glast/u44/MC-tasks/Interleave55d-GR-v11r17/prune/FT2_55day_patch.fits'
 
     hp = Healpix(16, Healpix.NESTED, SkyDir.GALACTIC)
     #
@@ -223,11 +223,15 @@ if __name__ == '__main__':
     # First, handle pixels that already have historical light curves,
     # so just update using last downlink
     #
-    missing_pixels = addPixelFluxes(hot_pixels, downlinks[-1], dbState)
+    try:
+        missing_pixels = addPixelFluxes(hot_pixels, downlinks[-1], dbState)
+        #
+        # now add pixels that do not yet have historical light curves
+        #
+        for pixel in missing_pixels:
+            print "adding light curve for pixel", pixel
+            addLightCurve(pixel, downlinks, dbState)
+    except:
+        print "Available downlinks"
+        print downlinks
 
-    #
-    # now add pixels that do not yet have historical light curves
-    #
-    for pixel in missing_pixels:
-        print "adding light curve for pixel", pixel
-        addLightCurve(pixel, downlinks, dbState)

@@ -1,6 +1,6 @@
 import cx_Oracle
 from datetime import datetime
-
+from databaseAccess import asp_default
 
 _dbtables={'LightCurves':'LightCurves', \
  'FlareEvents':'FlareEvents',\
@@ -76,7 +76,7 @@ _FlareEventsFields={
 
 class dbmanager:
 	def __init__(self):
-		self.conn= cx_Oracle.connect('glast_asp', 'red.pen3', 'GLASTP')
+		self.conn= cx_Oracle.connect(*asp_default)
 	def close(self):
 		self.conn.close()
 	def getPointSources(self):
