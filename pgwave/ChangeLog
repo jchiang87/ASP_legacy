@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: tosti  Mon Feb 25 17:18:21 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	dbmanager.py runsrcid.py 
+Log Message:
+add pointsources insert 
+    *
+------------------------------------------------------------
 User: tosti  Mon Feb 25 16:03:11 PST 2008
 ASP/pgwave/python
 
