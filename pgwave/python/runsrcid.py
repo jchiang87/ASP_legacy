@@ -174,7 +174,7 @@ def SaveAssoc(pgwfile,pgwdata):
 def checkPointSource():
 	mydb=db.dbmanager()
         mydb.getPointSources()
-        mydb.close()
+        #mydb.close()
 	ra=db._PointSourcesFields['RA'][1]
 	dec=db._PointSourcesFields['DEC'][1]
 	i=0
@@ -189,6 +189,7 @@ def checkPointSource():
 			print "trovata:",(db._PointSourcesFields['PTSRC_NAME'][1])[k],index[i]
 		  k=k+1
 		i=i+1
+	mydb.close()
 def inviaMail(testo):
 	_fromaddress="tosti@slac.stanford.edu"
         _toaddress=['tosti@pg.infn.it']

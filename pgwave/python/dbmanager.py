@@ -89,6 +89,19 @@ class dbmanager:
 		  for i in range(0,tot):
 		    _PointSourcesFields[colname[i][0]][1].append(row[i])
 		cursor.close()
+        def getPointSourcesFSP(self):     
+	        sql="select count(*) from POINTSOURCES where source_type='Other_FSP'"
+               	cursor=self.conn.cursor()                
+		res=cursor.execute(sql)                
+		nrec=cursor.fetchone()
+		no=[]
+		if nrec[0]>0:
+			sql="select ptsrc_name from POINTSOURCES where source_type='DRP'"
+			res=cursor.execute(sql)
+			for it in cursor:
+				no.append(it[0])	          
+		cursor.close()
+		return no
 	def getNrec(self,table):
 		sql=("select count(*) from %s" % table)
 		cursor=self.conn.cursor()
@@ -112,13 +125,26 @@ class dbmanager:
 		res=cursor.execute(sql)
 		for it in cursor:
 			print it"""			    
-		cursor.close()	
+		cursor.close()
+	def insertPointSource(self,nome,heaid,ra,dec,err):
+		r = ra*3.14159265358979/180.
+       		d = dec*3.14159265358979/180.
+       		dir = ( cos(r)*cos(d), sin(r)*cos(d) , sin(d) ) 
+        	cursor=self.conn.cursor()
+        	sql2="insert into pointsources(ptsrc_name,healpix_id,source_type,ra,dec,err,nx,ny,nz) "
+        	sql3= ("values('%s',%i,'Other_FSP',%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,0,0)" % (nome,heaid,ra,dec,err,dir[0],dir[1],dir[2]))
+        	sql4=sql2+sql3
+        	print sql4
+        	res=cursor.execute(sql4)
+        	self.conn.commit()	
 if __name__=="__main__":
 
 	d=datetime.now()
 	db=dbmanager()
 	#db.getPointSources()
-	n=db.insertFlareEvent('3C 279',2555000,2500000,3e-7,3e-8,2.6,0)
+	#n=db.insertFlareEvent('3C 279',2555000,2500000,3e-7,3e-8,2.6,0)
+	no=db.getPointSourcesFSP()
+	if len(no)>0:
+		print no
 	db.close()
-	print n
 	#print _PointSourcesFields['HEALPIX_ID'][1]
