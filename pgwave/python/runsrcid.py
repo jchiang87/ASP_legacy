@@ -6,11 +6,12 @@ import astroUtil as ast
 from AspHealPix import Healpix,Pixel, SkyDir
 import dbmanager as db
 import sendFAmail as smail
+import datetime as dt
 noassocfile='NoAssiated.fits'
 index=[]
 ddec=[]
 rra=[]
-d={}
+dateinfo={}
 sunFlag=0
 sunSunId=-1
 def loadpgwRow(pgwfits):
@@ -112,10 +113,9 @@ def GetAssociated(pgwdata,catf,prefix):
 			break
 	
 def checkSun(pgwadata):
-	d=ast.getEventTimeInterval('Filtered_evt.fits')
+	dateinfo=ast.getEventTimeInterval('Filtered_evt.fits')
 	#print d        
-	sunpos=ast.getSunPos(d["midjd"])        
-	print ("SUN Pos at %f is RA=%f DEC=%f \n" % (d["midjd"],sunpos.ra(), sunpos.dec()))        
+	sunpos=ast.getSunPos(dateinfo["midjd"])        
 	k=0        
 	for ra, dec in zip(rra, ddec):                
 		dis=sunpos.difference(SkyDir(ra,dec))*180./3.1415   
@@ -124,7 +124,8 @@ def checkSun(pgwadata):
 		    sourceSunId=k   
 		    index[k]=("SUN_%i " % d['tstart'])+index[k]                    
 		    print "Sun Pos close to Source:",pgwdata.field('NAME')[k]                
-	k=k+1		
+	k=k+1	
+	return sunpos	
 
 def SaveAssoc(pgwfile,pgwdata):
 	id=[]
@@ -194,6 +195,15 @@ def inviaMail(testo):
         subject='test FA mail'
         smail.sendFAmail(_fromaddress,_toaddress,subject,testo)
 
+def faMessage(source,sunpos):
+        flag=num.array(source['FLARING_FLAG'])
+        testo="Flaring Source Pipeline Report\n"
+	testo=testo+("DATE:%s\n" % (dt.datetime.now().isoformat()))
+        for i in range(0,len(flag)):
+                if flag[i]>0:
+                  testo=testo+"Flaring source found:"+source['NAME'][i]+(" at RA=%f, DEC=%f\n"% (source['RAJ2000'][i],source['DECJ2000'][i]))
+	ss= ("Sun (RA,DEC): %7.4f,%7.4f \nSun (l,b): %7.4f,%7.4f\n" % (sunpos.ra(), sunpos.dec(),sunpos.l(),sunpos.b()))
+	return (testo+ss)
 
 def runsrcid(pgwfile,prob):
 
@@ -205,14 +215,10 @@ def runsrcid(pgwfile,prob):
 		print prefix
 		rungtsrcid(pgwfile,catfiles[i],'assoc.fits',prob)
 		GetAssociated(pgwdata,'assoc.fits',prefix)
-	checkSun(pgwdata)
+	sun=checkSun(pgwdata)
 	checkPointSource()
 	source = SaveAssoc(pgwfile,pgwdata)
-	flag=num.array(source['FLARING_FLAG'])
-	testo=""
-	for i in range(0,len(flag)):
-		if flag[i]>0:
-		  testo=testo+"\nFlaring source found:"+source['NAME'][i]+(" at RA=%f, DEC=%f\n"% (source['RAJ2000'][i],source['DECJ2000'][i]))
+	testo=faMessage(source,sun)
 	inviaMail(testo)
 	os.system('rm temp.fits assoc.fits')
 

@@ -89,13 +89,36 @@ class dbmanager:
 		  for i in range(0,tot):
 		    _PointSourcesFields[colname[i][0]][1].append(row[i])
 		cursor.close()
-			    
-			
+	def getNrec(self,table):
+		sql=("select count(*) from %s" % table)
+		cursor=self.conn.cursor()
+		res=cursor.execute(sql)
+		nrec=cursor.fetchone()
+		cursor.close()
+		return nrec[0]
+	def insertFlareEvent(self,nome,tstart,tstop,flux,err,chi,ff):
+		cursor=self.conn.cursor()
+		sql="select flareevents_Seq.nextval from dual"
+		res=cursor.execute(sql)
+		nrec=cursor.fetchone()
+		#print nrec[0]
+		sql2="insert into flareevents(flare_id,ptsrc_name,starttime,endtime,flux,flux_err,flare_test_type,flare_test_value,processing_date,flaring_flag) "
+		sql3= ("values(%i,'%s',%i,%i,%.2e,%.2e,'Chi2',%.2f,current_timestamp,%i)" % (nrec[0],nome,tstart,tstop,flux,err,chi,ff))
+		sql4=sql2+sql3
+		print sql4
+		res=cursor.execute(sql4)
+		self.conn.commit()
+		"""sql="select * from flareevents"
+		res=cursor.execute(sql)
+		for it in cursor:
+			print it"""			    
+		cursor.close()	
 if __name__=="__main__":
 
 	d=datetime.now()
 	db=dbmanager()
-	db.getPointSources()
+	#db.getPointSources()
+	n=db.insertFlareEvent('3C 279',2555000,2500000,3e-7,3e-8,2.6,0)
 	db.close()
-
-	print _PointSourcesFields['HEALPIX_ID'][1]
+	print n
+	#print _PointSourcesFields['HEALPIX_ID'][1]
