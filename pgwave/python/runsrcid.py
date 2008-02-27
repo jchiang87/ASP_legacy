@@ -202,7 +202,7 @@ def checkPointSource(pgwdata,dateinfo):
 		  k=k+1
 		if flag==0:
 			name=mydb.insertPointSource(idpix[i],r,de,1.)
-			source_name.append('test')
+			source_name.append(name)
 			mydb.insertFlareEvent(name,dateinfo['tstart'],dateinfo['tstop'],pgwdata.field('Flux(E>100)')[i],pgwdata.field('errFlux')[i],pgwdata.field('CHI_2_VAR')[i],int(pgwdata.field('FLARING_FLAG')[i]))
 		i=i+1
 
