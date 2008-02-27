@@ -1,7 +1,7 @@
 import cx_Oracle
 from datetime import datetime
 from databaseAccess import asp_default
-
+from math import *
 _dbtables={'LightCurves':'LightCurves', \
  'FlareEvents':'FlareEvents',\
  'PointSources':'PointSources',\
@@ -118,7 +118,7 @@ class dbmanager:
 		sql2="insert into flareevents(flare_id,ptsrc_name,starttime,endtime,flux,flux_err,flare_test_type,flare_test_value,processing_date,flaring_flag) "
 		sql3= ("values(%i,'%s',%i,%i,%.2e,%.2e,'Chi2',%.2f,current_timestamp,%i)" % (nrec[0],nome,tstart,tstop,flux,err,chi,ff))
 		sql4=sql2+sql3
-		print sql4
+		#print sql4
 		res=cursor.execute(sql4)
 		self.conn.commit()
 		"""sql="select * from flareevents"
@@ -126,17 +126,23 @@ class dbmanager:
 		for it in cursor:
 			print it"""			    
 		cursor.close()
-	def insertPointSource(self,nome,heaid,ra,dec,err):
+	def insertPointSource(self,heaid,ra,dec,err):
 		r = ra*3.14159265358979/180.
        		d = dec*3.14159265358979/180.
        		dir = ( cos(r)*cos(d), sin(r)*cos(d) , sin(d) ) 
         	cursor=self.conn.cursor()
-        	sql2="insert into pointsources(ptsrc_name,healpix_id,source_type,ra,dec,err,nx,ny,nz) "
-        	sql3= ("values('%s',%i,'Other_FSP',%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,0,0)" % (nome,heaid,ra,dec,err,dir[0],dir[1],dir[2]))
+		sql="select pgwave_Seq.nextval from dual"                
+		res=cursor.execute(sql)
+                nrec=cursor.fetchone()
+		nome=('FSP_%05d' % nrec[0])
+        	sql2="insert into pointsources(ptsrc_name,healpix_id,source_type,ra,dec,error_radius,nx,ny,nz,is_obsolete,is_public) "
+        	sql3= ("values('%s',%i,'Other_FSP',%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,'0','0')" % (nome,heaid,ra,dec,err,dir[0],dir[1],dir[2]))
         	sql4=sql2+sql3
-        	print sql4
+        	#print sql4
         	res=cursor.execute(sql4)
-        	self.conn.commit()	
+        	self.conn.commit()
+		cursor.close()	
+		return nome
 if __name__=="__main__":
 
 	d=datetime.now()
