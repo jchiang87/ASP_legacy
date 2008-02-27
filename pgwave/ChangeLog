@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: tosti  Tue Feb 26 17:52:25 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	dbmanager.py runsrcid.py 
+Log Message:
+add source insertion in the db
+    *
+------------------------------------------------------------
 User: tosti  Mon Feb 25 17:18:21 PST 2008
 ASP/pgwave/python
 
