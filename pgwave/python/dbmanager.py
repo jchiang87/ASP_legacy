@@ -89,6 +89,23 @@ class dbmanager:
 		  for i in range(0,tot):
 		    _PointSourcesFields[colname[i][0]][1].append(row[i])
 		cursor.close()
+	def getPgwaveConfig(self):
+		sql="select * from pgwaveconfig order by version_id desc"
+		cursor=self.conn.cursor()                
+		res=cursor.execute(sql)
+		nrec=cursor.fetchone()
+		#print cursor.description
+		#for it in cursor:
+		#    print it
+		cursor.close()
+		return nrec
+	def setPgwaveConfigDef(self):
+		sql="insert into pgwaveconfig(version_id,tstamp,pgw_nwav_scale,pgw_wav_scale,pgw_k_sigma_thres,pgw_noverthresh_pix,pgw_ntime_bin,pgw_chi2_thresh) values(1,current_timestamp,1,'3.0','10',3,5,10)"
+		print sql
+		cursor=self.conn.cursor()
+		res=cursor.execute(sql)
+		self.conn.commit()
+		cursor.close()
         def getPointSourcesFSP(self):     
 	        sql="select count(*) from POINTSOURCES where source_type='Other_FSP'"
                	cursor=self.conn.cursor()                
@@ -109,14 +126,14 @@ class dbmanager:
 		nrec=cursor.fetchone()
 		cursor.close()
 		return nrec[0]
-	def insertFlareEvent(self,nome,tstart,tstop,flux,err,chi,ff):
+	def insertFlareEvent(self,nome,tstart,tstop,flux,err,chi,ff,confid=1):
 		cursor=self.conn.cursor()
 		sql="select flareevents_Seq.nextval from dual"
 		res=cursor.execute(sql)
 		nrec=cursor.fetchone()
 		#print nrec[0]
-		sql2="insert into flareevents(flare_id,ptsrc_name,starttime,endtime,flux,flux_err,flare_test_type,flare_test_value,processing_date,flaring_flag) "
-		sql3= ("values(%i,'%s',%i,%i,%.2e,%.2e,'Chi2',%.2f,current_timestamp,%i)" % (nrec[0],nome,tstart,tstop,flux,err,chi,ff))
+		sql2="insert into flareevents(flare_id,ptsrc_name,starttime,endtime,flux,flux_err,flare_test_type,flare_test_value,processing_date,flaring_flag,pgwaveconfig_id) "
+		sql3= ("values(%i,'%s',%i,%i,%.2e,%.2e,'Chi2',%.2f,current_timestamp,%i,%i)" % (nrec[0],nome,tstart,tstop,flux,err,chi,ff,confid))
 		sql4=sql2+sql3
 		#print sql4
 		res=cursor.execute(sql4)
@@ -136,7 +153,7 @@ class dbmanager:
                 nrec=cursor.fetchone()
 		nome=('FSP_%05d' % nrec[0])
         	sql2="insert into pointsources(ptsrc_name,healpix_id,source_type,ra,dec,error_radius,nx,ny,nz,is_obsolete,is_public) "
-        	sql3= ("values('%s',%i,'Other_FSP',%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,'0','0')" % (nome,heaid,ra,dec,err,dir[0],dir[1],dir[2]))
+        	sql3= ("values('%s',%i,'Other_FSP',%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,0,0)" % (nome,heaid,ra,dec,err,dir[0],dir[1],dir[2]))
         	sql4=sql2+sql3
         	#print sql4
         	res=cursor.execute(sql4)
@@ -145,12 +162,15 @@ class dbmanager:
 		return nome
 if __name__=="__main__":
 
-	d=datetime.now()
+	#d=datetime.now()
 	db=dbmanager()
 	#db.getPointSources()
 	#n=db.insertFlareEvent('3C 279',2555000,2500000,3e-7,3e-8,2.6,0)
-	no=db.getPointSourcesFSP()
-	if len(no)>0:
-		print no
+	#no=db.getPointSourcesFSP()
+	#if len(no)>0:
+	#	print no
+	#db.setPgwaveConfigDef()
+	no=db.getPgwaveConfig()
+	print no[3]
 	db.close()
 	#print _PointSourcesFields['HEALPIX_ID'][1]
