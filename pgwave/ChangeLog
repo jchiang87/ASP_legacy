@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: tosti  Fri Feb 29 15:45:07 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	dbmanager.py 
+Log Message:
+add access to pgwconfig table
+    *
+------------------------------------------------------------
 User: tosti  Wed Feb 27 13:35:06 PST 2008
 ASP/pgwave/python
 
