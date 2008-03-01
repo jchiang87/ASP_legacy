@@ -14,6 +14,8 @@
   <prerequisites>
     <prerequisite name="logicalPath" type="string"/>
     <prerequisite name="OUTPUTDIR" type="string"/>
+    <prerequisite name="frequency" type="string"/>
+    <prerequisite name="interval" type="integer"/>
     <prerequisite name="TSTART" type="integer"/>
     <prerequisite name="TSTOP" type="integer"/>
     <prerequisite name="ASP_PATH" type="string"/>
@@ -65,20 +67,21 @@
 
   <process name="registerData">
     <script><![CDATA[
-    rootname = 'Filtered_evt'
+    suffix = OUTPUTDIR.split('/')[-1]
+    rootname = 'Filtered_evt_%s' % suffix
     exts = ('.fits', '_map.fits', '_map.list', '_map.reg', 
             '_map_pgw_out.fits', '_map_ait.gif')
-    suffix = OUTPUTDIR.split('/')[-1]
     files = [rootname + ext for ext in exts]
     files.append('counts_%s.fits' % suffix)
     files.append('exposure_%s.fits' % suffix)
-    dataTypes = ('FT1', 'DATA', 'DATA', 'DATA', 'FITS', 'DATA', 'FITS', 'FITS')
-    types = ('EVENTS', 'SKYMAP', 'PGWAVESOURCESLIST', 'DS9REGIONS', 
-             'FSUMMARY', 'GIFSKYMAP', 'CMAP', 'EMAP')
-    for outfile, type, dataType in zip(files, types, dataTypes):
-        logicalPath = ('/ASP/OpsSim2/FlareMonitoring/%s/%s' 
-                       % (suffix, outfile))
-        attributes = 'type="%s":nMetStart=%i:nMetStop=%i' % (type,TSTART,TSTOP)
+    datatypes = ('EVENTS', 'SKYMAP', 'PGWAVESOURCELIST', 'DS9REGIONS', 
+                 'PGWAVESUMMARY', 'SKYMAP', 'COUNTSMAP', 'EXPOSUREMAP')
+    processId = PIPELINE_PROCESSINSTANCE
+    for outfile, dataType in zip(files, dataTypes):
+        logicalPath = ('/ASP/OpsSim2/FlareMonitoring/%s:%s' 
+                       % (dataType, outfile))
+        attributes = ('nProcessId=%i:nMetStart=%i:nMetStop=%i' 
+                       % (ProcessId,TSTART,TSTOP))
         filePath = '%s/%s' % (OUTPUTDIR, outfile)
         datacatalog.registerDataset(dataType, logicalPath, 
                                     filePath, attributes)
