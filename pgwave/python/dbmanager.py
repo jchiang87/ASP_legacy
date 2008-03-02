@@ -90,7 +90,8 @@ class dbmanager:
 		    _PointSourcesFields[colname[i][0]][1].append(row[i])
 		cursor.close()
 	def getPgwaveConfig(self):
-		sql="select * from pgwaveconfig order by version_id desc"
+		sql="select * from pgwaveconfig  order by version_id desc"
+		print sql
 		cursor=self.conn.cursor()                
 		res=cursor.execute(sql)
 		nrec=cursor.fetchone()

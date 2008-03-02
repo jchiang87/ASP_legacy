@@ -217,12 +217,16 @@ def inviaMail(testo):
 def faMessage(source,sunpos):
         flag=num.array(source['FLARING_FLAG'])
         testo="Flaring Source Pipeline Report\n"
-	testo=testo+("DATE:%s\n" % (dt.datetime.now().isoformat()))
-        for i in range(0,len(flag)):
+	testo=testo+("UTC DATE:%s\n" % (dt.datetime.utcnow().isoformat()))
+	if len(flag)>0:
+           for i in range(0,len(flag)):
                 if flag[i]>0:
                   testo=testo+"Flaring source found:"+source['NAME'][i]+(" at RA=%f, DEC=%f\n"% (source['RAJ2000'][i],source['DECJ2000'][i]))
+	else:
+	   testo=testo+'NO FLARING SOURCE DETECTED\n' 	
 	ss= ("Sun (RA,DEC): %7.4f,%7.4f \nSun (l,b): %7.4f,%7.4f\n" % (sunpos.ra(), sunpos.dec(),sunpos.l(),sunpos.b()))
-	return (testo+ss)
+	testo=testo+ss+'\nData Products at: http://glast-ground.slac.stanford.edu/ASPDataViewer/\n'
+	return (testo)
 
 def runsrcid(pgwfile,prob):
 	dateinfo=ast.getEventTimeInterval('Filtered_evt.fits')
