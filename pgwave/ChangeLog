@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Mar  2 15:08:38 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	runpgw.py 
+Log Message:
+set the pipeline variable to get the processinstance id into the scriptlet
+    *
+------------------------------------------------------------
 User: jchiang  Sun Mar  2 07:09:12 PST 2008
 ASP/pgwave/xml
 
