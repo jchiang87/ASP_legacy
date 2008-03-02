@@ -126,7 +126,11 @@ def runpgw(infile):
 #	os.environ['PGWOUTPUTLIST']=pgwfile
 
 if __name__=="__main__":
+        import pipeline
+        pipeline.setVariable('ProcessInstance', 
+                             os.environ['PIPELINE_PROCESSINSTANCE'])
+
 	os.chdir(os.environ['OUTPUTDIR'])
 	runpgw('Filtered_evt.fits')
 	os.system('chmod 777 *')
-		
+

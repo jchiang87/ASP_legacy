@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="PGWave" version="4.4" type="Data">
+<task name="PGWave" version="4.5" type="Data">
   <variables>
     <!-- Default values that can be overridden at the command line. -->
     <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r4p1"</var>
@@ -67,8 +67,11 @@
 
   <process name="registerData">
     <script><![CDATA[
+    def filename(ext, suffix):
+        fn = 'Filtered_evt' + ext
+        tokens = fn.split('.')
+        return tokens[0] + '_' + suffix + '.' + tokens[1]
     suffix = OUTPUTDIR.split('/')[-1]
-    rootname = 'Filtered_evt_%s' % suffix
     exts = ('.fits', '_map.fits', '_map.list', '_map.reg', 
             '_map_pgw_out.fits', '_map_ait.gif')
     files = [rootname + ext for ext in exts]
@@ -76,13 +79,9 @@
     files.append('exposure_%s.fits' % suffix)
     dataTypes = ('EVENTS', 'SKYMAP', 'PGWAVESOURCELIST', 'DS9REGIONS', 
                  'PGWAVESUMMARY', 'SKYMAP', 'COUNTSMAP', 'EXPOSUREMAP')
-    thisProcess = pipeline.getProcessInstance("runpgw")
-    print thisProcess
-    processId = thisProcess.getVariable('PIPELINE_PROCESSINSTANCE')
-    print PIPELINE_PROCESSINSTANCE
+    priorProcess = pipeline.getProcessInstance("runpgw")
+    processId = priorProcess.getVariable('ProcessInstance')
     print processId
-    variables = thisProcess.getVariables()
-    
     for outfile, dataType in zip(files, dataTypes):
         logicalPath = ('/ASP/OpsSim2/FlareMonitoring/%s:%s' 
                        % (dataType, outfile))
@@ -90,21 +89,13 @@
         filePath = '%s/%s' % (OUTPUTDIR, outfile)
         print filePath
         attributes = ('nProcessId=%s:nMetStart=%i:nMetStop=%i' 
-                       % (processId,TSTART,TSTOP))
+                       % (processId, TSTART, TSTOP))
         print attributes
         datacatalog.registerDataset(dataType, logicalPath, 
                                     filePath, attributes)
     ]]></script>
     <depends>
       <after process="runpgw" status="SUCCESS"/>
-    </depends>
-  </process>
-
-  <process name="build_lc_db">
-    <job executable="${PGWAVEROOT}/${BINDIR}/build_lc_db.sh"
-         batchOptions=" -q medium"/>
-    <depends>
-      <after process="registerData" status="SUCCESS"/>
     </depends>
   </process>
 
