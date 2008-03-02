@@ -1,4 +1,15 @@
 ------------------------------------------------------------
+User: jchiang  Sun Mar  2 15:17:36 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	runpgw.py 
+Added Files:
+	renameOutFiles.py 
+Log Message:
+add script to rename output files, adding the suffix describing the interval to the file name
+    *
+------------------------------------------------------------
 User: jchiang  Sun Mar  2 15:08:38 PST 2008
 ASP/pgwave/xml
 
