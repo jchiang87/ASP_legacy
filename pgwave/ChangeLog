@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Sun Mar  2 07:09:12 PST 2008
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+check for nan in err returned by pgwave; skip ft1 filtering if CTBCLASSLEVEL is not present; attempt to add process id to metadata
+    *
+------------------------------------------------------------
+User: jchiang  Sun Mar  2 07:09:12 PST 2008
 ASP/pgwave/python
 
 Modified Files:
