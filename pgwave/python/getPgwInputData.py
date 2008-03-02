@@ -59,9 +59,17 @@ try:
 except OSError:
     pass
 
-fcopy = GtApp('fcopy')
-fcopy.run(infile='time_filtered_events.fits[EVENTS][CTBCLASSLEVEL>1]',
-          outfile='Filtered.fits')
+#
+# Perform CTBCLASSLEVEL cut when it is available.  @todo implement to
+# use ft1_filter string from SourceMonitoringConfig table
+#
+foo = FitsNTuple('time_filtered_events.fits', 'EVENTS')
+if 'CTBCLASSLEVEL' in foo.names:
+    fcopy = GtApp('fcopy')
+    fcopy.run(infile='time_filtered_events.fits[EVENTS][CTBCLASSLEVEL>1]',
+              outfile='Filtered.fits')
+else:
+    os.system('ln -s time_filtered_events.fits Filtered.fits')
 
 #
 # apply zenith angle cut and energy cut

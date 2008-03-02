@@ -128,6 +128,9 @@ class dbmanager:
 		cursor.close()
 		return nrec[0]
 	def insertFlareEvent(self,nome,tstart,tstop,flux,err,chi,ff,confid=1):
+                if err != err:
+                        # Have nan from pgwave so return without trying to insert
+                        return
 		cursor=self.conn.cursor()
 		sql="select flareevents_Seq.nextval from dual"
 		res=cursor.execute(sql)
@@ -136,7 +139,7 @@ class dbmanager:
 		sql2="insert into flareevents(flare_id,ptsrc_name,starttime,endtime,flux,flux_err,flare_test_type,flare_test_value,processing_date,flaring_flag,pgwaveconfig_id) "
 		sql3= ("values(%i,'%s',%i,%i,%.2e,%.2e,'Chi2',%.2f,current_timestamp,%i,%i)" % (nrec[0],nome,tstart,tstop,flux,err,chi,ff,confid))
 		sql4=sql2+sql3
-		#print sql4
+		print sql4
 		res=cursor.execute(sql4)
 		self.conn.commit()
 		"""sql="select * from flareevents"

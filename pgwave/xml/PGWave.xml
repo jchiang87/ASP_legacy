@@ -5,7 +5,7 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="PGWave" version="3.7" type="Data">
+<task name="PGWave" version="4.4" type="Data">
   <variables>
     <!-- Default values that can be overridden at the command line. -->
     <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r4p1"</var>
@@ -74,15 +74,24 @@
     files = [rootname + ext for ext in exts]
     files.append('counts_%s.fits' % suffix)
     files.append('exposure_%s.fits' % suffix)
-    datatypes = ('EVENTS', 'SKYMAP', 'PGWAVESOURCELIST', 'DS9REGIONS', 
+    dataTypes = ('EVENTS', 'SKYMAP', 'PGWAVESOURCELIST', 'DS9REGIONS', 
                  'PGWAVESUMMARY', 'SKYMAP', 'COUNTSMAP', 'EXPOSUREMAP')
-    processId = PIPELINE_PROCESSINSTANCE
+    thisProcess = pipeline.getProcessInstance("runpgw")
+    print thisProcess
+    processId = thisProcess.getVariable('PIPELINE_PROCESSINSTANCE')
+    print PIPELINE_PROCESSINSTANCE
+    print processId
+    variables = thisProcess.getVariables()
+    
     for outfile, dataType in zip(files, dataTypes):
         logicalPath = ('/ASP/OpsSim2/FlareMonitoring/%s:%s' 
                        % (dataType, outfile))
-        attributes = ('nProcessId=%i:nMetStart=%i:nMetStop=%i' 
-                       % (ProcessId,TSTART,TSTOP))
+        print logicalPath
         filePath = '%s/%s' % (OUTPUTDIR, outfile)
+        print filePath
+        attributes = ('nProcessId=%s:nMetStart=%i:nMetStop=%i' 
+                       % (processId,TSTART,TSTOP))
+        print attributes
         datacatalog.registerDataset(dataType, logicalPath, 
                                     filePath, attributes)
     ]]></script>
