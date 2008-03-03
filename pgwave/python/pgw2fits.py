@@ -11,13 +11,13 @@ def getFlux(ra,dec,counts):
 	outdir=output_dir = os.environ['OUTPUTDIR']
 	suff=os.path.basename(outdir)
 	emapfile='exposure_'+suff+'.fits'
-	#emapfile='exposure_255514800.fits'
+	#emapfile='exposure_00001.fits'
 	emap = ExposureArray(emapfile)
 	flux=num.zeros(len(ra),dtype=num.float)
 	errflux=num.zeros(len(ra),dtype=num.float)
 	for i in range(0,len(ra)):
 		exposure_value=(emap[SkyDir(ra[i], dec[i])])
-		if exposure_value>0:
+		if exposure_value>0 and counts[i]>0:
 			flux[i]=counts[i]/exposure_value
 			errflux[i]=num.sqrt(counts[i])/exposure_value
 	return flux,errflux
@@ -72,7 +72,7 @@ def pgw2fits(pgwfile,flag):
 	print '---Variability check----'
 	#filevt=os.path.join(os.environ['INPUTFT1DIR'],os.environ['INPUTFT1FILE'])
 	chi=0.
-	nbins=6
+	nbins=5
 	radius=3.0
 	print "NAME            RA       DEC    SIGNIF  COUNTS  CHI2"
 	for i in range(0,len(ra_pgw)):
