@@ -126,6 +126,7 @@ def runpgw(infile):
 #	os.environ['PGWOUTPUTLIST']=pgwfile
 
 if __name__=="__main__":
+        from syncDataViewer import syncDataViewer
         from renameOutFiles import renameOutFiles
         import pipeline
         pipeline.setVariable('ProcessInstance', 
@@ -134,6 +135,8 @@ if __name__=="__main__":
 	os.chdir(os.environ['OUTPUTDIR'])
 
 	runpgw('Filtered_evt.fits')
+
+        syncDataViewer()
         renameOutFiles()
 
 	os.system('chmod 777 *')
