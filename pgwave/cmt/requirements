@@ -6,6 +6,7 @@ version v0r3
 use AspPolicy v* ASP
 use pyASP v* ASP
 use sourceDet v* ASP -no_auto_imports
+use drpMonitoring v* ASP -no_auto_imports
 use astro v*
 use cfitsio * IExternal
 use pil * IExternal
