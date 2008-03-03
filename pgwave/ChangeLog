@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Sun Mar  2 21:01:42 PST 2008
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+add drp launching script; add subtask to do the launching
+    *
+------------------------------------------------------------
+User: jchiang  Sun Mar  2 21:01:42 PST 2008
 ASP/pgwave/python
 
 Added Files:
