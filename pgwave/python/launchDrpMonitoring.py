@@ -45,5 +45,5 @@ if __name__ == '__main__':
     processId = int(os.environ['pgwave_processId'])
 
     launch_drp(interval, frequency, tstart, tstop, logicalPath,
-               output_dir, processId, debug=True)
+               output_dir, processId, debug=False)
 
