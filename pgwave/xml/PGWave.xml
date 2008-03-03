@@ -88,8 +88,9 @@
         print logicalPath
         filePath = '%s/%s' % (OUTPUTDIR, outfile)
         print filePath
-        attributes = ('nProcessId=%s:nMetStart=%i:nMetStop=%i' 
-                       % (processId, TSTART, TSTOP))
+        #attributes = ('nProcessId=%s:nMetStart=%i:nMetStop=%i' 
+        attributes = ('nDatasetId=%s:nMetStart=%i:nMetStop=%i' 
+                      % (processId, TSTART, TSTOP))
         print attributes
         datacatalog.registerDataset(dataType, logicalPath, 
                                     filePath, attributes)
