@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sun Mar  2 21:01:42 PST 2008
+ASP/pgwave/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+add drp launching script; add subtask to do the launching
+    *
+------------------------------------------------------------
 User: tosti  Sun Mar  2 16:59:50 PST 2008
 ASP/pgwave/python
 
