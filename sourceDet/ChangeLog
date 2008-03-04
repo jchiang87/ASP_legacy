@@ -1,0 +1,138 @@
+------------------------------------------------------------
+User: jchiang  Thu Feb  7 14:42:14 PST 2008
+ASP/sourceDet/python
+
+Modified Files:
+	PoissonProb.py computePixelFluxes.py cstatDist.py 
+	generateMaps.py healmaps.py make_maps.py plot_maps.py 
+	poisson_test.py poisson_test_2.py 
+Log Message:
+switch to AspHealPix; tagging v0r0p1
+    *
+------------------------------------------------------------
+User: jchiang  Thu Feb  7 14:42:14 PST 2008
+ASP/sourceDet/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+switch to AspHealPix; tagging v0r0p1
+    *
+------------------------------------------------------------
+User: jchiang  Thu Feb  7 14:42:13 PST 2008
+ASP/sourceDet/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+switch to AspHealPix; tagging v0r0p1
+    *
+------------------------------------------------------------
+User: jchiang  Tue Nov 20 20:23:20 PST 2007
+ASP/sourceDet/python
+
+Modified Files:
+	computePixelFluxes.py 
+Log Message:
+get start stop times from FT2 file
+    *
+------------------------------------------------------------
+User: jchiang  Mon Oct  8 22:43:00 PDT 2007
+ASP/sourceDet/xml
+
+Modified Files:
+	flareDetection.xml 
+Log Message:
+run using DownlinkId
+    *
+------------------------------------------------------------
+User: jchiang  Mon Oct  8 18:28:03 PDT 2007
+ASP/sourceDet/xml
+
+Modified Files:
+	flareDetection.xml 
+Log Message:
+add computePixelFluxes process
+    *
+------------------------------------------------------------
+User: jchiang  Mon Oct  8 18:23:37 PDT 2007
+ASP/sourceDet/python
+
+Added Files:
+	computePixelFluxes.py 
+Log Message:
+add computePixelFluxes.py
+    *
+------------------------------------------------------------
+User: jchiang  Mon Oct  8 09:04:09 PDT 2007
+ASP/sourceDet/xml
+
+Added Files:
+	flareDetection.xml 
+Log Message:
+add xml task def and createHealpixMaps script
+    *
+------------------------------------------------------------
+User: jchiang  Mon Oct  8 09:04:09 PDT 2007
+ASP/sourceDet/python
+
+Modified Files:
+	generateMaps.py 
+Added Files:
+	createHealpixMaps.py 
+Log Message:
+add xml task def and createHealpixMaps script
+    *
+------------------------------------------------------------
+User: jchiang  Mon Oct  8 09:02:47 PDT 2007
+ASP/sourceDet/xml
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/ASP/sourceDet/xml added to the repository
+
+    *
+------------------------------------------------------------
+User: cohen  Fri Jul 27 14:46:33 PDT 2007
+ASP/sourceDet/python
+
+Added Files:
+	healmaps.py 
+Log Message:
+test python script for the pipeline
+
+    *
+------------------------------------------------------------
+User: jchiang  Fri Jul 27 11:52:30 PDT 2007
+ASP/sourceDet/python
+
+Modified Files:
+	poisson_test.py 
+Log Message:
+latest version of poisson_test.py (transferred from my laptop)
+    *
+------------------------------------------------------------
+User: jchiang  Fri Jul 20 15:10:04 PDT 2007
+ASP/sourceDet
+
+Log Message:
+initial import of sourceDet package
+
+Status:
+
+Vendor Tag:	JC
+Release Tags:	v0
+		
+N ASP/sourceDet/.cvsignore
+N ASP/sourceDet/cmt/requirements
+N ASP/sourceDet/doc/release.notes
+N ASP/sourceDet/python/PoissonProb.py
+N ASP/sourceDet/python/generateMaps.py
+N ASP/sourceDet/python/make_maps.py
+N ASP/sourceDet/python/plot_maps.py
+N ASP/sourceDet/python/poisson_test.py
+N ASP/sourceDet/python/poisson_test_2.py
+N ASP/sourceDet/python/cstatDist.py
+
+No conflicts created by this import
+
+    *
