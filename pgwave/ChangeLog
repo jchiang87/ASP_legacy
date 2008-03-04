@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Mon Mar  3 16:57:53 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	getPgwInputData.py 
+Log Message:
+remove dc2 kluge; add code to insert the next time intervale
+    *
+------------------------------------------------------------
 User: jchiang  Mon Mar  3 14:58:15 PST 2008
 ASP/pgwave/python
 
