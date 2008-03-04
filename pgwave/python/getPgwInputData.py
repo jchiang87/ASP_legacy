@@ -71,32 +71,21 @@ else:
 gtselect.run(emin=100, zmax=105, infile='Filtered.fits',
              outfile='Filtered_evt.fits')
 
-start_time = int(os.environ['TSTART'])
-stop_time = int(os.environ['TSTOP'])
-#
-# Insert the current interval into the TIMEINTERVALS table.
-#
-inum = int(os.environ['interval'])
-frequency = os.environ['frequency']
-sql = ("insert into TIMEINTERVALS " +
-       "(INTERVAL_NUMBER, FREQUENCY, TSTART, TSTOP) values " +
-       "(%i, '%s', %i, %i)" % (inum, frequency, start_time, stop_time))
-
 import databaseAccess as dbAccess
+
+#
+# Set the is_processed flag for this interval
+#
+interval = int(os.environ['interval'])
+frequency = os.environ['frequency']
+
+sql = ("update TIMEINTERVALS set IS_PROCESSED=1 where " +
+       "INTERVAL_NUMBER=%i and " % interval +
+       "FREQUENCY='%s'" % frequency)
 try:
     dbAccess.apply(sql)
-except dbAccess.cx_Oracle.IntegrityError, message:
-    #
-    # Check to see if this interval is already in the table. If so,
-    # proceed anyways.  This is useful for rollbacks.
-    #
-    sql = ("select tstart, tstop from TIMEINTERVALS where " +
-           "INTERVAL_NUMBER=%i and FREQUENCY='%s'" % (inum, frequency))
-    def getTlims(cursor):
-        for entry in cursor:
-            return entry[0], entry[1]
-    tlims = dbAccess.apply(sql, getTlims)
-    if tlims[0] != start_time or tlims[1] != stop_time:
-        raise dbAccess.cx_Oracle.IntegrityError, message 
+except StandardError, message:
+    print message
+    print sql
 
 os.system('chmod 777 *')

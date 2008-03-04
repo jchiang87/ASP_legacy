@@ -28,6 +28,8 @@ def renameOutFiles():
     for infile in infiles:
         shutil.copy(infile, outfile(infile, suffix))
 
+    shutil.copy('FT2_merged.fits', 'FT2_%s.fits' % suffix)
+
 if __name__ == '__main__':
     os.chdir(os.environ['OUTPUTDIR'])
     renameOutFiles()

@@ -181,7 +181,7 @@ def checkPointSource(pgwdata,dateinfo):
 	mydb=db.dbmanager()
         mydb.getPointSources()
         #mydb.close()
-	procid=os.environ['PIPELINE_PROCESSINSTANCE']
+	procid=int(os.environ['PIPELINE_PROCESSINSTANCE'])
 	ra=db._PointSourcesFields['RA'][1]
 	dec=db._PointSourcesFields['DEC'][1]
 	i=0
