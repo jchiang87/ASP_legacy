@@ -19,12 +19,6 @@ fileStager = FileStager(process_id, stageArea=output_dir)
 
 ft1, ft2 = getStagedFitsData(fileStager=fileStager)
 
-##
-## kluge for Interleave55d FT2 file since it violates convention established
-## by L1Proc for OktoberTest
-##
-#ft2 = ('/nfs/farm/g/glast/u44/MC-tasks/Interleave55d-GR-v11r17/prune/FT2_55day_patch.fits',)
-
 os.chdir(output_dir)
 
 start_time = float(os.environ['TSTART'])
@@ -76,5 +70,33 @@ else:
 #
 gtselect.run(emin=100, zmax=105, infile='Filtered.fits',
              outfile='Filtered_evt.fits')
+
+start_time = int(os.environ['TSTART'])
+stop_time = int(os.environ['TSTOP'])
+#
+# Insert the current interval into the TIMEINTERVALS table.
+#
+inum = int(os.environ['interval'])
+frequency = os.environ['frequency']
+sql = ("insert into TIMEINTERVALS " +
+       "(INTERVAL_NUMBER, FREQUENCY, TSTART, TSTOP) values " +
+       "(%i, '%s', %i, %i)" % (inum, frequency, start_time, stop_time))
+
+import databaseAccess as dbAccess
+try:
+    dbAccess.apply(sql)
+except dbAccess.cx_Oracle.IntegrityError, message:
+    #
+    # Check to see if this interval is already in the table. If so,
+    # proceed anyways.  This is useful for rollbacks.
+    #
+    sql = ("select tstart, tstop from TIMEINTERVALS where " +
+           "INTERVAL_NUMBER=%i and FREQUENCY='%s'" % (inum, frequency))
+    def getTlims(cursor):
+        for entry in cursor:
+            return entry[0], entry[1]
+    tlims = dbAccess.apply(sql, getTlims)
+    if tlims[0] != start_time or tlims[1] != stop_time:
+        raise dbAccess.cx_Oracle.IntegrityError, message 
 
 os.system('chmod 777 *')
