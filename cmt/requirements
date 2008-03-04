@@ -1,5 +1,5 @@
 package ASP
-version v1
+version v2
 
 author James Chiang <jchiang@slac.stanford.edu>
 
@@ -8,13 +8,13 @@ author James Chiang <jchiang@slac.stanford.edu>
 # $Header$
 #
 
-use AspPolicy v0r3 ASP
-use pyASP v2r4 ASP
+use AspPolicy v0r4 ASP
+use pyASP v3 ASP
 use BayesianBlocks v0r2 ASP
-use grbASP v2r1 ASP
-use drpMonitoring v0r4 ASP
-use AspHealPix v0 ASP
-use pgwave v0r3 ASP
+use grbASP v3 ASP
+use drpMonitoring v1 ASP
+use AspHealPix v0r0p1 ASP
+use pgwave v1 ASP
 use sourceDet v0r0p1 ASP
-use AspLauncher v0 ASP
+use AspLauncher v1 ASP
 
