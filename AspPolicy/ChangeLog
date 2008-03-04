@@ -1,0 +1,66 @@
+------------------------------------------------------------
+User: jchiang  Sun May 13 20:13:12 PDT 2007
+ASP/AspPolicy/doc
+
+Modified Files:
+	release.notes 
+Log Message:
+tagging v0r1
+    *
+------------------------------------------------------------
+User: jchiang  Sun May 13 20:13:11 PDT 2007
+ASP/AspPolicy/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+tagging v0r1
+    *
+------------------------------------------------------------
+User: jchiang  Sun May 13 17:42:51 PDT 2007
+ASP/AspPolicy/python
+
+Modified Files:
+	wrapperGenerator.py 
+Log Message:
+minor reformatting
+    *
+------------------------------------------------------------
+User: jchiang  Sun May 13 17:42:51 PDT 2007
+ASP/AspPolicy/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+minor reformatting
+    *
+------------------------------------------------------------
+User: jchiang  Sun May 13 13:45:52 PDT 2007
+ASP/AspPolicy/python
+
+Modified Files:
+	wrapperGenerator.py 
+Log Message:
+use ST_INST and ASP_PATH env vars
+    *
+------------------------------------------------------------
+User: jchiang  Sat Apr 21 17:41:34 PDT 2007
+ASP/AspPolicy
+
+Log Message:
+initial import
+
+Status:
+
+Vendor Tag:	JC
+Release Tags:	v0
+		
+N ASP/AspPolicy/.cvsignore
+N ASP/AspPolicy/cmt/requirements
+N ASP/AspPolicy/cmt/fragments/generateWrappers
+N ASP/AspPolicy/doc/release.notes
+N ASP/AspPolicy/python/wrapperGenerator.py
+
+No conflicts created by this import
+
+    *

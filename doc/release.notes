@@ -1,0 +1,14 @@
+/** 
+  @file release.notes
+  @brief package ASP
+
+  @verbatim
+  $Id$
+
+  10-May-07 v0r1     JC    add grbASP, drpMonitoring, flareMonitoring,
+                           HealPix, AspPolicy, HealPix as contained and 
+                           checked out packages
+  16-Mar-07 v0       JC    initial version
+ 
+  @endverbatim
+*/
