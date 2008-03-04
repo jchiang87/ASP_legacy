@@ -1,4 +1,52 @@
 ------------------------------------------------------------
+TAG
+Tag name: v1, operation: add
+Package: pgwave
+User: jchiang  Tue Mar  4 14:05:44 2008
+Files:
+  pgwave/.cvsignore  1.1.1.1
+  pgwave/ChangeLog  1.1.1.96
+  pgwave/cmt/requirements  1.8
+  pgwave/pfiles/pgwave2D.par  1.1
+  pgwave/pfiles/pgwave.par  1.1.1.1
+  pgwave/pgwave/utile.h  1.2
+  pgwave/pgwave/MyImageAnalisys.h  1.1.1.1
+  pgwave/pgwave/MyMatrix.h  1.1.1.1
+  pgwave/pgwave/MyImage.h  1.1.1.1
+  pgwave/pgwave/function_util.h  1.1.1.1
+  pgwave/pgwave/filtri.h  1.1.1.1
+  pgwave/python/makeHealPixMaps.py  1.3
+  pgwave/python/start_pipe.py  1.2
+  pgwave/python/sendFAmail.py  1.2
+  pgwave/python/runsrcid.py  1.15
+  pgwave/python/getPgwInputData.py  1.12
+  pgwave/python/angdist.py  1.1
+  pgwave/python/astroUtil.py  1.2
+  pgwave/python/readFT.py  1.2
+  pgwave/python/lc.py  1.4
+  pgwave/python/launchDrpMonitoring.py  1.2
+  pgwave/python/renameOutFiles.py  1.2
+  pgwave/python/readpgw.py  1.2
+  pgwave/python/creaXimageGif.py  1.9
+  pgwave/python/runpgw.py  1.16
+  pgwave/python/build_lc_db.py  1.7
+  pgwave/python/createPgwStreams.py  1.3
+  pgwave/python/runPipe.py  1.3
+  pgwave/python/pgw2fits.py  1.9
+  pgwave/python/dbmanager.py  1.9
+  pgwave/python/syncDataViewer.py  1.1
+  pgwave/python/pgw2xml.py  1.1
+  pgwave/python/startpgw.py  1.2
+  pgwave/src/function_util.cpp  1.2
+  pgwave/src/utile.cpp  1.5
+  pgwave/src/filtri.cpp  1.1.1.1
+  pgwave/src/MyImage.cpp  1.1.1.1
+  pgwave/src/MyImageAnalisys.cpp  1.2
+  pgwave/src/app/main.cpp  1.1.1.1
+  pgwave/xml/PGWave.xml  1.26
+
+    *
+------------------------------------------------------------
 User: jchiang  Tue Mar  4 14:05:28 PST 2008
 ASP/pgwave/cmt
 
