@@ -127,7 +127,7 @@ class dbmanager:
 		nrec=cursor.fetchone()
 		cursor.close()
 		return nrec[0]
-	def insertFlareEvent(self,nome,tstart,tstop,flux,err,chi,ff,confid=1):
+	def insertFlareEvent(self,nome,tstart,tstop,flux,err,chi,ff,confid,procid):
                 if err != err:
                         # Have nan from pgwave so return without trying to insert
                         return
@@ -136,8 +136,8 @@ class dbmanager:
 		res=cursor.execute(sql)
 		nrec=cursor.fetchone()
 		#print nrec[0]
-		sql2="insert into flareevents(flare_id,ptsrc_name,starttime,endtime,flux,flux_err,flare_test_type,flare_test_value,processing_date,flaring_flag,pgwaveconfig_id) "
-		sql3= ("values(%i,'%s',%i,%i,%.2e,%.2e,'Chi2',%.2f,current_timestamp,%i,%i)" % (nrec[0],nome,tstart,tstop,flux,err,chi,ff,confid))
+		sql2="insert into flareevents(flare_id,ptsrc_name,starttime,endtime,flux,flux_err,flare_test_type,flare_test_value,processing_date,flaring_flag,pgwaveconfig_id,process_id) "
+		sql3= ("values(%i,'%s',%i,%i,%.2e,%.2e,'Chi2',%.2f,current_timestamp,%i,%i,%i)" % (nrec[0],nome,tstart,tstop,flux,err,chi,ff,confid,procid))
 		sql4=sql2+sql3
 		print sql4
 		res=cursor.execute(sql4)
