@@ -146,6 +146,11 @@ def creaXimageGif(nomefile,l,b):
 		
 	except:
 		print "@error while trying to create gif"
+
+        #
+        # Ensure a file exists, to enable data registration process later
+        #
+        os.system('touch %s' % outgif)
 	
 	#os.remove(outgif)	
 	
