@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Mar  5 10:42:40 PST 2008
+ASP/pgwave/python
+
+Modified Files:
+	creaXimageGif.py 
+Log Message:
+workaround to ensure a gif file is produced
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1, operation: add
 Package: pgwave
