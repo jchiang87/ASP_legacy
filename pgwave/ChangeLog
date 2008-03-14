@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: tosti  Fri Mar 14 09:33:42 PDT 2008
+ASP/pgwave/python
+
+Modified Files:
+	runsrcid.py 
+Log Message:
+Add a SUN flag on the sourcename if it is close to the source
+    *
+------------------------------------------------------------
 User: jchiang  Fri Mar 14 09:05:16 PDT 2008
 ASP/pgwave/xml
 
