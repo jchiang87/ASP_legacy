@@ -120,8 +120,9 @@ def checkSun(pgwdata,dateinfo):
                 if  dis<=1.:   
 	            sunFlag=1                        
 		    sourceSunId=k   
-		    index[k]=("SUN_%i " % dateinfo['tstart'])+index[k]                    
-		    print "Sun Pos close to Source:",pgwdata.field('NAME')[k]                
+		    index[k]=("SUN_%i " % dateinfo['tstart'])+index[k]
+		    pgwdata.field('NAME')[k]=("SUN_(%s)" % pgwdata.field('NAME')[k])
+                    print "Sun Pos close to Source:",pgwdata.field('NAME')[k]                
 	k=k+1	
 	return sunpos	
 
@@ -209,6 +210,7 @@ def checkPointSource(pgwdata,dateinfo):
 
 	mydb.close()
 	return source_name
+
 def inviaMail(testo):
 	_fromaddress="tosti@slac.stanford.edu"
         _toaddress=['tosti@pg.infn.it']
