@@ -1,0 +1,311 @@
+------------------------------------------------------------
+User: tosti  Sun Oct  7 10:18:43 PDT 2007
+ASP/pgwave/python
+
+Modified Files:
+	createPgwStreams.py lc.py pgw2fits.py runPipe.py runpgw.py 
+	runsrcid.py startpgw.py 
+Added Files:
+	getPgwInputData.py 
+Removed Files:
+	pgwGetInputData.py 
+Log Message:
+changes in python scripts
+    *
+------------------------------------------------------------
+TAG
+Tag name: v0r1p1, operation: add
+Package: pgwave
+User: tosti  Wed Oct  3 11:28:55 2007
+Files:
+  pgwave/.cvsignore  1.1.1.1
+  pgwave/ChangeLog  1.1.1.10
+  pgwave/cmt/requirements  1.2
+  pgwave/pfiles/pgwave2D.par  1.1
+  pgwave/pfiles/pgwave.par  1.1.1.1
+  pgwave/pgwave/utile.h  1.1.1.1
+  pgwave/pgwave/MyImageAnalisys.h  1.1.1.1
+  pgwave/pgwave/MyMatrix.h  1.1.1.1
+  pgwave/pgwave/MyImage.h  1.1.1.1
+  pgwave/pgwave/function_util.h  1.1.1.1
+  pgwave/pgwave/filtri.h  1.1.1.1
+  pgwave/python/createPgwStreams.py  1.1
+  pgwave/python/start_pipe.py  1.2
+  pgwave/python/runPipe.py  1.1
+  pgwave/python/runsrcid.py  1.1
+  pgwave/python/pgw2fits.py  1.1
+  pgwave/python/angdist.py  1.1
+  pgwave/python/pgwGetInputData.py  1.1
+  pgwave/python/readFT.py  1.1
+  pgwave/python/lc.py  1.1
+  pgwave/python/pgw2xml.py  1.1
+  pgwave/python/readpgw.py  1.1
+  pgwave/python/startpgw.py  1.1
+  pgwave/python/runpgw.py  1.2
+  pgwave/src/function_util.cpp  1.1.1.1
+  pgwave/src/utile.cpp  1.1.1.1
+  pgwave/src/filtri.cpp  1.1.1.1
+  pgwave/src/MyImage.cpp  1.1.1.1
+  pgwave/src/MyImageAnalisys.cpp  1.1.1.1
+  pgwave/src/app/main.cpp  1.1.1.1
+  pgwave/xml/PGWave.xml  1.1
+
+    *
+------------------------------------------------------------
+User: tosti  Wed Oct  3 10:43:08 PDT 2007
+ASP/pgwave/xml
+
+Added Files:
+	PGWave.xml 
+Log Message:
+added xml file for pipeline
+    *
+------------------------------------------------------------
+User: tosti  Wed Oct  3 10:40:50 PDT 2007
+ASP/pgwave/xml
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/ASP/pgwave/xml added to the repository
+
+    *
+------------------------------------------------------------
+User: tosti  Wed Oct  3 10:39:18 PDT 2007
+ASP/pgwave/python
+
+Modified Files:
+	runpgw.py start_pipe.py 
+Added Files:
+	createPgwStreams.py pgwGetInputData.py startpgw.py 
+Log Message:
+added scripts for pipeline
+    *
+------------------------------------------------------------
+TAG
+Tag name: v0r1, operation: add
+Package: pgwave
+User: tosti  Mon Oct  1 10:11:24 2007
+Files:
+  pgwave/.cvsignore  1.1.1.1
+  pgwave/ChangeLog  1.1.1.5
+  pgwave/cmt/requirements  1.2
+  pgwave/pfiles/pgwave2D.par  1.1
+  pgwave/pfiles/pgwave.par  1.1.1.1
+  pgwave/pgwave/utile.h  1.1.1.1
+  pgwave/pgwave/MyImageAnalisys.h  1.1.1.1
+  pgwave/pgwave/MyMatrix.h  1.1.1.1
+  pgwave/pgwave/MyImage.h  1.1.1.1
+  pgwave/pgwave/function_util.h  1.1.1.1
+  pgwave/pgwave/filtri.h  1.1.1.1
+  pgwave/python/start_pipe.py  1.1
+  pgwave/python/runPipe.py  1.1
+  pgwave/python/runsrcid.py  1.1
+  pgwave/python/pgw2fits.py  1.1
+  pgwave/python/angdist.py  1.1
+  pgwave/python/readFT.py  1.1
+  pgwave/python/lc.py  1.1
+  pgwave/python/pgw2xml.py  1.1
+  pgwave/python/readpgw.py  1.1
+  pgwave/python/runpgw.py  1.1
+  pgwave/src/function_util.cpp  1.1.1.1
+  pgwave/src/utile.cpp  1.1.1.1
+  pgwave/src/filtri.cpp  1.1.1.1
+  pgwave/src/MyImage.cpp  1.1.1.1
+  pgwave/src/MyImageAnalisys.cpp  1.1.1.1
+  pgwave/src/app/main.cpp  1.1.1.1
+
+    *
+------------------------------------------------------------
+User: tosti  Mon Oct  1 10:04:57 PDT 2007
+ASP/pgwave/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+requirements changed
+    *
+------------------------------------------------------------
+User: tosti  Mon Oct  1 10:01:54 PDT 2007
+ASP/pgwave/pfiles
+
+Added Files:
+	pgwave2D.par 
+Log Message:
+parfile
+    *
+------------------------------------------------------------
+User: tosti  Mon Oct  1 09:53:52 PDT 2007
+ASP/pgwave/python
+
+Added Files:
+	angdist.py lc.py pgw2fits.py pgw2xml.py readFT.py readpgw.py 
+	runPipe.py runpgw.py runsrcid.py start_pipe.py 
+Log Message:
+python script added
+    *
+------------------------------------------------------------
+User: tosti  Mon Oct  1 09:44:30 PDT 2007
+ASP/pgwave/python
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/ASP/pgwave/python added to the repository
+
+    *
+------------------------------------------------------------
+User: jchiang  Wed Sep 26 11:13:02 PDT 2007
+ASP/pgwave
+
+Log Message:
+initial import into ASP checkout package
+
+Status:
+
+Vendor Tag:	GLAST
+Release Tags:	v0r0p1
+		
+I ASP/pgwave/CVS
+N ASP/pgwave/ChangeLog
+I ASP/pgwave/rh9_gcc32
+N ASP/pgwave/.cvsignore
+I ASP/pgwave/.cvsignore~
+I ASP/pgwave/cmt/CVS
+N ASP/pgwave/cmt/requirements
+I ASP/pgwave/src/CVS
+N ASP/pgwave/src/MyImage.cpp
+N ASP/pgwave/src/MyImageAnalisys.cpp
+N ASP/pgwave/src/filtri.cpp
+N ASP/pgwave/src/function_util.cpp
+N ASP/pgwave/src/utile.cpp
+I ASP/pgwave/src/app/CVS
+N ASP/pgwave/src/app/main.cpp
+I ASP/pgwave/pgwave/CVS
+N ASP/pgwave/pgwave/MyImage.h
+N ASP/pgwave/pgwave/MyImageAnalisys.h
+N ASP/pgwave/pgwave/MyMatrix.h
+N ASP/pgwave/pgwave/filtri.h
+N ASP/pgwave/pgwave/function_util.h
+N ASP/pgwave/pgwave/utile.h
+I ASP/pgwave/pfiles/CVS
+N ASP/pgwave/pfiles/pgwave.par
+
+No conflicts created by this import
+
+    *
+------------------------------------------------------------
+TAG
+Tag name: v0r0p1, operation: add
+Package: pgwave
+User: tosti  Fri Sep 14 09:17:52 2007
+Files:
+  pgwave/ChangeLog  1.5
+  pgwave/cmt/setup.csh  1.2
+  pgwave/cmt/cleanup.csh  1.2
+  pgwave/cmt/requirements  1.3
+  pgwave/cmt/cleanup.sh  1.2
+  pgwave/cmt/setup.sh  1.2
+  pgwave/cmt/Makefile  1.1.1.1
+  pgwave/pfiles/pgwave.par  1.1.1.1
+  pgwave/pgwave/utile.h  1.1.1.1
+  pgwave/pgwave/MyImageAnalisys.h  1.1.1.1
+  pgwave/pgwave/MyMatrix.h  1.1.1.1
+  pgwave/pgwave/MyImage.h  1.1.1.1
+  pgwave/pgwave/function_util.h  1.1.1.1
+  pgwave/pgwave/filtri.h  1.2
+  pgwave/src/function_util.cpp  1.2
+  pgwave/src/utile.cpp  1.2
+  pgwave/src/filtri.cpp  1.2
+  pgwave/src/MyImage.cpp  1.2
+  pgwave/src/MyImageAnalisys.cpp  1.2
+  pgwave/src/app/main.cpp  1.1
+
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 09:10:43 PDT 2007
+pgwave/pgwave
+
+Modified Files:
+	filtri.h 
+Log Message:
+commit
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 09:10:43 PDT 2007
+pgwave/cmt
+
+Modified Files:
+	requirements 
+Log Message:
+commit
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 08:54:29 PDT 2007
+pgwave/src
+
+Modified Files:
+	MyImage.cpp MyImageAnalisys.cpp filtri.cpp function_util.cpp 
+	utile.cpp 
+Removed Files:
+	main.cpp 
+Log Message:
+main.cpp removed from src dir
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 08:49:51 PDT 2007
+pgwave/src/app
+
+Added Files:
+	main.cpp 
+Log Message:
+add new file to app dir
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 08:45:27 PDT 2007
+pgwave/src/app
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/pgwave/src/app added to the repository
+
+    *
+------------------------------------------------------------
+User: tosti  Fri Sep 14 00:38:00 PDT 2007
+pgwave/cmt
+
+Modified Files:
+	cleanup.csh cleanup.sh requirements setup.csh setup.sh 
+Log Message:
+
+    *
+------------------------------------------------------------
+User: tosti  Thu Sep 13 04:10:26 PDT 2007
+pgwave
+
+Log Message:
+initial import
+
+Status:
+
+Vendor Tag:	GT
+Release Tags:	v0r0p0
+		
+N pgwave/cmt/Makefile
+N pgwave/cmt/requirements
+N pgwave/cmt/setup.csh
+N pgwave/cmt/setup.sh
+N pgwave/cmt/cleanup.csh
+N pgwave/cmt/cleanup.sh
+N pgwave/src/filtri.cpp
+N pgwave/src/function_util.cpp
+N pgwave/src/main.cpp
+N pgwave/src/MyImage.cpp
+N pgwave/src/MyImageAnalisys.cpp
+N pgwave/src/utile.cpp
+N pgwave/pgwave/filtri.h
+N pgwave/pgwave/function_util.h
+N pgwave/pgwave/MyImage.h
+N pgwave/pgwave/MyImageAnalisys.h
+N pgwave/pgwave/MyMatrix.h
+N pgwave/pgwave/utile.h
+N pgwave/pfiles/pgwave.par
+
+No conflicts created by this import
+
+    *
