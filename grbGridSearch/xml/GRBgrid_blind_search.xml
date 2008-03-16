@@ -5,9 +5,9 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="GRBgrid_blind_search" version="1.1" type="Data">
+<task name="GRBgrid_blind_search" version="1.3" type="Data">
   <variables>
-    <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r3p1"</var>
+    <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r4p2"</var>
     <var name="BINDIR">rh9_gcc32</var>
   </variables>
    <prerequisites>
@@ -15,7 +15,7 @@
       <prerequisite name="TSTART" type="integer"/>
       <prerequisite name="TSTOP" type="integer"/>
       <prerequisite name="output_dir" type="string"/>
-      <prerequisite name="GRBASPROOT" type="string"/>
+      <prerequisite name="GRBGRIDSEARCHROOT" type="string"/>
       <prerequisite name="ASP_PATH" type="string"/>
       <prerequisite name="PIPELINESERVER" type="string"/>
       <prerequisite name="GRBCONFIG_FILE" type="string"/>
@@ -29,13 +29,20 @@
        opt3 = '(nMetStart <= %(TSTOP)i && %(TSTOP)i <= nMetStop)' % locals()
        query = ('DataType == \"MERIT\" && (%s || %s || %s)' 
                 % (opt1, opt2, opt3))
-       datasetList = datacatalog.getDatasets(logicalPath + "/*", query)
+       
+       datasetList = datacatalog.getDatasets(logicalPath, 0, 0, "MERIT",
+                                             0, query, (), ("nDownlink",), ())
        it = datasetList.iterator()
        istream = 0
        while it.hasNext():
            dataset = it.next()
-           meritFile = dataset.getFirstOKLocation().getPath()
+           try:
+               meritFile = dataset.getFirstOKLocation().getPath()
+           except AttributeError:
+               continue
            ds_name = dataset.getName()
+           downlink = dataset.getMetaValue("nDownlink")
+           print "downlink = ", downlink
            pipeline.createSubstream("BlindSearch", istream,
                                     "MERIT_FILE=%s, DS_NAME=%s" 
                                     % (meritFile, ds_name))
@@ -57,7 +64,7 @@
        <prerequisite name="DS_NAME" type="string"/>
      </prerequisites>
      <process name="MeritBlindSearch">
-       <job executable="${GRBASPROOT}/${BINDIR}/MeritBlindSearch.sh"
+       <job executable="${GRBGRIDSEARCHROOT}/${BINDIR}/MeritBlindSearch.sh"
             batchOptions="-q short "/>
      </process>
    </task> <!--BlindSearch-->
