@@ -38,12 +38,17 @@ _grbConfig = {'PARTITIONSIZE' : 20,
 def process_file(merit_file, cuts=_pass5_cuts, grbConfig=_grbConfig,
                  t0=252460800, logLikeFile='loglike.dat', 
                  output=sys.stdout, columns=_defaultColumns,
-                 verbose=False):
+                 verbose=False, exclude_src_id=None):
     if verbose:
         print "using grbConfig:"
         print grbConfig, "\n"
         print "using merit columns:"
         print columns, "\n"
+        print "excluding MC_SRC_ID: "
+        print exclude_src_id
+    if exclude_src_id is not None:
+        cuts += "&& McSourceId!=%i" % exclude_src_id
+
     raw_events = RootNTuple(merit_file, cuts, columns=_defaultColumns,
                             verbose=verbose)
     gtis = [(min(raw_events.TIME), max(raw_events.TIME))]
@@ -128,7 +133,9 @@ if __name__ == '__main__':
     candidateBurstFile = fileStager.output(outpath("candidateBursts.dat"))
 
     results = open(candidateBurstFile, "w")
+
+    mc_src_id = 3000 + int(os.environ["DS_NAME"])
     
     process_file(merit_file, logLikeFile=logLikeFile, output=results,
                  cuts=cuts, grbConfig=grbConfig, columns=columns, 
-                 verbose=True)
+                 verbose=True, exclude_src_id=mc_src_id)
