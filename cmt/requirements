@@ -14,7 +14,7 @@ use AspPolicy v0r4 ASP
 use BayesianBlocks v0r2 ASP
 use dbManager v0r2 ASP
 use drpMonitoring v1r1 ASP
-use grbASP v3r1 ASP
+use grbASP v3r1p1 ASP
 use pgwave v1r1 ASP
 use pyASP v3 ASP
 use sourceDet v0r0p1 ASP
