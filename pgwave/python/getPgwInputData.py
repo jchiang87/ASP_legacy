@@ -45,7 +45,6 @@ gtselect['dec'] = 0.
 gtselect['rad'] = 180
 gtselect['emin'] = 30
 gtselect['emax'] = 2e5
-gtselect['eventClass'] = -1
 gtselect.run()
 
 try:
