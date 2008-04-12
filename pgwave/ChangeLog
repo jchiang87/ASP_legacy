@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Sat Apr 12 13:14:48 PDT 2008
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+add option to set datacatalog implementation
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r1, operation: add
 Package: pgwave
