@@ -14,6 +14,7 @@ from PipelineCommand import PipelineCommand, _asp_path
 
 _version = os.path.split(os.environ['DRPMONITORINGROOT'])[-1]
 _drpRoot = os.path.join(_asp_path, 'ASP', 'drpMonitoring', _version)
+_datacatalog_imp = os.environ['datacatalog_imp']
 
 def launch_drp(interval, frequency, tstart, tstop, folder, output_dir,
                pgwave_processId, num_RoIs=30, debug=False):
@@ -25,7 +26,8 @@ def launch_drp(interval, frequency, tstart, tstop, folder, output_dir,
             'TSTOP' : tstop,
             'pgwave_processId' : pgwave_processId,
             'num_RoIs' : num_RoIs,
-            'DRPMONITORINGROOT' : _drpRoot}
+            'DRPMONITORINGROOT' : _drpRoot,
+            'datacatalog_imp' : _datacatalog_imp}
     command = PipelineCommand('DRP_monitoring', args)
     command.run(debug=debug)
 

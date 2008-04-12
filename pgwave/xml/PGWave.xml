@@ -5,11 +5,12 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="PGWave" version="5.0" type="Data">
+<task name="PGWave" version="6.1" type="Data">
   <variables>
     <!-- Default values that can be overridden at the command line. -->
-    <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r4p1"</var>
+    <var name="ST_INST">"/nfs/farm/g/glast/u30/builds/rh9_gcc32/ScienceTools/ScienceTools-v9r5"</var>
     <var name="BINDIR">rh9_gcc32</var>
+    <var name="datacatalog_imp">datacatalog</var>
   </variables>
   <prerequisites>
     <prerequisite name="logicalPath" type="string"/>
@@ -26,6 +27,8 @@
   <process name="catalogQuery">
     <script>
       <![CDATA[
+        print "using datacatalog implementation: ", datacatalog_imp
+        datacat = eval(datacatalog_imp)
         def query(outfile, path, TSTART, TSTOP):
             output = pipeline.createFile(outfile)
             opt1 = '(%(TSTART)i <= nMetStart && nMetStop <= %(TSTOP)i)' % locals()
@@ -33,7 +36,7 @@
             opt3 = '(nMetStart <= %(TSTOP)i && %(TSTOP)i <= nMetStop)' % locals()
             query = ('DataType == \"%s\" && (%s || %s || %s)' 
                      % (path, opt1, opt2, opt3))
-            datasetList = datacatalog.getDatasets(logicalPath+'/*', query)
+            datasetList = datacat.getDatasets(logicalPath+'/*', query)
             datasetList.writeToFile(output, 1)
             pipeline.writeFile(output)
         query("Ft1FileList", "FT1", TSTART, TSTOP)
@@ -67,6 +70,8 @@
 
   <process name="registerData">
     <script><![CDATA[
+    print "using datacatalog implementation: ", datacatalog_imp
+    datacat = eval(datacatalog_imp)
     def filename(ext, suffix):
         fn = 'Filtered_evt' + ext
         tokens = fn.split('.')
@@ -92,8 +97,8 @@
         attributes = ('nDatasetId=%s:nMetStart=%i:nMetStop=%i' 
                       % (processId, TSTART, TSTOP))
         print attributes
-        datacatalog.registerDataset(dataType, logicalPath, 
-                                    filePath, attributes)
+        datacat.registerDataset(dataType, logicalPath, 
+                                filePath, attributes)
     # FT2 is a special case
     outfile = 'FT2_%s.fits' % suffix
     logicalPath = ('/ASP/OpsSim2/FlareMonitoring/%s/%s:%s' 
@@ -104,7 +109,7 @@
     attributes = ('nDatasetId=%s:nMetStart=%i:nMetStop=%i' 
                   % (processId, TSTART, TSTOP))
     print attributes
-    datacatalog.registerDataset('FT2', logicalPath, filePath, attributes)
+    datacat.registerDataset('FT2', logicalPath, filePath, attributes)
     #
     if frequency in ('daily', 'weekly'):
         pipeline.createSubstream("drpMonitoring", 0, 
