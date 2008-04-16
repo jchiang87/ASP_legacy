@@ -32,7 +32,7 @@ pipeline_config = lambda x : os.path.join("/afs/slac.stanford.edu/g/glast/ground
 
 _ftools_setup= pipeline_config("ASP/headas-config-noric024835.sh")
 _asp_python_path = pipeline_config("ASP/python/lib/python2.5/site-packages")
-_GPLtools_path = pipeline_config("GPLtools/L1prod/python")
+_GPLtools_path = pipeline_config("GPLtools/prod/python")
 _LoggerPath = "/afs/slac.stanford.edu/g/glast/isoc/flightOps/rhel4_gcc34/ISOC_PROD/lib/python2.5/site-packages/gov"
 _asp_python = "/usr/bin/env python"
 _asp_db_config = pipeline_config('ASP/db_config')
