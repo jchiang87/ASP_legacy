@@ -49,6 +49,8 @@ def process_file(merit_file, cuts=_pass5_cuts, grbConfig=_grbConfig,
     if exclude_src_id is not None:
         cuts += "&& McSourceId!=%i" % exclude_src_id
 
+    print "applying TCut:"
+    print cuts
     raw_events = RootNTuple(merit_file, cuts, columns=_defaultColumns,
                             verbose=verbose)
     gtis = [(min(raw_events.TIME), max(raw_events.TIME))]
@@ -134,8 +136,18 @@ if __name__ == '__main__':
 
     results = open(candidateBurstFile, "w")
 
-    mc_src_id = 3000 + int(os.environ["DS_NAME"])
+    #    mc_src_id = 3000 + int(os.environ["DS_NAME"])
+    #
+    # Grid 3 uses an offset of 4000 for the grb src id
+    mc_src_id = 4000 + int(os.environ["DS_NAME"])
     
     process_file(merit_file, logLikeFile=logLikeFile, output=results,
                  cuts=cuts, grbConfig=grbConfig, columns=columns, 
                  verbose=True, exclude_src_id=mc_src_id)
+
+    #
+    # Need to call finish() explicitly since exceptions raised
+    # in FileStager.__del__ are ignored when the process is shutting
+    # down.
+    #
+    fileStager.finish()
