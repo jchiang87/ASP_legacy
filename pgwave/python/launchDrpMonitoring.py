@@ -17,18 +17,18 @@ _drpRoot = os.path.join(_asp_path, 'ASP', 'drpMonitoring', _version)
 _datacatalog_imp = os.environ['datacatalog_imp']
 
 def launch_drp(interval, frequency, tstart, tstop, folder, output_dir,
-               pgwave_processId, num_RoIs=30, debug=False):
+               pgwave_streamId, num_RoIs=30, debug=False):
     args = {'OUTPUTDIR' : output_dir,
             'logicalPath' : folder,
             'interval' : interval,
             'frequency' : frequency,
             'TSTART' : tstart,
             'TSTOP' : tstop,
-            'pgwave_processId' : pgwave_processId,
+            'pgwave_streamId' : pgwave_streamId,
             'num_RoIs' : num_RoIs,
             'DRPMONITORINGROOT' : _drpRoot,
             'datacatalog_imp' : _datacatalog_imp}
-    command = PipelineCommand('DRP_monitoring', args)
+    command = PipelineCommand('DRP_monitoring', args, stream=pgwave_streamId)
     command.run(debug=debug)
 
 if __name__ == '__main__':
@@ -44,8 +44,8 @@ if __name__ == '__main__':
     tstart = int(os.environ['TSTART'])
     tstop = int(os.environ['TSTOP'])
 
-    processId = int(os.environ['pgwave_processId'])
+    streamId = int(os.environ['pgwave_streamId'])
 
     launch_drp(interval, frequency, tstart, tstop, logicalPath,
-               output_dir, processId, debug=False)
+               output_dir, streamId, debug=False)
 

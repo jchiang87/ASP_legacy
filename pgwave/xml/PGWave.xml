@@ -84,9 +84,8 @@
     files.append('exposure_%s.fits' % suffix)
     dataTypes = ('EVENTS', 'SKYMAP', 'PGWAVESOURCELIST', 'DS9REGIONS', 
                  'PGWAVESUMMARY', 'SKYMAP', 'COUNTSMAP', 'EXPOSUREMAP')
-    priorProcess = pipeline.getProcessInstance("runpgw")
-    processId = priorProcess.getVariable('ProcessInstance')
-    print processId
+    streamId = pipeline.getStream()
+    print "registering with stream ID = ", streamId
     for outfile, dataType in zip(files, dataTypes):
         logicalPath = ('/ASP/OpsSim2/FlareMonitoring/%s/%s:%s' 
                        % (frequency, dataType, outfile))
@@ -95,7 +94,7 @@
         print filePath
         #attributes = ('nProcessId=%s:nMetStart=%i:nMetStop=%i' 
         attributes = ('nDatasetId=%s:nMetStart=%i:nMetStop=%i' 
-                      % (processId, TSTART, TSTOP))
+                      % (streamId, TSTART, TSTOP))
         print attributes
         datacat.registerDataset(dataType, logicalPath, 
                                 filePath, attributes)
@@ -107,13 +106,13 @@
     filePath = '%s/%s' % (OUTPUTDIR, outfile)
     print filePath
     attributes = ('nDatasetId=%s:nMetStart=%i:nMetStop=%i' 
-                  % (processId, TSTART, TSTOP))
+                  % (streamId, TSTART, TSTOP))
     print attributes
     datacat.registerDataset('FT2', logicalPath, filePath, attributes)
     #
     if frequency in ('daily', 'weekly'):
         pipeline.createSubstream("drpMonitoring", 0, 
-                                 "pgwave_processId=%i" % processId)
+                                 "pgwave_streamId=%i" % streamId)
     ]]></script>
     <depends>
       <after process="runpgw" status="SUCCESS"/>
@@ -125,7 +124,7 @@
   
   <task name="drpMonitoring" version="1.0" type="Data">
     <prerequisites>
-      <prerequisite name="pgwave_processId" type="integer"/>
+      <prerequisite name="pgwave_streamId" type="integer"/>
     </prerequisites>
     <process name="launchDrpMonitoring">
       <job executable="${PGWAVEROOT}/${BINDIR}/launchDrpMonitoring.sh"
