@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: jchiang  Wed Apr 16 15:22:09 PDT 2008
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+propagate pgwave_streamId to drpMonitoring streams; register data products with stream Id
+    *
+------------------------------------------------------------
 User: jchiang  Wed Apr 16 15:22:08 PDT 2008
 ASP/pgwave/python
 
