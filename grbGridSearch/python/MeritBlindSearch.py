@@ -136,11 +136,12 @@ if __name__ == '__main__':
 
     results = open(candidateBurstFile, "w")
 
-    #    mc_src_id = 3000 + int(os.environ["DS_NAME"])
-    #
-    # Grid 3 uses an offset of 4000 for the grb src id
-    mc_src_id = 4000 + int(os.environ["DS_NAME"])
-    
+    mc_src_id = None
+#    mc_src_id = 3000 + int(os.environ["DS_NAME"])
+#    #
+#    # Grid 3 uses an offset of 4000 for the grb src id
+#    mc_src_id = 4000 + int(os.environ["DS_NAME"])
+#    
     process_file(merit_file, logLikeFile=logLikeFile, output=results,
                  cuts=cuts, grbConfig=grbConfig, columns=columns, 
                  verbose=True, exclude_src_id=mc_src_id)
