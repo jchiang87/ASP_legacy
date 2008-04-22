@@ -1,0 +1,13 @@
+package AspPolicy
+version v0r4p1
+
+# $Id$
+
+use GlastPolicy v*
+
+path_remove PYTHONPATH AspPolicy
+path_append PYTHONPATH $(ASPPOLICYROOT)/python
+
+make_fragment generateWrappers -header=generateWrappers
+
+pattern wrapper_scripts document generateWrappers wrappers
