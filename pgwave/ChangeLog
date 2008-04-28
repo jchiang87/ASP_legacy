@@ -1,5 +1,14 @@
 ------------------------------------------------------------
 User: jchiang  Mon Apr 28 16:38:41 PDT 2008
+ASP/pgwave/xml
+
+Modified Files:
+	PGWave.xml 
+Log Message:
+no need to set processinstance variable in runpgw.py; add outputFolder variable to xml task def
+    *
+------------------------------------------------------------
+User: jchiang  Mon Apr 28 16:38:41 PDT 2008
 ASP/pgwave/python
 
 Modified Files:
