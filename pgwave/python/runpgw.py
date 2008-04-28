@@ -128,9 +128,6 @@ def runpgw(infile):
 if __name__=="__main__":
         from syncDataViewer import syncDataViewer
         from renameOutFiles import renameOutFiles
-        import pipeline
-        pipeline.setVariable('ProcessInstance', 
-                             os.environ['PIPELINE_PROCESSINSTANCE'])
 
 	os.chdir(os.environ['OUTPUTDIR'])
 
