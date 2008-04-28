@@ -1,6 +1,49 @@
 import pyfits
 import sys,pyASP
 
+def d2dms(degree):
+    "This function translates from degree to (degree , minute, second)"
+    if degree < 0.0:
+        neg = 1
+    else:
+        neg = 0
+
+    degree = abs(degree)
+    deg = int(degree)
+    degree = degree - deg
+    minute = int(degree * 60.0)
+    degree = degree - minute / 60.0
+    sec = degree * 3600
+ 
+    if neg:
+        if deg > 0:
+            deg = -deg
+        elif minute > 0:
+            minute = -minute
+        else:
+            sec = -sec
+    return deg, minute, sec
+    
+def d2dmstext(degree,sign=0):
+	d,m,s=d2dms(degree)
+	d1=d+int(m+int(s+0.5)/60)/60
+	m1=m+int((s+0.5)/60)
+	if m1>m:
+		s1=0
+	else:
+		s1=s+0.5
+	if sign==0:
+		ss="%02d%02d%02d" % (int(d1),int(m1),int(s1))
+	else:
+		ss="%+03d%02d%02d" % (int(d1),int(m1),int(s1))
+	return ss
+
+def d2hmstext(degree):
+	return d2dmstext(degree/15.)
+	
+def sphd2shptext(ra,dec):
+	return d2dmstext(ra/15.)+d2dmstext(dec,1)
+
 def tjd2jd(tjd):
         return (2440000.5+tjd)
 

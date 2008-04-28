@@ -1,6 +1,7 @@
 import cx_Oracle
 from datetime import datetime
 from databaseAccess import asp_default
+import astroUtil as ast
 from math import *
 _dbtables={'LightCurves':'LightCurves', \
  'FlareEvents':'FlareEvents',\
@@ -156,8 +157,9 @@ class dbmanager:
 		res=cursor.execute(sql)
                 nrec=cursor.fetchone()
 		nome=('FSP_%05d' % nrec[0])
+		nome1='ASP'+ast.sphd2shptext(r,d)
         	sql2="insert into pointsources(ptsrc_name,healpix_id,source_type,ra,dec,error_radius,nx,ny,nz,is_obsolete,is_public) "
-        	sql3= ("values('%s',%i,'Other_FSP',%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,0,0)" % (nome,heaid,ra,dec,err,dir[0],dir[1],dir[2]))
+        	sql3= ("values('%s',%i,'Other_FSP',%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,0,0)" % (nome1,heaid,ra,dec,err,dir[0],dir[1],dir[2]))
         	sql4=sql2+sql3
         	#print sql4
         	res=cursor.execute(sql4)
