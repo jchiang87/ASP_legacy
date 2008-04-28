@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+User: tosti  Mon Apr 28 05:33:28 PDT 2008
+ASP/pgwave/python
+
+Modified Files:
+	astroUtil.py dbmanager.py 
+Log Message:
+chaged the source name to be consistent with catalog convention
+    *
+------------------------------------------------------------
 TAG
 Tag name: v1r2, operation: add
 Package: pgwave
