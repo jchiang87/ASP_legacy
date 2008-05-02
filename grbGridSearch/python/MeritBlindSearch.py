@@ -33,7 +33,8 @@ _pass5_cuts = "((GltWord&10)>0) && ((GltWord&7)!=3) && (FilterStatus_HI==0) && (
 
 _grbConfig = {'PARTITIONSIZE' : 20,
               'DEADTIME' : 1000,
-              'THRESHOLD' : 83}
+              'THRESHOLD' : 83,
+              'BG_WINDOW' : 100}
 
 def process_file(merit_file, cuts=_pass5_cuts, grbConfig=_grbConfig,
                  t0=252460800, logLikeFile='loglike.dat', 
@@ -74,7 +75,8 @@ def process_file(merit_file, cuts=_pass5_cuts, grbConfig=_grbConfig,
         blindSearch = BlindSearch(events, clusterAlg, 
                                   dn=grbConfig['PARTITIONSIZE'],
                                   deadtime=grbConfig['DEADTIME'], 
-                                  threshold=grbConfig['THRESHOLD'])
+                                  threshold=grbConfig['THRESHOLD'],
+                                  bg_window=grbConfig['BG_WINDOW'])
 
         grbDirs = blindSearch.grbDirs()
         for item in grbDirs:
@@ -136,8 +138,8 @@ if __name__ == '__main__':
 
     results = open(candidateBurstFile, "w")
 
-    mc_src_id = None
-#    mc_src_id = 3000 + int(os.environ["DS_NAME"])
+#    mc_src_id = None
+    mc_src_id = 3000 + int(os.environ["DS_NAME"])
 #    #
 #    # Grid 3 uses an offset of 4000 for the grb src id
 #    mc_src_id = 4000 + int(os.environ["DS_NAME"])
