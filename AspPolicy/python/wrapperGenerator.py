@@ -46,7 +46,7 @@ pipeline_config = lambda x : os.path.join("/afs/slac.stanford.edu/g/glast/ground
 _ftools_setup = pipeline_config("ASP/headas-config-noric024835.sh")
 _asp_python_path = pipeline_config("ASP/python/lib/python2.5/site-packages")
 _GPLtools_path = pipeline_config("GPLtools/prod/python")
-_LoggerPath = "/afs/slac.stanford.edu/g/glast/isoc/flightOps/rhel4_gcc34/ISOC_PROD/lib/python2.5/site-packages/gov"
+#_LoggerPath = "/afs/slac.stanford.edu/g/glast/isoc/flightOps/rhel4_gcc34/ISOC_PROD/lib/python2.5/site-packages/gov"
 _asp_python = "/usr/bin/env python"
 _asp_db_config = pipeline_config('ASP/db_config')
 
@@ -70,8 +70,8 @@ def wrapperGenerator(scriptName):
     output.write("export ORACLE_HOME=/usr/oracle\n")
     output.write("export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:${LD_LIBRARY_PATH}:%s\n" % pipeline_config('ASP/lib'))
     output.write("export ASP_DB_CONFIG=%s\n" % _asp_db_config)
-    output.write("export PYTHONPATH=%s:%s:${PYTHONPATH}:%s\n" 
-                 % (_asp_python_path, _GPLtools_path, _LoggerPath))
+    output.write("export PYTHONPATH=%s:%s:${PYTHONPATH}\n" 
+                 % (_asp_python_path, _GPLtools_path))
     output.write('exec %s %s\n' % (_asp_python, pyScript))
     output.close()
     os.system('chmod +x %s' % outfile)
