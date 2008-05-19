@@ -19,18 +19,31 @@ def packageName():
     output.close()
     return line[0].strip()
 
-_ST_path = "${ST_INST}"
-_ASP_path = "${ASP_PATH}"
+def resolve_nfs_path(path):
+    tokens = path.split(":")
+    for i in range(len(tokens)):
+        if tokens[i].find('g.glast.'):
+            tokens[i] = os.path.join('/nfs/farm/g/glast', 
+                                     tokens[i].split('g.glast.')[-1])
+    return ":".join(tokens)
+
+_ST_path = resolve_nfs_path(os.environ['ST_INST'])
+
 _bindir = os.environ['BINDIR']
+_glast_ext_root = "/afs/slac.stanford.edu/g/glast/ground/GLAST_EXT"
+
+_cmt_version = "v1r18p20061003"
+_cmt_base = "/afs/slac.stanford.edu/g/glast/applications/CMT"
+_cmt_path = resolve_nfs_path(os.environ['CMTPATH'])
 
 _packageName = packageName()
 _packageRoot = string.upper(_packageName) + 'ROOT'
 _package_version = os.environ[_packageRoot].split(os.path.sep)[-1]
-_package_root = os.path.join(_ASP_path, "ASP", _packageName, _package_version)
+_package_root = resolve_nfs_path(os.environ[_packageRoot])
 
 pipeline_config = lambda x : os.path.join("/afs/slac.stanford.edu/g/glast/ground/PipelineConfig", x)
 
-_ftools_setup= pipeline_config("ASP/headas-config-noric024835.sh")
+_ftools_setup = pipeline_config("ASP/headas-config-noric024835.sh")
 _asp_python_path = pipeline_config("ASP/python/lib/python2.5/site-packages")
 _GPLtools_path = pipeline_config("GPLtools/prod/python")
 _LoggerPath = "/afs/slac.stanford.edu/g/glast/isoc/flightOps/rhel4_gcc34/ISOC_PROD/lib/python2.5/site-packages/gov"
@@ -43,17 +56,16 @@ def wrapperGenerator(scriptName):
     outfile = os.path.join(os.environ[_packageRoot], _bindir, prefix + ".sh")
     output = open(outfile, "w")
     output.write("#!/usr/bin/env bash\n")
-    output.write("CMTSITE=SLAC_UNIX; export CMTSITE\n")
-    output.write("CMTVERSION=v1r16p20040701; export CMTVERSION\n")
-    output.write("CMTBASE=/afs/slac.stanford.edu/g/glast/applications/CMT; export CMTBASE\n")
-    output.write("CMTROOT=/afs/slac.stanford.edu/g/glast/applications/CMT/v1r16p20040701; export CMTROOT\n")
-    output.write("CMTBIN=Linux; export CMTBIN\n")
-    output.write("CMTCONFIG=%s; export CMTCONFIG\n" % _bindir)
-    output.write("CMTPATH=%s; export CMTPATH\n" %
-                 os.pathsep.join((_ST_path, _ASP_path)))
+    output.write("export CMTVERSION=%s\n" % _cmt_version)
+    output.write("export CMTBASE=%s\n" % _cmt_base)
+    output.write("export CMTROOT=${CMTBASE}/${CMTVERSION}\n")
+    output.write("export CMTBIN=Linux\n")
+    output.write("export CMTCONFIG=%s\n" % _bindir)
+    output.write("export CMTPATH=%s\n" % _cmt_path)
+    output.write('export PFILES=".;"\n')
     output.write("source %s\n" % _ftools_setup)
-    output.write("GLAST_EXT=/afs/slac.stanford.edu/g/glast/ground/GLAST_EXT/%s; export GLAST_EXT\n" % _bindir)
-    output.write("PATH=%s:${PATH}; export PATH\n" % os.path.join(_ST_path, 'bin'))
+    output.write("export GLAST_EXT=%s/%s\n" % (_glast_ext_root, _bindir))
+    output.write("export PATH=%s:${PATH}\n" % os.path.join(_ST_path, 'bin'))
     output.write("source %s\n" % os.path.join(_package_root, 'cmt','setup.sh'))
     output.write("export ORACLE_HOME=/usr/oracle\n")
     output.write("export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:${LD_LIBRARY_PATH}:%s\n" % pipeline_config('ASP/lib'))
