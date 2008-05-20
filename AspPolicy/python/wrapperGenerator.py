@@ -72,7 +72,7 @@ def wrapperGenerator(scriptName):
     output.write("export ASP_DB_CONFIG=%s\n" % _asp_db_config)
     output.write("export PYTHONPATH=%s:%s:${PYTHONPATH}\n" 
                  % (_asp_python_path, _GPLtools_path))
-    output.write('exec %s %s\n' % (_asp_python, pyScript))
+    output.write('exec %s %s "$@"\n' % (_asp_python, pyScript))
     output.close()
     os.system('chmod +x %s' % outfile)
 
