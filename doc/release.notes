@@ -5,6 +5,8 @@
   @verbatim
   $Id$
 
+  22-May-08 v2r4     JC    Changes to accomodate db table changes for GRBs;
+                           refactor launching code
   12-May-08 v2r3     JC    Changes to asp_pgwave, drpMonitoring, pyASP,
                            grbASP
   22-Apr-08 v2r2     JC    Changes from OpsSim2 and move to ST v9r5
