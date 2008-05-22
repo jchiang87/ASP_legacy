@@ -5,6 +5,8 @@
     $Id$
 
     @verbatim
+    v0r5   22-May-08   JC   refactor wrapperGenerator, removing need to
+                            use ASP_PATH and ST_INST env vars
     v0r4p1 22-Apr-08   JC   use GPLtools/prod in wrapperGenerator.py
     v0r4   04-Mar-08   JC   various wrapperGenerator path and envvar mods; 
                             OpsSim2 tag
