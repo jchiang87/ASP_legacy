@@ -5,6 +5,8 @@
   @verbatim
   $Id$
 
+  05-May-08 v2r5     JC    Changes for GCN Notice email ingest; 
+                           more db table changes for source monitoring
   22-May-08 v2r4     JC    Changes to accomodate db table changes for GRBs;
                            refactor launching code
   12-May-08 v2r3     JC    Changes to asp_pgwave, drpMonitoring, pyASP,
