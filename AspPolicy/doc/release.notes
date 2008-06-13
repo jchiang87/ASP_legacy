@@ -5,6 +5,8 @@
     $Id$
 
     @verbatim
+    v0r6   13-Jun-08   JC   modify wrapperGenerator.py to set up environment
+                            for Oracle wallets
     v0r5   22-May-08   JC   refactor wrapperGenerator, removing need to
                             use ASP_PATH and ST_INST env vars
     v0r4p1 22-Apr-08   JC   use GPLtools/prod in wrapperGenerator.py
