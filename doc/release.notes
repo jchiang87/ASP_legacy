@@ -5,7 +5,9 @@
   @verbatim
   $Id$
 
-  05-May-08 v2r5     JC    Changes for GCN Notice email ingest; 
+  13-Jun-08 v2r5p1   JC    Changes for Oracle walllet use; bug-fixes and
+                           improved GCN notice handling in grbASP
+  05-Jun-08 v2r5     JC    Changes for GCN Notice email ingest; 
                            more db table changes for source monitoring
   22-May-08 v2r4     JC    Changes to accomodate db table changes for GRBs;
                            refactor launching code
