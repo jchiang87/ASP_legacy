@@ -68,8 +68,8 @@ def wrapperGenerator(scriptName):
     output.write("export PATH=%s:${PATH}\n" % os.path.join(_ST_path, 'bin'))
     output.write("source %s\n" % os.path.join(_package_root, 'cmt','setup.sh'))
 #    output.write("export ORACLE_HOME=/usr/oracle\n")
-    output.write("export TNS_ADMIN /u/gl/glast/oracle/admin\n")
-    output.write("export ORACLE_HOME=/afs/slac/packages/oracle/d/linux/11.1.0\n")
+    output.write("export TNS_ADMIN=/u/gl/glast/oracle/admin\n")
+    output.write("export ORACLE_HOME=/afs/slac/package/oracle/d/linux/11.1.0\n")
     output.write("export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:${LD_LIBRARY_PATH}:%s\n" % pipeline_config('ASP/lib'))
     output.write("export ASP_DB_CONFIG=%s\n" % _asp_db_config)
     output.write("export PYTHONPATH=%s:%s:${PYTHONPATH}\n" 
