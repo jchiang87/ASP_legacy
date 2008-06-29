@@ -1,4 +1,25 @@
 ------------------------------------------------------------
+TAG
+Tag name: v2r6, operation: add
+Package: v0
+User: jchiang  Sun Jun 29 13:11:28 2008
+Files:
+  v0/.cvsignore  1.1.1.1
+  v0/ChangeLog  1.1.1.2
+  v0/cmt/setup.csh  1.1.1.1
+  v0/cmt/cleanup.csh  1.1.1.1
+  v0/cmt/rh9_gcc32.make  1.1.1.1
+  v0/cmt/requirements  1.1.1.1
+  v0/cmt/cleanup.sh  1.1.1.1
+  v0/cmt/setup.sh  1.1.1.1
+  v0/cmt/Makefile  1.1.1.1
+  v0/python/fflare.py  1.1.1.1
+  v0/python/eqtogal.py  1.1.1.1
+  v0/python/readFT.py  1.1.1.1
+  v0/xml/fflare.xml  1.1.1.1
+
+    *
+------------------------------------------------------------
 User: cohen  Wed Aug  1 11:32:19 PDT 2007
 ASP/fflare/v0/python
 
