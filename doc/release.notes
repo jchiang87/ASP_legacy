@@ -5,6 +5,10 @@
   @verbatim
   $Id$
 
+  29-Jun-08 v2r6     JC    Fixes for GRB processing; improvements to pgwave
+                           from Gino; minor change to pyASP to allow it to 
+                           inherit the pipeline mode from L1Proc when launched
+                           in dev
   13-Jun-08 v2r5p1   JC    Changes for Oracle walllet use; bug-fixes and
                            improved GCN notice handling in grbASP
   05-Jun-08 v2r5     JC    Changes for GCN Notice email ingest; 
