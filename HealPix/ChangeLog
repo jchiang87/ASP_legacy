@@ -1,4 +1,27 @@
 ------------------------------------------------------------
+TAG
+Tag name: v2r6, operation: add
+Package: HealPix
+User: jchiang  Sun Jun 29 13:11:25 2008
+Files:
+  HealPix/.cvsignore  1.1.1.1
+  HealPix/ChangeLog  1.1.1.7
+  HealPix/HealPix/HealpixArray.h  1.2
+  HealPix/HealPix/CountsArray.h  1.1.1.1
+  HealPix/HealPix/ExposureArray.h  1.1.1.1
+  HealPix/HealPix/Pixel.h  1.1.1.1
+  HealPix/HealPix/PoissonProb.h  1.1.1.1
+  HealPix/cmt/requirements  1.1.1.1
+  HealPix/python/test.py  1.1.1.1
+  HealPix/python/HpArrayWrapper.py  1.1.1.1
+  HealPix/src/HealPix.in  1.1.1.1
+  HealPix/src/HealpixArray.cxx  1.5
+  HealPix/src/CountsArray.cxx  1.1.1.1
+  HealPix/src/PoissonProb.cxx  1.1.1.1
+  HealPix/src/ExposureArray.cxx  1.1.1.1
+
+    *
+------------------------------------------------------------
 User: cohen  Wed Sep 12 13:57:20 PDT 2007
 ASP/HealPix/src
 
