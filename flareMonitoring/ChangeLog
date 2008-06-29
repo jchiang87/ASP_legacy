@@ -1,0 +1,68 @@
+------------------------------------------------------------
+User: focke  Wed May 16 08:29:02 PDT 2007
+ASP/flareMonitoring/cmt/fragments
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/ASP/flareMonitoring/cmt/fragments added to the repository
+
+    *
+------------------------------------------------------------
+User: focke  Wed May  9 12:08:02 PDT 2007
+ASP/flareMonitoring/xml
+
+Added Files:
+	Flare_monitoring.xml 
+Log Message:
+Bring files over from pyASP.
+    *
+------------------------------------------------------------
+User: focke  Wed May  9 12:08:01 PDT 2007
+ASP/flareMonitoring/python
+
+Added Files:
+	cStat.py countsMap.py diffMaps.py flareAnalysis.py 
+	flareSearch.py livetimecube.py modelMap.py sourceMap.py 
+	wrapperGenerator.py 
+Log Message:
+Bring files over from pyASP.
+    *
+------------------------------------------------------------
+User: focke  Wed May  9 12:08:00 PDT 2007
+ASP/flareMonitoring/data
+
+Added Files:
+	Flare_monitoring.txt 
+Log Message:
+Bring files over from pyASP.
+    *
+------------------------------------------------------------
+User: focke  Wed May  9 12:08:00 PDT 2007
+ASP/flareMonitoring/cmt
+
+Modified Files:
+	cleanup.csh cleanup.sh requirements setup.csh setup.sh 
+Log Message:
+Bring files over from pyASP.
+    *
+------------------------------------------------------------
+User: focke  Wed May  9 10:42:15 PDT 2007
+ASP/flareMonitoring
+
+Log Message:
+New package
+
+Status:
+
+Vendor Tag:	start
+Release Tags:	v0r1
+		
+N ASP/flareMonitoring/cmt/Makefile
+N ASP/flareMonitoring/cmt/requirements
+N ASP/flareMonitoring/cmt/setup.csh
+N ASP/flareMonitoring/cmt/setup.sh
+N ASP/flareMonitoring/cmt/cleanup.csh
+N ASP/flareMonitoring/cmt/cleanup.sh
+
+No conflicts created by this import
+
+    *

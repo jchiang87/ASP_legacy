@@ -1,0 +1,183 @@
+------------------------------------------------------------
+User: cohen  Wed Aug  1 16:30:00 PDT 2007
+ASP/fflare/python
+
+Modified Files:
+	fflare.py 
+Log Message:
+fix a small ussue
+
+    *
+------------------------------------------------------------
+User: cohen  Wed Aug  1 16:28:57 PDT 2007
+ASP/fflare/python
+
+Modified Files:
+	fflare.py 
+Log Message:
+fix a small ussue
+
+    *
+------------------------------------------------------------
+User: cohen  Wed Aug  1 14:09:34 PDT 2007
+ASP/fflare/python
+
+Modified Files:
+	fflare.py 
+Log Message:
+make pylab potentially available
+
+    *
+------------------------------------------------------------
+User: cohen  Wed Aug  1 11:32:19 PDT 2007
+ASP/fflare/python
+
+Modified Files:
+	fflare.py 
+Added Files:
+	.cvsignore 
+Log Message:
+clean the package and fix nump/numarray treatement of mean function
+
+    *
+------------------------------------------------------------
+User: cohen  Wed Aug  1 11:32:19 PDT 2007
+ASP/fflare/cmt
+
+Added Files:
+	.cvsignore 
+Log Message:
+clean the package and fix nump/numarray treatement of mean function
+
+    *
+------------------------------------------------------------
+User: tosti  Tue Jul 24 03:54:30 PDT 2007
+ASP/fflare/python
+
+Modified Files:
+	fflare.py 
+Log Message:
+numpy in numarry
+    *
+------------------------------------------------------------
+User: tosti  Tue Jul 24 03:53:41 PDT 2007
+ASP/fflare/python
+
+Modified Files:
+	readFT.py 
+Log Message:
+numpy in numarry
+    *
+------------------------------------------------------------
+User: tosti  Tue Jul 24 03:14:05 PDT 2007
+ASP/fflare/python
+
+Modified Files:
+	fflare.py 
+Log Message:
+fflare.py update
+    *
+------------------------------------------------------------
+User: jchiang  Mon Jul 23 13:15:22 PDT 2007
+ASP/fflare/xml
+
+Added Files:
+	fflare.xml 
+Log Message:
+add Gino's xml task definition
+    *
+------------------------------------------------------------
+User: tosti  Mon Jul 23 08:07:39 PDT 2007
+ASP/fflare
+
+Log Message:
+
+
+Status:
+
+Vendor Tag:	GLAST
+Release Tags:	v0
+		
+N ASP/fflare/v0/.cvsignore
+N ASP/fflare/v0/ChangeLog
+N ASP/fflare/v0/cmt/Makefile
+N ASP/fflare/v0/cmt/rh9_gcc32.make
+N ASP/fflare/v0/cmt/setup.csh
+N ASP/fflare/v0/cmt/cleanup.sh
+N ASP/fflare/v0/cmt/cleanup.csh
+N ASP/fflare/v0/cmt/setup.sh
+N ASP/fflare/v0/cmt/requirements
+N ASP/fflare/v0/xml/fflare.xml
+N ASP/fflare/v0/python/readFT.pyc
+N ASP/fflare/v0/python/eqtogal.py
+N ASP/fflare/v0/python/fflare.py
+N ASP/fflare/v0/python/eqtogal.pyc
+N ASP/fflare/v0/python/readFT.py
+
+No conflicts created by this import
+
+    *
+------------------------------------------------------------
+User: jchiang  Thu Jul 19 09:08:48 PDT 2007
+ASP/fflare/xml
+
+Log Message:
+Directory /nfs/slac/g/glast/ground/cvs/ASP/fflare/xml added to the repository
+
+    *
+------------------------------------------------------------
+User: jchiang  Thu Jul 19 09:07:47 PDT 2007
+ASP/fflare
+
+Log Message:
+initial import into ASP container package
+
+Status:
+
+Vendor Tag:	JC
+Release Tags:	v0
+		
+N ASP/fflare/.cvsignore
+I ASP/fflare/CVS
+N ASP/fflare/ChangeLog
+N ASP/fflare/cmt/requirements
+I ASP/fflare/cmt/CVS
+N ASP/fflare/python/fflare.py
+N ASP/fflare/python/eqtogal.py
+I ASP/fflare/python/CVS
+N ASP/fflare/python/readFT.py
+
+No conflicts created by this import
+
+    *
+------------------------------------------------------------
+User: tosti  Wed Jul 18 09:03:42 PDT 2007
+fflare
+
+Log Message:
+
+
+
+Status:
+
+Vendor Tag:	GLAST
+Release Tags:	v0
+		
+N fflare/cmt/Makefile
+N fflare/cmt/rh9_gcc32.make
+N fflare/cmt/setup.csh
+N fflare/cmt/~requirements
+N fflare/cmt/cleanup.sh
+N fflare/cmt/cleanup.csh
+N fflare/cmt/setup.sh
+N fflare/cmt/requirements
+N fflare/python/readFT.pyc
+N fflare/python/eqtogal.py
+N fflare/python/fflare.py
+N fflare/python/eqtogal.pyc
+N fflare/python/readFT.py
+N fflare/rh9_gcc32/fflaresetup.make
+
+No conflicts created by this import
+
+    *

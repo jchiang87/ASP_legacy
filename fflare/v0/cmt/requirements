@@ -1,0 +1,14 @@
+package fflare
+
+version v0
+
+# $Id$
+
+use AspPolicy v* ASP
+
+path_remove PYTHONPATH fflare
+path_append PYTHONPATH $(FFLAREROOT)/python
+path_append PYTHONPATH $(FFLAREROOT)/$(BINDIR)
+
+apply_pattern wrapper_scripts
+
