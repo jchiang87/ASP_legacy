@@ -5,6 +5,10 @@
   @verbatim
   $Id$
 
+  13-Jul-08 v2r7     JC    flux calculations enabled for asp_pgwave; using
+                           ST v9r6p1; filename cross checks in 
+                           pyASP/getFitsData.py for prod data; various 
+                           GRB-handling fixes
   29-Jun-08 v2r6     JC    Fixes for GRB processing; improvements to pgwave
                            from Gino; minor change to pyASP to allow it to 
                            inherit the pipeline mode from L1Proc when launched
