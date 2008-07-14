@@ -5,6 +5,9 @@
   @verbatim
   $Id$
 
+  14-Jul-08 v2r7p1   JC    GRB_refinement lightcurve handling fix; update
+                           gtexposure params in afterglowAnalysis; FA email 
+                           handling in asp_pgwave
   13-Jul-08 v2r7     JC    flux calculations enabled for asp_pgwave; using
                            ST v9r6p1; filename cross checks in 
                            pyASP/getFitsData.py for prod data; various 
