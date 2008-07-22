@@ -5,6 +5,10 @@
   @verbatim
   $Id$
 
+  22-Jul-08 v2r8     JC    data archiving on xrootd; remove makeHealpixMap
+                           process in PGWave; Gino's fixes for aperture
+                           photometry cut; inspect GTIs for launching
+                           GRB_refinement
   14-Jul-08 v2r7p1   JC    GRB_refinement lightcurve handling fix; update
                            gtexposure params in afterglowAnalysis; FA email 
                            handling in asp_pgwave
