@@ -5,6 +5,8 @@
   @verbatim
   $Id$
 
+  29-Jul-08 v2r8p1   JC    CTBCLASSLEVEL cut handling; leap seconds for
+                           GRB time conversion; blind search email attachments
   22-Jul-08 v2r8     JC    data archiving on xrootd; remove makeHealpixMap
                            process in PGWave; Gino's fixes for aperture
                            photometry cut; inspect GTIs for launching
