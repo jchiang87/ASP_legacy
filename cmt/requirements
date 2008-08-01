@@ -1,0 +1,19 @@
+package ASP
+version v2r8p1
+
+author James Chiang <jchiang@slac.stanford.edu>
+
+#
+# Container package for Automated Science Processing code
+# $Header$
+#
+
+use AspHealPix v0r0p1 ASP
+use AspLauncher v1r3p3 ASP
+use AspPolicy v0r6 ASP
+use BayesianBlocks v0r2 ASP
+use asp_pgwave v1r7p4 ASP
+use dbManager v0r2 ASP
+use drpMonitoring v1r4p4 ASP
+use grbASP v4r5p4 ASP
+use pyASP v3r5p5 ASP
