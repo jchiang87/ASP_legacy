@@ -5,6 +5,9 @@
   @verbatim
   $Id$
 
+  31-Jul-08 v2r8p2   JC    Archiving and clean-up for PGWave; prefiltering of
+                           FT1 files for PGWave and DRP_monitoring; atomization
+                           of runpgw functionality.
   29-Jul-08 v2r8p1   JC    CTBCLASSLEVEL cut handling; leap seconds for
                            GRB time conversion; blind search email attachments
   22-Jul-08 v2r8     JC    data archiving on xrootd; remove makeHealpixMap
