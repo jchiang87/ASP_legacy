@@ -5,6 +5,8 @@
   @verbatim
   $Id$
 
+  21-Aug-08 v2r8p4   JC    pointsources db table changes forced by web apps 
+                           and RSP
   11-Aug-08 v2r8p3   JC    PGWave, grbASP bug-fixes
   31-Jul-08 v2r8p2   JC    Archiving and clean-up for PGWave; prefiltering of
                            FT1 files for PGWave and DRP_monitoring; atomization
