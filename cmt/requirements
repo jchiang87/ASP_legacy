@@ -1,5 +1,5 @@
 package ASP
-version v2r8p4
+version v2r8p5
 
 author James Chiang <jchiang@slac.stanford.edu>
 
@@ -14,6 +14,6 @@ use AspPolicy v0r6 ASP
 use BayesianBlocks v0r2 ASP
 use asp_pgwave v1r7p7 ASP
 use dbManager v0r2 ASP
-use drpMonitoring v1r5 ASP
-use grbASP v4r5p6 ASP
-use pyASP v3r5p5 ASP
+use drpMonitoring v1r6 ASP
+use grbASP v4r5p7 ASP
+use pyASP v3r5p6 ASP

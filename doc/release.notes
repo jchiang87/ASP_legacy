@@ -5,6 +5,7 @@
   @verbatim
   $Id$
 
+  27-Aug-08 v2r8p5   JC    add code to FASTCopy light curves to GSSC
   21-Aug-08 v2r8p4   JC    pointsources db table changes forced by web apps 
                            and RSP
   11-Aug-08 v2r8p3   JC    PGWave, grbASP bug-fixes
