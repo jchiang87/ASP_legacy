@@ -5,6 +5,7 @@
     $Id$
 
     @verbatim
+    v0r6p1 04-Sep-08   JC   use ASP-specific symlink to GPLTools
     v0r6   13-Jun-08   JC   modify wrapperGenerator.py to set up environment
                             for Oracle wallets
     v0r5   22-May-08   JC   refactor wrapperGenerator, removing need to
