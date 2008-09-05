@@ -1,5 +1,5 @@
 package ASP
-version v2r8p5
+version v2r9
 
 author James Chiang <jchiang@slac.stanford.edu>
 
@@ -10,10 +10,10 @@ author James Chiang <jchiang@slac.stanford.edu>
 
 use AspHealPix v0r0p1 ASP
 use AspLauncher v1r3p3 ASP
-use AspPolicy v0r6 ASP
+use AspPolicy v0r6p1 ASP
 use BayesianBlocks v0r2 ASP
-use asp_pgwave v1r7p7 ASP
+use asp_pgwave v1r8 ASP
 use dbManager v0r2 ASP
-use drpMonitoring v1r6 ASP
-use grbASP v4r5p7 ASP
+use drpMonitoring v1r6p1 ASP
+use grbASP v4r6 ASP
 use pyASP v3r5p6 ASP

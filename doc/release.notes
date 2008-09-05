@@ -5,6 +5,7 @@
   @verbatim
   $Id$
 
+  04-Sep-08 v2r9     JC    updates for ST v9r7p1 compatibility
   27-Aug-08 v2r8p5   JC    add code to FASTCopy light curves to GSSC
   21-Aug-08 v2r8p4   JC    pointsources db table changes forced by web apps 
                            and RSP
