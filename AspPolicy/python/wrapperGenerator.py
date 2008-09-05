@@ -45,8 +45,7 @@ pipeline_config = lambda x : os.path.join("/afs/slac.stanford.edu/g/glast/ground
 
 _ftools_setup = pipeline_config("ASP/headas-config-noric024835.sh")
 _asp_python_path = pipeline_config("ASP/python/lib/python2.5/site-packages")
-_GPLtools_path = pipeline_config("GPLtools/prod/python")
-#_LoggerPath = "/afs/slac.stanford.edu/g/glast/isoc/flightOps/rhel4_gcc34/ISOC_PROD/lib/python2.5/site-packages/gov"
+_GPLtools_path = pipeline_config("GPLtools/asp/python")
 _asp_python = "/usr/bin/env python"
 _asp_db_config = pipeline_config('ASP/db_config')
 
@@ -67,7 +66,6 @@ def wrapperGenerator(scriptName):
     output.write("export GLAST_EXT=%s/%s\n" % (_glast_ext_root, _bindir))
     output.write("export PATH=%s:${PATH}\n" % os.path.join(_ST_path, 'bin'))
     output.write("source %s\n" % os.path.join(_package_root, 'cmt','setup.sh'))
-#    output.write("export ORACLE_HOME=/usr/oracle\n")
     output.write("export TNS_ADMIN=/u/gl/glast/oracle/admin\n")
     output.write("export ORACLE_HOME=/afs/slac/package/oracle/d/linux/11.1.0\n")
     output.write("export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:${LD_LIBRARY_PATH}:%s\n" % pipeline_config('ASP/lib'))
