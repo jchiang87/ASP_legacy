@@ -5,6 +5,9 @@
   @verbatim
   $Id$
 
+  05-Oct-08 v2r10    JC    delay PGWave launching until end of pending
+                           interval; clean-up old GRBs; enter spectral
+                           indexes in lightcurves table
   08-Sep-08 v2r9p1   JC    bug-fixes to refinePositions.py in asp_pgwave;
                            apply Jean's ROI-based zenith angle cut for regions
                            near orbital poles.
