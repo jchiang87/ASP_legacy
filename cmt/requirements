@@ -15,5 +15,5 @@ use BayesianBlocks v0r2 ASP
 use asp_pgwave v1r8p2 ASP
 use dbManager v0r2 ASP
 use drpMonitoring v1r6p3 ASP
-use grbASP v4r6p1 ASP
+use grbASP v4r7 ASP
 use pyASP v3r5p6 ASP
