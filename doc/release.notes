@@ -5,6 +5,8 @@
   @verbatim
   $Id$
 
+  09-Oct-08 v2r10p1  JC    launch DRP_monitoring on six hour time scales;
+                           use diffuse class events for afterglow analysis
   05-Oct-08 v2r10    JC    delay PGWave launching until end of pending
                            interval; clean-up old GRBs; enter spectral
                            indexes in lightcurves table
