@@ -5,6 +5,10 @@
   @verbatim
   $Id$
 
+  18-Oct-08 v2r10p2  JC    aspLaucher.py bug-fix for duplicate stream exception;
+                           handle GTIs with zero events in BlindSearch.py;
+                           restrict PGWave query to pointsources db table to
+                           select only ASP-relevant sources
   09-Oct-08 v2r10p1  JC    launch DRP_monitoring on six hour time scales;
                            use diffuse class events for afterglow analysis
   05-Oct-08 v2r10    JC    delay PGWave launching until end of pending
