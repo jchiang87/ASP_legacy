@@ -10,18 +10,12 @@ import os
 from GtApp import GtApp
 from parfile_parser import Parfile
 from combineExpMaps import writeExpMapBounds
-from GrbAspConfig import grbAspConfig
 
 debug = False
 #debug = True
 
 os.chdir(os.environ['OUTPUTDIR'])
-grbpars = Parfile(os.environ['GRBPARS'])
-
-config = grbAspConfig.find(grbpars['tstart'])
-print config
-
-grbName = grbpars['name']
+grbName = Parfile(os.environ['GRBPARS'])['name']
 
 afterglowFiles = grbName + '_afterglow_files'
 pars = Parfile(afterglowFiles)
@@ -40,8 +34,8 @@ gtexpmap['evfile'] = pars['ft1File']
 gtexpmap['scfile'] = pars['ft2File']
 gtexpmap['expcube'] = gtlivetimecube['outfile']
 gtexpmap['outfile'] = 'expMap_' + grbName + '.fits'
-gtexpmap['srcrad'] = config.AGRADIUS + 10
-gtexpmap['irfs'] = config.IRFS
+gtexpmap['srcrad'] = 25
+gtexpmap['irfs'] = 'DSS'
 gtexpmap.pars.write(os.path.join(os.environ['OUTPUTDIR'], 'gtexpmap.par'))
 
 writeExpMapBounds(gtexpmap, nx=1, ny=1)

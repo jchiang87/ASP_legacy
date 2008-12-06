@@ -11,17 +11,17 @@ various ASP tasks
 import os
 import time
 
-_bindir = os.environ['BINDIR']
-_st_inst = os.environ['ST_INST']
-_asp_path = os.environ['ASP_PATH']
-_pipelineServer = os.environ['PIPELINESERVER']
+def pyASProot():
+    version = os.environ['PYASPROOT'].split(os.path.sep)[-1]
+    return os.path.join('/nfs/farm/g/glast/u33/jchiang/ASP/pyASP', version)
 
-print "Using:\n"
-print "BINDIR = %s" % _bindir
-print "ST_INST = %s" % _st_inst
-print "ASP_PATH = %s" % _asp_path
-print "PIPELINESERVER = %s" % _pipelineServer
-print ""
+_pyASProot = pyASProot()
+_outputDir = os.environ['OUTPUTDIR']
+_bindir = os.environ['BINDIR']
+
+print "Using:\n\nPYASPROOT = %s" % _pyASProot
+print "OUTPUTDIR = %s" % _outputDir
+print "BINDIR = %s\n" % _bindir
 
 class PipelineError(EnvironmentError):
     "Pipeline stream creation failed"
@@ -30,12 +30,9 @@ class PipelineCommand(object):
     def __init__(self, taskname, args, stream=None):
         "Abstraction for a Pipeline-II command."
         if stream is None:
-#            stream = self.streamNumber()
-            stream = -1
-        executable = '/afs/slac/g/glast/ground/bin/pipeline'
-        self.command = ('%s -m %s createStream -S %s -D "%s" %s'
-                        % (executable, _pipelineServer, stream, 
-                           self._argString(args), taskname))
+            stream = self.streamNumber()
+        self.command = ('~glast/pipeline-II/pipeline createStream %s %s "%s"'
+                        % (taskname, stream, self._argString(args)))
     def run(self, debug=False):
         print self.command + "\n"
         if not debug:
@@ -55,10 +52,9 @@ class PipelineCommand(object):
         the default dictionary can be over-ridden by key-value pairs in
         the argDict.
         """
-        defaultDict = {'BINDIR' : _bindir,
-                       'ST_INST' : _st_inst,
-                       'ASP_PATH' : _asp_path,
-                       'PIPELINESERVER' : _pipelineServer}
+        defaultDict = {'output_dir' : _outputDir,
+                       'PYASPROOT' : _pyASProot,
+                       'BINDIR' : _bindir}
         defaultDict.update(argDict)
         arg_string = ""
         for item in defaultDict:

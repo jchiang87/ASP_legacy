@@ -8,10 +8,12 @@
 #
 
 import os
-import numpy as num
+import numarray as num
 import pyASP
 from GcnPacket import GcnPacket
 from dbAccess import readGcnNotices, readGrb, cx_Oracle
+
+_LatFt2File = '/nfs/farm/g/glast/u33/jchiang/DC2/DC2_FT2_v2.fits'
 
 class GcnNotice(object):
     def __init__(self, grb_id):
@@ -61,7 +63,7 @@ class GcnNotice(object):
     def _readfloat(self, key):
         line = self._dict[key]
         return float(line.split(':')[1].split()[0])
-    def offAxisAngle(self, ft2File):
+    def offAxisAngle(self, ft2File=_LatFt2File):
         self._getFt2(ft2File)
         indx = num.where(self.ft2.START > self.start_time)
         ii = indx[0][0]
@@ -71,7 +73,7 @@ class GcnNotice(object):
         t2 = self.ft2.START[ii]
         my_dir = pyASP.SkyDir_interpolate(dir1, dir2, t1, t2, self.start_time)
         return my_dir.difference(pyASP.SkyDir(self.RA, self.DEC))*180./num.pi
-    def inSAA(self, ft2File):
+    def inSAA(self, ft2File =_LatFt2File):
         self._getFt2(ft2File)
         indx = num.where(self.ft2.START < self.start_time)
         ii = indx[0][-1]

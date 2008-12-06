@@ -32,10 +32,8 @@ class LatGcnTemplate(dict):
     def __init__(self, template=os.path.join(_dataDir, 'GCN_Notice.tpl')):
         self.ordered_keys = []
         for line in open(template):
-            if line.find("#") == 0:   # skip this line
-                continue
             if line.find('COMMENTS') == 0:
-                continue
+                break
             if line.find(':') > 0:
                 data = line.split(':')
                 key, value = data[0], (':'.join(data[1:])).strip()
@@ -149,7 +147,7 @@ class LatGcnNotice(object):
         packet = copy.copy(self._packet)
         packet.byteswap()
         return packet
-    def registerWithDatabase(self, grb_id=None, isUpdate=False):
+    def registerWithDatabase(self, grb_id=None):
         if grb_id is None:
             grb_id = self.grb_id
         try:
@@ -160,34 +158,10 @@ class LatGcnNotice(object):
             pass
         # need to implement error radius estimate
         dbAccess.updateGrb(grb_id, GCN_NAME="'%s'" % self.name,
-                           INITIAL_LAT_RA=self.ra, INITIAL_LAT_DEC=self.dec,
-                           INITIAL_ERROR_RADIUS=1, ANALYSIS_VERSION=0,
-                           L1_DATA_AVAILABLE=0)
+                           INITIAL_RA=self.ra, INITIAL_DEC=self.dec,
+                           INITIAL_ERROR_RADIUS=1)
         dbAccess.insertGcnNotice(grb_id, self.GcnPacket(), 
-                                 dbAccess.current_date(), self.met, 
-                                 self.ra, self.dec, 1, isUpdate=int(isUpdate))
-    def email_notification(self):
-        import smtplib
-        sql = "select * from GRB_EMAIL_LIST where ROLE = 'Advocate'"
-        def cursorFunc(cursor):
-            return [item[1] for item in cursor]
-#        recipients = dbAccess.apply(sql, cursorFunc)
-#        recipients.extend(['shiftslist@glast.stanford.edu', 
-#                           'GRBslist@glast.stanford.edu'])
-#        print recipients
-        recipients = ['jchiang@slac.stanford.edu']
-        fromadr = "solist@glast.stanford.edu"
-        subj = "ASP blind search GRB candidate"
-        mail = smtplib.SMTP('smtpunix.slac.stanford.edu')
-        for address in recipients:
-            print "sending GCN Notice to %s" % address
-            hdr = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" 
-                   % (fromadr, address, subj))
-            message = ("%sASP GRB_blind_search found a burst candidate at\n\n"
-                       + "MET = %i, (RA, Dec) = (%.3f, %.3f)\n\n"
-                       + "See http://glast-ground.slac.stanford.edu/GRBMonitoring/") % (hdr, self.grb_id, self.ra, self.dec)
-            mail.sendmail(fromadr, address, message)
-        mail.quit()
+                                 dbAccess.current_date(), self.met)
 
 if __name__ == '__main__':
     notice = LatGcnNotice(222535575.0, 305.723, -67.0446)

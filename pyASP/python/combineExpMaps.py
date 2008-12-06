@@ -12,6 +12,10 @@ import os
 from GtApp import GtApp
 import pyfits
 
+#os.chdir(os.environ['OUTPUTDIR'])
+#
+#gtexpmap = GtApp("gtexpmap")
+
 _defaultTextFile = "gtexpmap_submaps.txt"
 
 def pixbounds(npts, nx):
@@ -20,8 +24,8 @@ def pixbounds(npts, nx):
     return x
 
 def writeExpMapBounds(gtexpmap, nx=2, ny=2, textfile=_defaultTextFile):
-    xvals = pixbounds(gtexpmap["nlong"], nx)
-    yvals = pixbounds(gtexpmap["nlat"], ny)
+    xvals = pixbounds(gtexpmap["number_of_longitude_points"], nx)
+    yvals = pixbounds(gtexpmap["number_of_latitude_points"], ny)
     output = open(textfile, "w")
     i = 0
     outfile_root = gtexpmap["outfile"].split(".fits")[0]
@@ -57,9 +61,9 @@ def combineExpMaps(textfile=_defaultTextFile, outfile="expMap_sum.fits"):
 
 if __name__ == '__main__':
     import os
-    from parfile_parser import Parfile
+    from parfile_parser import parfile_parser
     os.chdir(os.environ['OUTPUTDIR'])
     gtexpmap = GtApp('gtexpmap')
-    grbName = Parfile(os.environ['GRBPARS'])['name']
+    grbName = parfile_parser(os.environ['GRBPARS'])['name']
     outfile = 'expMap_' + grbName + '.fits'
     combineExpMaps(outfile=outfile)

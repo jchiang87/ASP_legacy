@@ -5,18 +5,6 @@
     $Id$
 
     @verbatim
-    v3     04-Mar-08   JC   OpsSim2 tag
-    v2r1   12-Feb-08   JC   sync up with changes made though ST v9r4p1,
-                            including GtApp changes (now in ST HEAD1.629);
-                            pass ST_INST explicitly in grb_followup functions;
-                            add data/GCN_Notice.tpl
-    v2     07-Feb-08   JC   add launcher tasks; use db tables;
-                            added MeritBlindSearch, RootNTupleBase,
-                            GRBgrid_blind_search task; 
-                            patches to remove duplicate event times;
-                            apply zenith angle cuts;
-    v1r1   04-Oct-07   JC   use GRB_ASP_CONFIG for setting analysis 
-                            parameters, irfs, etc.
     v1     04-Sep-07   JC   implement GRB db table access; make connections
                             to GCN Client; implement DataCatalog access
     v0r4p1 26-Jul-07   JC   set ft2 file override in GcnNotice.py

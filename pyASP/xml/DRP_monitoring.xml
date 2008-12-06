@@ -5,28 +5,23 @@
    xsi:schemaLocation="http://glast-ground.slac.stanford.edu/pipeline http://glast-ground.slac.stanford.edu/Pipeline-II/schemas/2.0/pipeline.xsd">
 <!-- $Header$
 -->
-<task name="DRP_monitoring" version="3.3" type="Data">
-  <variables>
-    <var name="sourceModelFile">${PYASPROOT}/data/DRP_SourceModel.xml</var>
-    <var name="PYASPROOT">/nfs/farm/g/glast/u33/jchiang/ASP/ASP/pyASP/v1</var>
-    <var name="BINDIR">rh9_gcc32</var>
-  </variables>
+<task name="DRP_monitoring" version="1.8" type="Data">
    <prerequisites>
       <prerequisite name="output_dir" type="string"/>
       <prerequisite name="start_time" type="string"/>
       <prerequisite name="stop_time" type="string"/>
       <prerequisite name="RoI_file" type="string"/>
-      <prerequisite name="num_RoIs" type="integer"/>
+      <prerequisite name="PYASPROOT" type="string"/>
+      <prerequisite name="BINDIR" type="string"/>
    </prerequisites>
 
    <process name="getIntervalData">
-     <job executable="${PYASPROOT}/${BINDIR}/getIntervalData.sh" 
-          batchOptions=" -q short" />
+     <job executable="${PYASPROOT}/${BINDIR}/getIntervalData.sh" maxCPU="600"/>
    </process>
 
    <process name="diffuseResponses">
      <job executable="${PYASPROOT}/${BINDIR}/diffuseResponses.sh"
-          batchOptions=" -q medium"/>
+          maxCPU="20000"/>
      <depends>
        <after process="getIntervalData" status="SUCCESS"/>
      </depends>
@@ -34,7 +29,7 @@
 
    <process name="livetimecube">
      <job executable="${PYASPROOT}/${BINDIR}/livetimecube.sh"
-          batchOptions=" -q medium"/>
+          maxCPU="20000"/>
      <depends>
        <after process="getIntervalData" status="SUCCESS"/>
      </depends>
@@ -43,7 +38,8 @@
    <process name="launchRoiAnalyses">
      <script language="python">
        <![CDATA[
-       for i in range(num_RoIs):
+       rois = 12
+       for i in range(rois):
            pipeline.createSubstream("roiAnalysis", i+1)
        ]]>
      </script>
@@ -61,8 +57,7 @@
        <variables>
          <var name="ROI_ID">${pipeline.stream}</var>
        </variables>
-       <job executable="${PYASPROOT}/${BINDIR}/getRoiData.sh" 
-            batchOptions=" -q short"/>
+       <job executable="${PYASPROOT}/${BINDIR}/getRoiData.sh" maxCPU="600"/>
      </process>
 
      <process name="exposureMap">
@@ -90,9 +85,9 @@
          <var name="ROI_ID">${pipeline.stream}</var>
        </variables>
        <job executable="${PYASPROOT}/${BINDIR}/combineDrpExpMaps.sh" 
-            batchOptions=" -q short"/>
+            maxCPU="600"/>
        <depends>
-         <after process="exposureSubMap.drpExpMap" status="SUCCESS"/>
+         <after process="exposureSubMap.expmap" status="SUCCESS"/>
        </depends>
      </process>
 
@@ -101,57 +96,24 @@
          <var name="ROI_ID">${pipeline.stream}</var>
        </variables>
        <job executable="${PYASPROOT}/${BINDIR}/sourceAnalysis.sh"
-            batchOptions=" -q xlong"/>
+            maxCPU="20000"/>
        <depends>
          <after process="combineExpMaps" status="SUCCESS"/>
        </depends>
-     </process>
-
-     <process name="launchEnergyBandAnalyses">
-       <script language="python">
-         <![CDATA[
-            #emins = [100, 300, 1e3, 3e3, 1e4, 100]
-            #emaxs = [300, 1e3, 3e3, 1e4, 100, 3e5]
-            emins = [100]
-            emaxs = [3e5]
-            for i, emin, emax in zip(range(len(emins)), emins, emaxs):
-                args = "emin=%i,emax=%i,ROI_ID=%i" % (emin, emax,
-                                                      pipeline.stream)
-                pipeline.createSubstream("energyBandAnalysis", i, args)
-         ]]>
-       </script>
-       <depends>
-         <after process="sourceAnalysis" status="SUCCESS"/>
-       </depends>
-       <createsSubtasks>
-         <subtask>energyBandAnalysis</subtask>
-       </createsSubtasks>
      </process>
 
      <task name="exposureSubMap" version="1.0" type="Data">
        <prerequisites>
          <prerequisite name="ROI_ID" type="string"/>
        </prerequisites>
-       <process name="drpExpMap">
+       <process name="expmap">
          <variables>
            <var name="EXPMAP_ID">${pipeline.stream}</var>
          </variables>
-         <job executable="${PYASPROOT}/${BINDIR}/drpExpMap.sh"
-              batchOptions=" -q medium"/>
+         <job executable="${PYASPROOT}/${BINDIR}/exposureSubMap.sh"
+              maxCPU="20000"/>
        </process>
      </task> <!--exposureSubMap-->
-
-     <task name="energyBandAnalysis" version="1.0" type="Data">
-       <prerequisites>
-         <prerequisite name="emin" type="integer"/>
-         <prerequisite name="emax" type="integer"/>
-         <prerequisite name="ROI_ID" type="string"/>
-       </prerequisites>
-       <process name="fitEnergyBand">
-         <job executable="${PYASPROOT}/${BINDIR}/fitEnergyBand.sh"
-              batchOptions=" -q long"/>
-       </process>
-     </task>
 
    </task><!--roiAnalysis-->
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Read in a series of FITS table files and make them accessible as
-numpy arrays
+numarrays, optionally creating a HippoDraw NTuple.
 
 @author J. Chiang <jchiang@slac.stanford.edu>
 """
@@ -11,9 +11,8 @@ numpy arrays
 
 class FitsNTuple:
     def __init__(self, fitsfiles, extension=1):
-        import sys, pyfits
-        import numpy as num
-        cat = num.concatenate
+        import sys, numarray, pyfits
+        cat = numarray.concatenate
         #
         # If fitsfile is not a list or tuple of file names, assume
         # it's a single file name and put it into a single element
@@ -25,27 +24,39 @@ class FitsNTuple:
         # Process each file named in the list or tuple.
         #
         columnData = {}
-        for i, file in enumerate(fitsfiles):
+        for i, file in zip(xrange(sys.maxint), fitsfiles):
             #print "adding", file
             table = pyfits.open(file.strip(" "))
             if i == 0:
                 self.names = table[extension].columns.names
             for name in self.names:
-                myData = table[extension].data.field(name)
-                #
-                # These casts to generic data types are necessary to
-                # work with swig-wrapped C++ code.  This is required
-                # for numpy/pyfits for some reason.
-                #
-                if myData.dtype.name.find('float') == 0:
-                    myData = num.array(myData, dtype=num.float)
-                if myData.dtype.name.find('int') == 0:
-                    myData = num.array(myData, dtype=num.int)
                 if i == 0:
-                    columnData[name] = myData
+                    columnData[name] = table[extension].data.field(name)
                 else:
-                    columnData[name] = cat((columnData[name], myData))
+                    columnData[name] = cat((columnData[name],
+                                            table[extension].data.field(name)))
         #
         # Add these columns to the internal dictionary.
         #
         self.__dict__.update(columnData)
+        
+    def makeNTuple(self, name=None, useNumArray=1):
+        import hippo, sys, numarray
+        if useNumArray:
+            nt = hippo.NumArrayTuple()
+        else:
+            nt = hippo.NTuple()
+        if name != None:
+            nt.setTitle(name)
+        ntc = hippo.NTupleController.instance()
+        ntc.registerNTuple(nt)
+        for name in self.names:
+            if type(self.__dict__[name][0]) == numarray.NumArray:
+                columns = self.__dict__[name]
+                columns.transpose()
+                for i, col in zip(xrange(sys.maxint), columns):
+                    colname = "%s%i" % (name, i)
+                    nt.addColumn(colname, col)
+            else:
+                nt.addColumn(name, self.__dict__[name])
+        return nt

@@ -1,10 +1,10 @@
-import numarray as num
+import numpy as num
 import bisect
 from BayesianBlocks import BayesianBlocks, DoubleVector
 
 class BayesBlocks(BayesianBlocks):
-    def __init__(self, events, ncpPrior=1):
-        BayesianBlocks.__init__(self, events, ncpPrior)
+    def __init__(self, events, ncpPrior=1, useInterval=True):
+        BayesianBlocks.__init__(self, events, ncpPrior, useInterval)
     def setCellScaling(self, scaleFactors):
         BayesianBlocks.setCellScaling(self, scaleFactors)
     def lightCurve(self):

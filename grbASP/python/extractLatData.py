@@ -6,16 +6,17 @@
 # $Header$
 #
 
-import numpy as num
+import numarray as num
 from FitsNTuple import FitsNTuple
 from BayesBlocks import BayesBlocks
 from GtApp import GtApp
-import dbAccess
 
 gtselect = GtApp('gtselect', 'dataSubselector')
 gtbin = GtApp('gtbin', 'evtbin')
 
-def extractLatData(gcnNotice, ft1File, duration=100, radius=15):
+_LatFt1File = '/nfs/farm/g/glast/u33/jchiang/DC2/FT1_merged_gti.fits'
+
+def extractLatData(gcnNotice, ft1File=_LatFt1File, duration=100, radius=15):
     gtselect['infile'] = ft1File
     gtselect['outfile'] = gcnNotice.Name + '_LAT.fits'
     gtselect['ra'] = gcnNotice.RA
@@ -23,7 +24,6 @@ def extractLatData(gcnNotice, ft1File, duration=100, radius=15):
     gtselect['rad'] = radius
     gtselect['tmin'] = gcnNotice.start_time - duration
     gtselect['tmax'] = gcnNotice.start_time + duration
-    gtselect['zmax'] = 100 # need to retrieve this from db table
     gtselect.run()
 
     gtbin['evfile'] = gtselect['outfile']
@@ -58,7 +58,6 @@ def extractLatData(gcnNotice, ft1File, duration=100, radius=15):
     except:
         pass
 
-    dbAccess.updateGrb(int(os.environ['GRB_ID']), LAT_DURATION=tmax-tmin)
     return gtselect['outfile'], gtbin['outfile']
 
 def burst_interval(lc_file, minrate=30):
@@ -70,34 +69,22 @@ def burst_interval(lc_file, minrate=30):
     return times[0] - dts[0], times[-1] + dts[-1]
 
 if __name__ == '__main__':
-    import os, shutil
+    import os, sys
     from GcnNotice import GcnNotice
-    from getFitsData import getStagedFitsData
-    from ft1merge import ft1merge, ft2merge
-    from GrbAspConfig import grbAspConfig
-
-    ft1, ft2 = getStagedFitsData()
+    from getL1Data import getL1Data
+    from ft1merge import ft1merge
     os.chdir(os.environ['OUTPUTDIR'])
+#    gcnNotice = GcnNotice(os.environ['GCN_NOTICE'])
     gcnNotice = GcnNotice(int(os.environ['GRB_ID']))
-
+    duration = 100
+    ft1, ft2 = getL1Data(gcnNotice.start_time - duration,
+                         gcnNotice.start_time + duration)
     ft1Merged = 'FT1_merged.fits'
-    print "merging FT1 files:"
-    for item in ft1:
-        print item
     ft1merge(ft1, ft1Merged)
-    
-    ft2Merged = 'FT2_merged.fits'
-    print "merging FT2 files:"
-    for item in ft2:
-        print item
-    ft2merge(ft2, ft2Merged)
-
-    config = grbAspConfig.find(gcnNotice.start_time)
-    duration = config.TIMEWINDOW
     ft1_extracted, lcFile = extractLatData(gcnNotice, ft1Merged, 
                                            duration=duration, radius=15)
     outfile = open('%s_files' % gcnNotice.Name, 'w')
-    outfile.write('%s\n%s\n' % (ft1_extracted, ft2Merged))
+    outfile.write('%s\n%s\n' % (ft1_extracted, ft2[0]))
     outfile.close()
 
     os.system('chmod 777 *')

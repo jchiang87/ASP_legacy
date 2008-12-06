@@ -22,9 +22,3 @@ gttsmap.run()
 
 grb_id = int(os.environ['GRB_ID'])
 dbAccess.updateGrb(grb_id, TS_MAP="'%s'" % absFilePath(gttsmap['outfile']))
-
-# create plots
-
-command = ("/afs/slac/g/glast/ground/grbMonitoring/bin/makeAllPlots . png %i"
-           % grb_id)
-os.system(command)

@@ -21,7 +21,6 @@ def readGrb(grb_id):
     def cursorFunc(cursor):
         for item in cursor:
             return item
-        return []
     return apply(sql, cursorFunc)
 
 def getGrbIds():
@@ -48,51 +47,34 @@ def deleteNotice(grb_id):
     sql = "delete from GCNNOTICES where GRB_ID = %i" % grb_id
     apply(sql)
 
-def deleteAfterglow(grb_id):
-    sql = "delete from GRBAFTERGLOW where GRB_ID = %i" % grb_id
-    apply(sql)
-
 def deleteGrb(grb_id):
     deleteNotice(grb_id)
-    deleteAfterglow(grb_id)
     sql = "delete from GRB where GRB_ID = %i" % grb_id
     apply(sql)
 
 def insertGrb(grb_id):
-    sql = "insert into GRB (GRB_ID) values (%i)" % grb_id
+    sql = ("insert into GRB (GRB_ID) values (%i)" % grb_id)
     apply(sql)
 
-def insertAfterglow(grb_id):
-    sql = "insert into GRBAFTERGLOW (GRB_ID) values (%i)" % grb_id
-    apply(sql)
-
-def insertGcnNotice(grb_id, gcn_notice, notice_date, met, ra, dec, error,
-                    isUpdate=0):
+def insertGcnNotice(grb_id, gcn_notice, notice_date, met):
     notices = readGcnNotices(grb_id)
     for notice in notices:
         if notice == gcn_notice:
             # This GCN Notice associated with this grb_id is already
             # in the database table.
             return
-    sql = (("insert into GCNNOTICES (GRB_ID, GCN_NOTICE, NOTICEDATE, "
-            + "NOTICEMET, RA, DEC, ERROR, ISUPDATE) values "
-            + "(%i, '%s', SYS_EXTRACT_UTC(current_timestamp), %i, "
-            + "%.5f, %.5f, %.5f, %i)")
+    sql = ("insert into GCNNOTICES (GRB_ID, GCN_NOTICE, NOTICEDATE, NOTICEMET)"
+           + "  values (%i, '%s', '%s', %i)"
            % (grb_id, base64.encodestring(gcn_notice.tostring()), 
-              met, ra, dec, error, isUpdate))
+              notice_date, met))
     apply(sql)
 
 def updateGrb(grb_id, **kwds):
-    assignments = ["%s=%s" % (key, kwds[key]) for key in kwds]
-    sql = ("update GRB set %s where GRB_ID = %i" 
-           % (','.join(assignments), grb_id))
-    apply(sql)
-
-def updateAfterglow(grb_id, **kwds):
-    assignments = ["%s=%s" % (key, kwds[key]) for key in kwds]
-    sql = ("update GRBAFTERGLOW set %s where GRB_ID = %i" 
-           % (','.join(assignments), grb_id))
-    apply(sql)
+    sql_template = ("update GRB set %s = %s where GRB_ID = %i" 
+                    % ('%s', '%s', grb_id))
+    for key in kwds:
+        sql = sql_template % (key, kwds[key])
+        apply(sql)
 
 def current_date():
     data = time.gmtime()
@@ -101,18 +83,15 @@ def current_date():
     year = data[0]
     month = data[1] - 1
     day = data[2]
-    date = "%4i-%s-%02i 10:11:00" % (year, months[month], day)
-    print date
-    return date
-#    return "%02i %s %i" % (day, months[month], year)
+    return "%02i %s %i" % (day, months[month], year)
 #    return `datetime.datetime(*data[:6])`
 
-def simple_packet(type):
-    my_packet = array.array("l", (type,) + 39*(0,))
-    my_packet.byteswap()
-    return my_packet
-
 if __name__ == '__main__':
+    def simple_packet(type):
+        my_packet = array.array("l", (type,) + 39*(0,))
+        my_packet.byteswap()
+        return my_packet
+
     grb_id = 1234
 
     try:
@@ -121,8 +100,7 @@ if __name__ == '__main__':
         pass
 
     insertGrb(grb_id)
-    insertGcnNotice(grb_id, simple_packet(6), current_date(), 0, 
-                    193.98, -5.82, 1)
+    insertGcnNotice(grb_id, simple_packet(6), current_date(), 0)
 
     notices = readGcnNotices(grb_id)
     for notice in notices:

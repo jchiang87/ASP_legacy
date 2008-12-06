@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <source_library title="source library">
-  <source name="_3EG_J0210m5055" type="PointSource">
+  <source name="my_3EG_J0210m5055" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="4.207"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-1.99"/>
@@ -12,7 +12,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="-50.93"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J0530p1323" type="PointSource">
+  <source name="my_3EG_J0530p1323" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="9.802"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.46"/>
@@ -24,7 +24,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="13.38"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J0829p2413" type="PointSource">
+  <source name="my_3EG_J0829p2413" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="2.448"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.42"/>
@@ -36,7 +36,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="24.22"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J1104p3809" type="PointSource">
+  <source name="my_3EG_J1104p3809" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="0.3471"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-1.57"/>
@@ -48,7 +48,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="38.15"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J1229p0210" type="PointSource">
+  <source name="my_3EG_J1229p0210" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="1.958"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.58"/>
@@ -60,7 +60,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="2.17"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J1255m0549" type="PointSource">
+  <source name="my_3EG_J1255m0549" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="3.479"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-1.96"/>
@@ -72,7 +72,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="-5.82"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J1409m0745" type="PointSource">
+  <source name="my_3EG_J1409m0745" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="2.185"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.29"/>
@@ -84,7 +84,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="-7.75"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J1625m2955" type="PointSource">
+  <source name="my_3EG_J1625m2955" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="2.653"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.07"/>
@@ -96,7 +96,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="-29.92"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J1733m1313" type="PointSource">
+  <source name="my_3EG_J1733m1313" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="2.614"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.23"/>
@@ -108,7 +108,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="-13.23"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J2254p1601" type="PointSource">
+  <source name="my_3EG_J2254p1601" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="3.765"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.21"/>
@@ -120,7 +120,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="16.02"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J1635p3813" type="PointSource">
+  <source name="my_3EG_J1635p3813" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="3.717"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.15"/>
@@ -132,7 +132,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="38.22"/>
     </spatialModel>
   </source>
-  <source name="Mrk501" type="PointSource">
+  <source name="my_Mrk501" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="3.717"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.15"/>
@@ -144,7 +144,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="39.76"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J1959p6342" type="PointSource">
+  <source name="my_3EG_J1959p6342" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="1.372"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.45"/>
@@ -156,7 +156,7 @@
       <parameter free="0" max="90.0" min="-90.0" name="DEC" scale="1.0" value="63.71"/>
     </spatialModel>
   </source>
-  <source name="_3EG_J2158m3023" type="PointSource">
+  <source name="my_3EG_J2158m3023" type="PointSource">
     <spectrum type="PowerLaw2">
       <parameter free="1" max="1000.0" min="1e-05" name="Integral" scale="1e-06" value="1.159"/>
       <parameter free="1" max="0.0" min="-5.0" name="Index" scale="1.0" value="-2.35"/>
