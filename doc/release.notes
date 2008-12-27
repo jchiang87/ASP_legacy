@@ -5,6 +5,9 @@
   @verbatim
   $Id$
 
+  26-Dec-08 v2r11    JC    release upper limits for DRP sources; release
+                           ATEL source fluxes; use GALPROP_MODEL in diffuse
+                           model
   18-Oct-08 v2r10p2  JC    aspLaucher.py bug-fix for duplicate stream exception;
                            handle GTIs with zero events in BlindSearch.py;
                            restrict PGWave query to pointsources db table to
