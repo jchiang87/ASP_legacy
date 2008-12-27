@@ -5,6 +5,7 @@
   @verbatim
   $Id$
 
+  26-Dec-08 v2r11p1  JC    addNdifrsp patch for grbASP/afterglowDiffResps
   26-Dec-08 v2r11    JC    release upper limits for DRP sources; release
                            ATEL source fluxes; use GALPROP_MODEL in diffuse
                            model
