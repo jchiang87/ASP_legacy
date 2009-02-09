@@ -5,6 +5,8 @@
   @verbatim
   $Id$
 
+  09-Feb-09 v2r11p3  JC    set latency for DRP (et al.) deliveries to FSSC
+                           to zero
   08-Feb-09 v2r11p2  JC    small grbASP fixes
   26-Dec-08 v2r11p1  JC    addNdifrsp patch for grbASP/afterglowDiffResps
   26-Dec-08 v2r11    JC    release upper limits for DRP sources; release
