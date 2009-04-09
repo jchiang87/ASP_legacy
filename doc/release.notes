@@ -5,6 +5,9 @@
   @verbatim
   $Id$
 
+  08-Apr-09 v2r12    JC    switch to numpy (for ST v9r11); remove old upper
+                           limits code; perform TS calc in GRB_refinement
+                           for all candidates; email GCN Notices
   09-Feb-09 v2r11p3  JC    set latency for DRP (et al.) deliveries to FSSC
                            to zero
   08-Feb-09 v2r11p2  JC    small grbASP fixes
