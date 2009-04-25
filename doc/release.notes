@@ -5,6 +5,9 @@
   @verbatim
   $Id$
 
+  25-Apr-09 v2r12p1  JC    add auto retry to PGWave and DRP_monitoring tasks;
+                           use alias coordinates in source monitoring output to
+                           FSSC; GCN Notice format adjustments from Barthelmy
   08-Apr-09 v2r12    JC    switch to numpy (for ST v9r11); remove old upper
                            limits code; perform TS calc in GRB_refinement
                            for all candidates; email GCN Notices
