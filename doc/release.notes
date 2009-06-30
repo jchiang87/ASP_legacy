@@ -5,6 +5,9 @@
   @verbatim
   $Id$
 
+  30-Jun-09 v2r12p2  JC    improvements for sourcesub_type handling in PGWave &
+                           DRP_monitoring; various improvements and bug
+                           fixes in grbASP
   25-Apr-09 v2r12p1  JC    add auto retry to PGWave and DRP_monitoring tasks;
                            use alias coordinates in source monitoring output to
                            FSSC; GCN Notice format adjustments from Barthelmy
