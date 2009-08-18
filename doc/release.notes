@@ -1,0 +1,85 @@
+/** 
+  @file release.notes
+  @brief package ASP
+  $Id$
+
+  @verbatim
+  * EOH *
+
+ ASP-03-00-02 18-Aug-2009 jchiang correct asp_pgwave version
+ ASP-03-00-01 18-Aug-2009 jchiang use v*r*p* version specs in req file
+ ASP-03-00-00 17-Aug-2009 jchiang add asp_pointlike, asp_skymaps, asp_healpix
+  30-Jun-09 v2r12p2  JC    improvements for sourcesub_type handling in PGWave &
+                           DRP_monitoring; various improvements and bug
+                           fixes in grbASP
+  25-Apr-09 v2r12p1  JC    add auto retry to PGWave and DRP_monitoring tasks;
+                           use alias coordinates in source monitoring output to
+                           FSSC; GCN Notice format adjustments from Barthelmy
+  08-Apr-09 v2r12    JC    switch to numpy (for ST v9r11); remove old upper
+                           limits code; perform TS calc in GRB_refinement
+                           for all candidates; email GCN Notices
+  09-Feb-09 v2r11p3  JC    set latency for DRP (et al.) deliveries to FSSC
+                           to zero
+  08-Feb-09 v2r11p2  JC    small grbASP fixes
+  26-Dec-08 v2r11p1  JC    addNdifrsp patch for grbASP/afterglowDiffResps
+  26-Dec-08 v2r11    JC    release upper limits for DRP sources; release
+                           ATEL source fluxes; use GALPROP_MODEL in diffuse
+                           model
+  18-Oct-08 v2r10p2  JC    aspLaucher.py bug-fix for duplicate stream exception;
+                           handle GTIs with zero events in BlindSearch.py;
+                           restrict PGWave query to pointsources db table to
+                           select only ASP-relevant sources
+  09-Oct-08 v2r10p1  JC    launch DRP_monitoring on six hour time scales;
+                           use diffuse class events for afterglow analysis
+  05-Oct-08 v2r10    JC    delay PGWave launching until end of pending
+                           interval; clean-up old GRBs; enter spectral
+                           indexes in lightcurves table
+  08-Sep-08 v2r9p1   JC    bug-fixes to refinePositions.py in asp_pgwave;
+                           apply Jean's ROI-based zenith angle cut for regions
+                           near orbital poles.
+  04-Sep-08 v2r9     JC    updates for ST v9r7p1 compatibility
+  27-Aug-08 v2r8p5   JC    add code to FASTCopy light curves to GSSC
+  21-Aug-08 v2r8p4   JC    pointsources db table changes forced by web apps 
+                           and RSP
+  11-Aug-08 v2r8p3   JC    PGWave, grbASP bug-fixes
+  31-Jul-08 v2r8p2   JC    Archiving and clean-up for PGWave; prefiltering of
+                           FT1 files for PGWave and DRP_monitoring; atomization
+                           of runpgw functionality.
+  29-Jul-08 v2r8p1   JC    CTBCLASSLEVEL cut handling; leap seconds for
+                           GRB time conversion; blind search email attachments
+  22-Jul-08 v2r8     JC    data archiving on xrootd; remove makeHealpixMap
+                           process in PGWave; Gino's fixes for aperture
+                           photometry cut; inspect GTIs for launching
+                           GRB_refinement
+  14-Jul-08 v2r7p1   JC    GRB_refinement lightcurve handling fix; update
+                           gtexposure params in afterglowAnalysis; FA email 
+                           handling in asp_pgwave
+  13-Jul-08 v2r7     JC    flux calculations enabled for asp_pgwave; using
+                           ST v9r6p1; filename cross checks in 
+                           pyASP/getFitsData.py for prod data; various 
+                           GRB-handling fixes
+  29-Jun-08 v2r6     JC    Fixes for GRB processing; improvements to pgwave
+                           from Gino; minor change to pyASP to allow it to 
+                           inherit the pipeline mode from L1Proc when launched
+                           in dev
+  13-Jun-08 v2r5p1   JC    Changes for Oracle walllet use; bug-fixes and
+                           improved GCN notice handling in grbASP
+  05-Jun-08 v2r5     JC    Changes for GCN Notice email ingest; 
+                           more db table changes for source monitoring
+  22-May-08 v2r4     JC    Changes to accomodate db table changes for GRBs;
+                           refactor launching code
+  12-May-08 v2r3     JC    Changes to asp_pgwave, drpMonitoring, pyASP,
+                           grbASP
+  22-Apr-08 v2r2     JC    Changes from OpsSim2 and move to ST v9r5
+  16-Mar-08 v2r1     JC    code freeze tag
+  04-Mar-08 v2       JC    OpsSim2 tag
+  13-May-07 v0r2     JC    grbASP, drpMonitoring, pyASP, AspPolicy
+  10-May-07 v0r1p2   JC    update pyASP version
+  10-May-07 v0r1p1   JC    update pyASP version
+  10-May-07 v0r1     JC    add grbASP, drpMonitoring, flareMonitoring,
+                           HealPix, AspPolicy, HealPix as contained and 
+                           checked out packages
+  16-Mar-07 v0       JC    initial version
+ 
+  @endverbatim
+*/
