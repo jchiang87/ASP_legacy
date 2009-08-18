@@ -6,6 +6,7 @@
   @verbatim
   * EOH *
 
+ ASP-03-00-01 18-Aug-2009 jchiang use v*r*p* version specs in req file
  ASP-03-00-00 17-Aug-2009 jchiang add asp_pointlike, asp_skymaps, asp_healpix
   30-Jun-09 v2r12p2  JC    improvements for sourcesub_type handling in PGWave &
                            DRP_monitoring; various improvements and bug
