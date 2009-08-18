@@ -1,6 +1,6 @@
 # -*- python -*-
 # @file SConscript
-# @brief scons build specifications for AspHealPix
+# @brief scons build specifications for ASP
 #
 # $Header$
 # Authors: J. Chiang <jchiang@slac.stanford.edu>
