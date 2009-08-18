@@ -1,4 +1,21 @@
 ------------------------------------------------------------
+TAG
+Tag name: ASP-03-00-00, operation: add
+Package: fflare
+User: jchiang  Mon Aug 17 23:44:24 2009
+Files:
+  fflare/.cvsignore  1.1.1.1
+  fflare/ChangeLog  1.1.1.13
+  fflare/cmt/.cvsignore  1.1
+  fflare/cmt/requirements  1.1.1.1
+  fflare/python/fflare.py  1.7
+  fflare/python/eqtogal.py  1.1.1.1
+  fflare/python/.cvsignore  1.1
+  fflare/python/readFT.py  1.2
+  fflare/xml/fflare.xml  1.1
+
+    *
+------------------------------------------------------------
 User: cohen  Wed Aug  1 16:30:00 PDT 2007
 ASP/fflare/python
 
