@@ -7,8 +7,8 @@ export PFILES=".;"
 pipeline_config_root=/afs/slac.stanford.edu/g/glast/ground/PipelineConfig/
 ftools_setup=$pipeline_config_root
 ftools_setup+=ASP/headas-config-noric024835.sh
-echo ${ftools_setup}
-####source ftools_setup
+###echo ${ftools_setup}
+source ftools_setup
 
 export TNS_ADMIN=/u/gl/glast/oracle/admin
 export ORACLE_HOME=/afs/slac/pacakge/oracle/d/linux/11.1.0
