@@ -1,12 +1,12 @@
 // -*- mode: c++ -*-
 /**
- * @file HealPix.in 
+ * @file AspHealPix.i 
  * @brief Interface file for SWIG generated wrappers.
  * @author J. Chiang <jchiang@slac.stanford.edu>
  *
  * $Header$
  */
-%module HealPix
+%module AspHealPix
 %{
 #include <cmath>
 #include <map>
@@ -14,15 +14,15 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "astro/Healpix.h"
 #include "astro/SkyDir.h"
 #include "astro/SkyProj.h"
+#include "healpix/Healpix.h"
 #include "map_tools/SkyImage.h"
-#include "HealPix/HealpixArray.h"
-#include "HealPix/CountsArray.h"
-#include "HealPix/ExposureArray.h"
-#include "HealPix/Pixel.h"
-#include "HealPix/PoissonProb.h"
+#include "AspHealPix/HealpixArray.h"
+#include "AspHealPix/CountsArray.h"
+#include "AspHealPix/ExposureArray.h"
+#include "AspHealPix/Pixel.h"
+#include "AspHealPix/PoissonProb.h"
 %}
 %include stl.i
 %exception {
@@ -45,15 +45,15 @@
 %template(DoubleVector) std::vector<double>;
 %template(FloatVector) std::vector<float>;
 %template(StringVector) std::vector<std::string>;
-%include $(ASTROROOT)/astro/SkyProj.h
-%include $(ASTROROOT)/astro/SkyDir.h
-%include $(ASTROROOT)/astro/Healpix.h
+%include astro/SkyProj.h
+%include astro/SkyDir.h
+%include healpix/Healpix.h
 %feature("autodoc", "1");
-%include $(HEALPIXROOT)/HealPix/Pixel.h
-%include $(HEALPIXROOT)/HealPix/HealpixArray.h
-%include $(HEALPIXROOT)/HealPix/CountsArray.h
-%include $(HEALPIXROOT)/HealPix/ExposureArray.h
-%include $(HEALPIXROOT)/HealPix/PoissonProb.h
+%include AspHealPix/Pixel.h
+%include AspHealPix/HealpixArray.h
+%include AspHealPix/CountsArray.h
+%include AspHealPix/ExposureArray.h
+%include AspHealPix/PoissonProb.h
 
 %extend HealpixArray {
    void __setitem__(const astro::SkyDir & dir, float value) {
@@ -64,7 +64,7 @@
    }
 }
 
-%extend astro::Healpix {
+%extend healpix::Healpix {
    Pixel pixel(const astro::SkyDir & dir) const {
       return self->pixel(dir);
    }
