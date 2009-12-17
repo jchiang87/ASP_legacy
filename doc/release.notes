@@ -6,6 +6,7 @@
   @verbatim
   * EOH *
 
+ ASP-03-01-02 16-Dec-2009 jchiang use rhel4_gcc34opt builds in all xml task defs
  ASP-03-01-00 22-Oct-2009 jchiang new BayesianBlocks interface;  fix
                            ROI problems with larger rocking angle
  ASP-03-00-02 18-Aug-2009 jchiang correct asp_pgwave version
